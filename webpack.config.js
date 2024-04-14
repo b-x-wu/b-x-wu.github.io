@@ -1,8 +1,11 @@
+import { resolve, dirname } from 'path'
+import { fileURLToPath } from 'url'
+import HtmlWebpackPlugin from 'html-webpack-plugin'
 
-const path = require("path")
-const HtmlWebpackPlugin = require('html-webpack-plugin')
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = dirname(__filename)
 
-module.exports = {
+export default {
     mode: process.env.NODE_ENV ?? "development", 
     entry: "./src/index.tsx", 
     plugins: [
@@ -11,7 +14,7 @@ module.exports = {
         })
     ],
     output: {
-        path: path.resolve(__dirname, "dist"),
+        path: resolve(__dirname, "dist"),
         filename: "main.js"
     },
     target: "web",
@@ -39,3 +42,4 @@ module.exports = {
         ]
     }
 }
+
