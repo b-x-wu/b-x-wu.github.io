@@ -1,45 +1,50 @@
-import { resolve, dirname } from 'path'
-import { fileURLToPath } from 'url'
-import HtmlWebpackPlugin from 'html-webpack-plugin'
+import { resolve, dirname } from 'path';
+import { fileURLToPath } from 'url';
+import HtmlWebpackPlugin from 'html-webpack-plugin';
 
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = dirname(__filename)
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 export default {
-    mode: process.env.NODE_ENV ?? "development", 
-    entry: "./src/index.tsx", 
+    mode: process.env.NODE_ENV ?? 'development', 
+    entry: './src/index.tsx', 
     plugins: [
         new HtmlWebpackPlugin({
-            template: 'public/index.html'
-        })
+            template: 'public/index.html',
+        }),
     ],
     output: {
-        path: resolve(__dirname, "dist"),
-        filename: "main.js"
+        path: resolve(__dirname, 'dist'),
+        filename: 'main.js',
     },
-    target: "web",
+    target: 'web',
     devServer: {
-        port: process.env.PORT ?? "3001",
-        static: ["./dist"],
+        port: process.env.PORT ?? '3001',
+        static: [ './dist' ],
         open: true,
-        hot: true
+        hot: true,
     },
     resolve: {
-        extensions: ['.tsx', '.ts', '.js','.jsx','.json'] 
+        extensions: [ '.tsx', '.ts', '.js','.jsx','.json' ], 
     },
     module:{
         rules: [
             {
                 test: /\.(js|jsx)$/,
-                exclude: /node_modules/,
-                use: 'babel-loader'
+                include: resolve(__dirname, 'src'),
+                use: 'babel-loader',
             },
             {
                 test: /\.(ts|tsx)$/,
-                exclude: /node_modules/,
-                use: 'ts-loader'
-            }
-        ]
-    }
-}
+                include: resolve(__dirname, 'src'),
+                use: 'ts-loader',
+            },
+            {
+                test: /\.css$/,
+                include: resolve(__dirname, 'src/styles'),
+                use: [ 'style-loader', 'css-loader', 'postcss-loader' ],
+            },
+        ],
+    },
+};
 
