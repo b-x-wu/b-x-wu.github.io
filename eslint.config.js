@@ -4,6 +4,7 @@ import eslint from '@eslint/js';
 import tseslint from 'typescript-eslint';
 import stylistic from '@stylistic/eslint-plugin';
 import reactlint from 'eslint-plugin-react';
+import tailwindlint from 'eslint-plugin-tailwindcss';
 
 export default tseslint.config(
     eslint.configs.recommended,
@@ -23,12 +24,14 @@ export default tseslint.config(
         plugins: {
             '@stylistic': stylistic,
             'react': reactlint,
+            'tailwindcss': tailwindlint,
         },
         settings: {
             'react': {
                 'version': 'detect',
             },
         },
+        // @ts-expect-error reactlint typing is wrong
         rules: {
             '@stylistic/quotes': [ 'error', 'single' ],
             '@stylistic/indent': [ 'error', 4 ],
@@ -45,6 +48,7 @@ export default tseslint.config(
                 'functions': 'always-multiline',
             }],
             ...reactlint.configs.recommended.rules,
+            ...tailwindlint.configs.recommended.rules,
         },
     },
 );
