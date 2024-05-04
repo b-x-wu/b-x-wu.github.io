@@ -3,6 +3,7 @@
 import eslint from '@eslint/js';
 import tseslint from 'typescript-eslint';
 import stylistic from '@stylistic/eslint-plugin';
+import reactlint from 'eslint-plugin-react';
 
 export default tseslint.config(
     eslint.configs.recommended,
@@ -13,9 +14,20 @@ export default tseslint.config(
                 'browser': true,
                 'process': true,
             },
+            parserOptions: {
+                ecmaFeatures: {
+                    jsx: true,
+                },
+            },
         },
         plugins: {
             '@stylistic': stylistic,
+            'react': reactlint,
+        },
+        settings: {
+            'react': {
+                'version': 'detect',
+            },
         },
         rules: {
             '@stylistic/quotes': [ 'error', 'single' ],
@@ -32,6 +44,7 @@ export default tseslint.config(
                 'exports': 'always-multiline',
                 'functions': 'always-multiline',
             }],
+            ...reactlint.configs.recommended.rules,
         },
     },
 );
