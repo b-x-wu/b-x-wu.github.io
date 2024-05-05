@@ -7,6 +7,12 @@ export default {
                 '160': '40rem',
                 '192': '48rem',
             },
+            colors: {
+                'primary': '#FF8DB0',
+                'secondary': '#AF4D07',
+                'enabled': '#50C4D9',
+                'disabled': '#C2CCD6',
+            },
         },
     },
     variants: {

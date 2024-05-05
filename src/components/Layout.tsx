@@ -5,7 +5,7 @@ import { Outlet } from 'react-router-dom';
 const Layout: React.FC = () => {
     return (
         <div className='flex items-center justify-center'>
-            <div className='h-screen w-192 border-2 border-solid border-black'>
+            <div className='mx-12 h-screen w-160'>
                 <Header />
                 <Outlet />
             </div>
@@ -14,4 +14,3 @@ const Layout: React.FC = () => {
 };
 
 export default Layout;
-
