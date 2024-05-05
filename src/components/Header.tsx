@@ -15,9 +15,9 @@ const Header: React.FC = () => {
                 <Link className='h-fit' to='/resume'>/resume</Link>
             </div>
             <div className="flex flex-row justify-between md:hidden">
-                <div onClick={() => setIsNavbarOpen(!isNavbarOpen)}>
+                <button onClick={() => setIsNavbarOpen(!isNavbarOpen)}>
                     {isNavbarOpen ? OPEN_FOLDER_COMPONENT : CLOSED_FOLDER_COMPONENT}
-                </div>
+                </button>
                 <Link className='h-fit font-bold text-primary' to='/'>b-x-wu.github.io!</Link>
                 <div className='w-10 opacity-0'>TODO</div>
             </div>
