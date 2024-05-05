@@ -41,6 +41,10 @@ jobs:
       
       - name: Build deployment artifacts
         run: npm run build
+
+      - name: Copy index to 404 backup
+        run: cp index.html 404.html
+        working-directory: "./dist/"
       
       - name: Upload artifacts
         uses: actions/upload-pages-artifact@v3
