@@ -1,22 +1,7 @@
 import React, { useMemo } from 'react';
 import { useTitle } from '../hooks';
 import Chatbox from '../components/home/Chatbox';
-
-/* eslint-disable no-irregular-whitespace -- eslint does not like the bunny */
-const BUNNY_SIGN_ELEMENT: React.JSX.Element = (
-    <pre>
-┌────────────────┐<br />
-│                │<br />
-│   THANKS FOR   │<br />
-│  HANGING OUT!  │<br />
-│                │<br />
-└────────────────┘<br />
-(\__/)  ││<br />
-( •o•)  ││<br />
-/ 　 づ<br />
-    </pre>
-);
-/* eslint-enable no-irregular-whitespace */
+import { BUNNY_SIGN_ELEMENT } from '../components/constants';
 
 const Home: React.FC = () => {
     useTitle('b-x-wu');
@@ -27,7 +12,7 @@ const Home: React.FC = () => {
 
     return (
         <div className='flex flex-col space-y-4'>
-            <div className='flex h-9 w-full items-center justify-center'>
+            <div className='flex h-9 w-full items-center justify-center text-center'>
                 <div className='text-disabled'>{dateString}</div>
             </div>
             <Chatbox content={<span className='text-secondary'>joined the room</span>} />
