@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { CLOSED_FOLDER_COMPONENT, OPEN_FOLDER_COMPONENT } from './constants';
+import { useClickOutsideRef } from '../hooks';
 
 
 const Header: React.FC = () => {
     const [ isNavbarOpen, setIsNavbarOpen ] = useState<boolean>(false);
+    const clickOutsideNavbarRef = useClickOutsideRef<HTMLButtonElement>(() => setIsNavbarOpen(false));
 
     return (
         <div className='py-10'>
@@ -15,7 +17,7 @@ const Header: React.FC = () => {
                 <Link className='h-fit' to='/resume'>/resume</Link>
             </div>
             <div className="flex flex-row justify-between md:hidden">
-                <button onClick={() => setIsNavbarOpen(!isNavbarOpen)}>
+                <button ref={clickOutsideNavbarRef} onClick={() => setIsNavbarOpen(!isNavbarOpen)}>
                     {isNavbarOpen ? OPEN_FOLDER_COMPONENT : CLOSED_FOLDER_COMPONENT}
                 </button>
                 <Link className='h-fit font-bold text-primary' to='/'>b-x-wu.github.io!</Link>
