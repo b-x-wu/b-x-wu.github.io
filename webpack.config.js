@@ -23,6 +23,7 @@ export default {
         static: [ './dist' ],
         open: true,
         hot: true,
+        historyApiFallback: true,
     },
     resolve: {
         extensions: [ '.tsx', '.ts', '.js','.jsx','.json' ], 
