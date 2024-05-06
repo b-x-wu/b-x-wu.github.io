@@ -59,7 +59,7 @@ const Resume: React.FC = () => {
                             position='Grader'
                             dates='August 2021 - December 2022'
                             bulletPoints={[
-                                'Evaluated 110 assignments per week per semester with detailed feedback in the subjects of calculus, mathematical logic, and statistical analysis',
+                                'Evaluated 110 assignments per week per semester with detailed feedback in calculus, mathematical logic, and statistical analysis',
                                 'Compiled monthly reports on student performance based on aggregated grading data and presented trends in understanding to professors and peers',
                             ]}
                         />

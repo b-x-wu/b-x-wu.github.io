@@ -9,7 +9,7 @@ const Header: React.FC = () => {
     const clickOutsideNavbarRef = useClickOutsideRef<HTMLButtonElement>(() => setIsNavbarOpen(false));
 
     return (
-        <div className='py-10'>
+        <div className='flex-none py-10'>
             <div className='hidden flex-row space-x-12 md:flex'>
                 <Link className='h-fit font-bold text-primary' to='/'>b-x-wu.github.io!</Link>
                 <Link className='h-fit' to='/blog'>/blog</Link>
