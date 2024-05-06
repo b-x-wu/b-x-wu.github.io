@@ -8,7 +8,8 @@
     "build": "webpack --mode production",
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "npx eslint . --ignore-pattern \"dist/*\"",
-    "lint:fix": "npm run -s lint -- --fix"
+    "lint:fix": "npm run -s lint -- --fix",
+    "clean": "rm -rf dist"
   },
   "keywords": [],
   "author": "",
@@ -22,6 +23,7 @@
     "autoprefixer": "^10.4.19",
     "babel-loader": "^9.1.0",
     "css-loader": "^7.1.1",
+    "cssnano": "^7.0.1",
     "eslint-plugin-tailwindcss": "^3.15.1",
     "html-webpack-plugin": "^5.5.0",
     "postcss": "^8.4.38",
