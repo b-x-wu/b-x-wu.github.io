@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { CLOSED_FOLDER_COMPONENT, OPEN_FOLDER_COMPONENT } from './constants';
 import { useClickOutsideRef } from '../hooks';
 
 
@@ -18,7 +17,23 @@ const Header: React.FC = () => {
             </div>
             <div className="flex flex-row justify-between md:hidden">
                 <button ref={clickOutsideNavbarRef} onClick={() => setIsNavbarOpen(!isNavbarOpen)}>
-                    {isNavbarOpen ? OPEN_FOLDER_COMPONENT : CLOSED_FOLDER_COMPONENT}
+                    { isNavbarOpen
+                        ? (
+                            <img
+                                className='h-full w-5'
+                                src='/static/icons/open-folder.svg'
+                                alt='Open folder'
+                                aria-describedby='Close navigation menu'
+                            />
+                        ) : (
+                            <img
+                                className='h-full w-5'
+                                src='/static/icons/closed-folder.svg'
+                                alt='Closed folder'
+                                aria-describedby='Open navigation menu'
+                            />
+                        )
+                    }
                 </button>
                 <Link className='h-fit font-bold text-primary' to='/'>b-x-wu.github.io!</Link>
                 <div className='w-10 opacity-0'>TODO</div>

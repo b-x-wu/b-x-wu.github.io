@@ -1,6 +1,7 @@
 import { resolve, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
+import CopyPlugin from 'copy-webpack-plugin';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -11,6 +12,14 @@ export default {
     plugins: [
         new HtmlWebpackPlugin({
             template: 'public/index.html',
+        }),
+        new CopyPlugin({
+            patterns: [
+                {
+                    from: 'public/static',
+                    to: 'static',
+                },
+            ],
         }),
     ],
     output: {
@@ -43,7 +52,16 @@ export default {
             {
                 test: /\.css$/,
                 include: resolve(__dirname, 'src/styles'),
-                use: [ 'style-loader', 'css-loader', 'postcss-loader' ],
+                use: [
+                    'style-loader',
+                    {
+                        loader: 'css-loader',
+                        options: {
+                            url: false,
+                        },
+                    }, 
+                    'postcss-loader',
+                ],
             },
         ],
     },

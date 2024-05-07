@@ -1,5 +1,4 @@
 import React from 'react';
-import { HEART_SVG_ELEMENT } from './constants';
 
 const Footer: React.FC = () => {
     return (
@@ -7,7 +6,7 @@ const Footer: React.FC = () => {
             <div className='mx-auto w-fit'>---</div>
             <div className='mx-auto flex w-fit flex-row gap-x-3 align-middle'>
                 <div>made with</div>
-                {HEART_SVG_ELEMENT}
+                <img className='size-5' src='/static/icons/heart.svg' alt='Love' />
                 <div className='hidden sm:block'>and a 16oz oat milk latte</div>
                 <div className='block sm:hidden'>and some coffee</div>
             </div>
