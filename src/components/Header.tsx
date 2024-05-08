@@ -10,10 +10,12 @@ const Header: React.FC = () => {
     return (
         <div className='flex-none py-10'>
             <div className='hidden flex-row space-x-12 md:flex'>
-                <Link className='h-fit font-bold text-primary' to='/'>b-x-wu.github.io!</Link>
-                <Link className='h-fit' to='/blog'>/blog</Link>
-                <Link className='h-fit' to='/projects'>/projects</Link>
-                <Link className='h-fit' to='/resume'>/resume</Link>
+                <Link className='h-fit font-bold text-primary hover:underline hover:underline-offset-2' to='/'>
+                    b-x-wu.github.io!
+                </Link>
+                <Link className='h-fit hover:underline hover:underline-offset-2' to='/blog'>/blog</Link>
+                <Link className='h-fit hover:underline hover:underline-offset-2' to='/projects'>/projects</Link>
+                <Link className='h-fit hover:underline hover:underline-offset-2' to='/resume'>/resume</Link>
             </div>
             <div className="flex flex-row justify-between md:hidden">
                 <button ref={clickOutsideNavbarRef} onClick={() => setIsNavbarOpen(!isNavbarOpen)}>
