@@ -1,6 +1,8 @@
 import React from 'react';
 import { useTitle } from '../hooks';
 import ExperienceSection from '../components/resume/ExperienceSection';
+import Experience from '../components/resume/Experience';
+import ExperienceTitleLink from '../components/resume/ExperienceTitleLink';
 
 const Resume: React.FC = () => {
     useTitle('b-x-wu | Resume');
@@ -80,6 +82,45 @@ const Resume: React.FC = () => {
                             dates: 'August 2019 - December 2022',
                             bulletPoints: [],
                         },
+                    ]}
+                />
+            </div>
+            <div className='flex flex-col gap-y-6'>
+                <div className='text-2xl font-bold'>Projects</div>
+                <Experience
+                    title={(
+                        <ExperienceTitleLink
+                            linkTo='/'
+                            title='b-x-wu.github.io'
+                        />
+                    )}
+                    subtitle='This website!'
+                    bulletPoints={[
+                        'Technologies used: Node.js, Webpack, React, Typescript, Tailwind CSS',
+                    ]}
+                />
+                <Experience
+                    title={(
+                        <ExperienceTitleLink
+                            linkTo='https://www.npmjs.com/package/create-react-sandbox'
+                            title='Create React Sandbox'
+                        />
+                    )}
+                    subtitle='A command-line tool to create lightweight React environments'
+                    bulletPoints={[
+                        'Technologies used: Node.js, Webpack, Babel, React, Typescript',
+                    ]}
+                />
+                <Experience
+                    title={(
+                        <ExperienceTitleLink
+                            linkTo='https://b-x-wu.itch.io/visual-novel-terminal'
+                            title='Visual Novel Terminal'
+                        />
+                    )}
+                    subtitle='A customizable visual novel reskin for the terminal'
+                    bulletPoints={[
+                        'Technologies used: C#, Unity, .NET',
                     ]}
                 />
             </div>
