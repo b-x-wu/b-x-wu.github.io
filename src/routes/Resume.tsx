@@ -23,13 +23,16 @@ const Resume: React.FC = () => {
                         {
                             title: 'Software Development Engineer',
                             dates: 'October 2023 - Today',
-                            bulletPoints: [ 'WIP' ],
+                            bulletPoints: [
+                                'Designed and implemented a ticket routing system using React Router that collectively saved two hundred days a year of ticket dwell time',
+                                'Gathered stakeholder feedback to develop requirements and enhacements that eliminated user pain points responsible for 20 hours a week of churn',
+                            ],
                         },
                         {
                             title: 'Software Development Intern',
                             dates: 'June 2022 - August 2022',
                             bulletPoints: [
-                                'Created a web app with a back end written in Java and a front-end written in React using Typescript all served with AWS CloudWatch',
+                                'Created a web app with a back end written in Java and a front-end written in React using Typescript all deployed with AWS Cloud Development Kit',
                                 'Delivered a 30-minute demo presentation to 20 clients and composed a three-page wiki article detailing the service for future developers',
                             ],
                         },
