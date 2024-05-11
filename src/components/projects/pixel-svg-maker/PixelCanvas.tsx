@@ -30,13 +30,30 @@ const PixelCanvas: React.FC<PixelCanvasProps> = ({
         }
     });
 
+    const setCanvasSize = (canvas: HTMLCanvasElement): void => {
+        if (containerWidth === undefined) {
+            return;
+        }
+
+        if (pixelWidth >= pixelHeight) {
+            const height = Math.round(containerWidth * pixelHeight / pixelWidth);
+            canvas.width = containerWidth;
+            canvas.height = height;
+            return;
+        }
+
+        const width = Math.round(containerWidth * pixelWidth / pixelHeight);
+        canvas.width = width;
+        canvas.height = containerWidth;
+    };
+
     const renderPixelGrid = (context: CanvasRenderingContext2D): void => {
         if (containerWidth === undefined) {
             return;
         }
 
         context.lineWidth = containerWidth / 1000;
-        const pixelSideLength = containerWidth / pixelWidth;
+        const pixelSideLength = Math.min(context.canvas.width / pixelWidth, context.canvas.height / pixelHeight);
         const scaledPixelSideLength = pixelSideLength * 0.92;
         for (let x = 0; x < pixelWidth; x++) {
             for (let y = 0; y < pixelHeight; y++) {
@@ -70,11 +87,7 @@ const PixelCanvas: React.FC<PixelCanvasProps> = ({
         }
 
         // set canvas size
-        const aspectRatio = pixelHeight / pixelWidth;
-        const height = Math.round(containerWidth * aspectRatio);
-
-        canvasElement.width = containerWidth;
-        canvasElement.height = height;
+        setCanvasSize(canvasElement);
 
         const canvasContext = canvasElement.getContext('2d');
         if (canvasContext === null) {
@@ -86,7 +99,7 @@ const PixelCanvas: React.FC<PixelCanvasProps> = ({
     }, [ pixelWidth, pixelHeight, containerWidth ]);
 
     return (
-        <div ref={containerRef}>
+        <div ref={containerRef} className='flex aspect-square h-full items-center justify-center'>
             <canvas ref={canvasRef}></canvas>
         </div>
     );
