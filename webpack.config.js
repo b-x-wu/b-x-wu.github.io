@@ -19,6 +19,9 @@ export default {
                     from: 'public/static',
                     to: 'static',
                 },
+                {
+                    from: 'public/favicon.ico',
+                },
             ],
         }),
     ],
