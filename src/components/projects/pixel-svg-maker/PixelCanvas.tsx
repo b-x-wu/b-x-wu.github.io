@@ -1,19 +1,20 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { Color } from './types';
 
 interface PixelCanvasProps {
     /**
-     * the number of pixels wide the grid view is
+     * the number of pixels on each side
     */
-    pixelWidth: number
+    pixelsPerSide: number;
     /**
-     * the number of pixels high the grid view is
+     * the array of pixels that make up what's in the grid
     */
-    pixelHeight: number
+    pixelArray: Array<Array<Color | undefined>>;
 }
 
 const PixelCanvas: React.FC<PixelCanvasProps> = ({
-    pixelWidth,
-    pixelHeight,
+    pixelsPerSide,
+    pixelArray,
 }: PixelCanvasProps) => {
     const containerRef = useRef<HTMLDivElement | null>(null);
     const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -35,38 +36,24 @@ const PixelCanvas: React.FC<PixelCanvasProps> = ({
             return;
         }
 
-        if (pixelWidth >= pixelHeight) {
-            const height = Math.round(containerWidth * pixelHeight / pixelWidth);
-            canvas.width = containerWidth;
-            canvas.height = height;
-            return;
-        }
-
-        const width = Math.round(containerWidth * pixelWidth / pixelHeight);
-        canvas.width = width;
+        canvas.width = containerWidth;
         canvas.height = containerWidth;
     };
 
-    const renderPixelGrid = (context: CanvasRenderingContext2D): void => {
-        if (containerWidth === undefined) {
-            return;
-        }
-
-        context.lineWidth = containerWidth / 1000;
-        const pixelSideLength = Math.min(context.canvas.width / pixelWidth, context.canvas.height / pixelHeight);
-        const scaledPixelSideLength = pixelSideLength * 0.92;
-        for (let x = 0; x < pixelWidth; x++) {
-            for (let y = 0; y < pixelHeight; y++) {
-                const centerX = (x + 0.5) * pixelSideLength;
-                const centerY = (y + 0.5) * pixelSideLength;
-                context.strokeRect(
-                    centerX - scaledPixelSideLength / 2,
-                    centerY - scaledPixelSideLength / 2,
-                    scaledPixelSideLength,
-                    scaledPixelSideLength,
-                );
+    const renderPixels = (context: CanvasRenderingContext2D): void => {
+        const pixelSideLength = context.canvas.width / pixelsPerSide;
+        for (let x = 0; x < pixelsPerSide; x++) {
+            for (let y = 0; y < pixelsPerSide; y++) {
+                const color = pixelArray.at(y)?.at(x);
+                if (color === undefined) {
+                    (x + y) % 2 === 0 ? context.fillStyle = '#eaeaea' : context.fillStyle = '#dadada';
+                    context.fillRect(x * pixelSideLength, y * pixelSideLength, pixelSideLength, pixelSideLength);
+                    continue;
+                }
+                context.fillStyle = `rgba(${color.red}, ${color.green}, ${color.blue}, ${color.alpha})`;
+                context.fillRect(x * pixelSideLength, y * pixelSideLength, pixelSideLength, pixelSideLength);
             }
-        }
+        };
     };
 
     // subscribe to resize observer
@@ -81,22 +68,15 @@ const PixelCanvas: React.FC<PixelCanvasProps> = ({
 
     // render grid and array when container size changes, or pixel dimensions change
     useEffect(() => {
-        const canvasElement = canvasRef.current;
-        if (canvasElement === null || containerWidth === undefined) {
+        const canvasContext = canvasRef.current?.getContext('2d');
+        if (canvasContext === null || canvasContext === undefined || containerWidth === undefined) {
             return;
         }
 
-        // set canvas size
-        setCanvasSize(canvasElement);
+        setCanvasSize(canvasContext.canvas);
+        renderPixels(canvasContext);
 
-        const canvasContext = canvasElement.getContext('2d');
-        if (canvasContext === null) {
-            return;
-        }
-
-        renderPixelGrid(canvasContext);
-
-    }, [ pixelWidth, pixelHeight, containerWidth ]);
+    }, [ pixelsPerSide, containerWidth, pixelArray ]);
 
     return (
         <div ref={containerRef} className='flex aspect-square h-full items-center justify-center'>

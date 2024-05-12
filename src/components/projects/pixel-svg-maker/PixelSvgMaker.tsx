@@ -1,13 +1,12 @@
 import React from 'react';
 import PixelCanvas from './PixelCanvas';
 
-const DEFAULT_PIXEL_WIDTH: number = 20;
-const DEFAULT_PIXEL_HEIGHT: number = 16;
+const DEFAULT_PIXELS_PER_SIDE: number = 16;
 
 const PixelSvgMaker: React.FC = () => {
     return (
         <div>
-            <PixelCanvas pixelWidth={DEFAULT_PIXEL_WIDTH} pixelHeight={DEFAULT_PIXEL_HEIGHT} />
+            <PixelCanvas pixelsPerSide={DEFAULT_PIXELS_PER_SIDE} pixelArray={[[{ red: 0, green: 0, blue: 255, alpha: '100%' }]]} />
         </div>
     );
 };
