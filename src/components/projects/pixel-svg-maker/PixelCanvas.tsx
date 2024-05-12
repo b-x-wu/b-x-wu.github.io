@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Color } from './types';
+import { Color, colorToString } from './types';
 
 interface PixelCanvasProps {
     /**
@@ -56,7 +56,7 @@ const PixelCanvas: React.FC<PixelCanvasProps> = ({
                     context.fillRect(x * pixelSideLength, y * pixelSideLength, pixelSideLength, pixelSideLength);
                     continue;
                 }
-                context.fillStyle = `rgba(${color.red}, ${color.green}, ${color.blue}, ${color.alpha})`;
+                context.fillStyle = colorToString(color);
                 context.fillRect(x * pixelSideLength, y * pixelSideLength, pixelSideLength, pixelSideLength);
             }
         };
@@ -102,8 +102,8 @@ const PixelCanvas: React.FC<PixelCanvasProps> = ({
     };
 
     return (
-        <div ref={containerRef} className='flex aspect-square h-full items-center justify-center'>
-            <canvas ref={canvasRef} onClick={handleCanvasClick}></canvas>
+        <div ref={ containerRef } className='flex aspect-square h-full items-center justify-center'>
+            <canvas ref={ canvasRef } onClick={ handleCanvasClick }></canvas>
         </div>
     );
 };

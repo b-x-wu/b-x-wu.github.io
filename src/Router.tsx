@@ -10,14 +10,14 @@ import PixelSvgMaker from './components/projects/pixel-svg-maker/PixelSvgMaker';
 const Router = (
     <BrowserRouter>
         <Routes>
-            <Route element={<Layout />}>
-                <Route index element={<Home />} />
-                <Route path='resume' element={<Resume />} />
+            <Route element={ <Layout /> }>
+                <Route index element={ <Home /> } />
+                <Route path='resume' element={ <Resume /> } />
                 <Route path='projects'>
-                    <Route index element={<Projects />} />
-                    <Route path='pixel-svg-maker' element={<PixelSvgMaker />} />
+                    <Route index element={ <Projects /> } />
+                    <Route path='pixel-svg-maker' element={ <PixelSvgMaker /> } />
                 </Route>
-                <Route path='*' element={<Error404 />} />
+                <Route path='*' element={ <Error404 /> } />
             </Route>
         </Routes>
     </BrowserRouter>

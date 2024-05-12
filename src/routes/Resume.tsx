@@ -9,17 +9,17 @@ const Resume: React.FC = () => {
 
     return (
         <div className='flex flex-col gap-y-6'>
-            {/*Basic Info*/}
+            { /*Basic Info*/ }
             <div className='flex flex-col gap-y-2'>
                 <div className='text-3xl font-bold'>Bridgette X. Wu</div>
                 <div className='text-disabled'>they/she</div>
             </div>
-            {/*Work Experience*/}
+            { /*Work Experience*/ }
             <div className='flex flex-col gap-y-6'>
                 <div className='text-2xl font-bold'>Work Experience</div>
                 <ExperienceSection
                     header='Amazon'
-                    experiences={[
+                    experiences={ [
                         {
                             title: 'Software Development Engineer',
                             dates: 'October 2023 - Today',
@@ -36,11 +36,11 @@ const Resume: React.FC = () => {
                                 'Delivered a 30-minute demo presentation to 20 clients and composed a three-page wiki article detailing the service for future developers',
                             ],
                         },
-                    ]}
+                    ] }
                 />
                 <ExperienceSection
                     header='Bit Project'
-                    experiences={[
+                    experiences={ [
                         {
                             title: 'Program Director',
                             dates: 'February 2021 - July 2021',
@@ -49,11 +49,11 @@ const Resume: React.FC = () => {
                                 'Directed a 5 week-long, 6-person focus group on the curriculum and converted collected feedback into deliverables',
                             ],
                         },
-                    ]}
+                    ] }
                 />
                 <ExperienceSection
                     header='New York University'
-                    experiences={[
+                    experiences={ [
                         {
                             title: 'Learning Assistant',
                             dates: 'January 2021 - December 2022',
@@ -71,60 +71,60 @@ const Resume: React.FC = () => {
                                 'Compiled monthly reports on student performance based on aggregated grading data and presented trends in understanding to professors and peers',
                             ],
                         },
-                    ]}
+                    ] }
                 />
             </div>
-            {/*Education*/}
+            { /*Education*/ }
             <div className='flex flex-col gap-y-6'>
                 <div className='text-2xl font-bold'>Education</div>
                 <ExperienceSection
                     header='New York University'
-                    experiences={[
+                    experiences={ [
                         {
                             title: 'BA in Math and Computer Science',
                             dates: 'August 2019 - December 2022',
                             bulletPoints: [],
                         },
-                    ]}
+                    ] }
                 />
             </div>
             <div className='flex flex-col gap-y-6'>
                 <div className='text-2xl font-bold'>Projects</div>
                 <Experience
-                    title={(
+                    title={ (
                         <ExperienceTitleLink
                             linkTo='/'
                             title='b-x-wu.github.io'
                         />
-                    )}
+                    ) }
                     subtitle='This website!'
-                    bulletPoints={[
+                    bulletPoints={ [
                         'Technologies used: Node.js, Webpack, React, Typescript, Tailwind CSS',
-                    ]}
+                    ] }
                 />
                 <Experience
-                    title={(
+                    title={ (
                         <ExperienceTitleLink
                             linkTo='https://www.npmjs.com/package/create-react-sandbox'
                             title='Create React Sandbox'
                         />
-                    )}
+                    ) }
                     subtitle='A command-line tool to create lightweight React environments'
-                    bulletPoints={[
+                    bulletPoints={ [
                         'Technologies used: Node.js, Webpack, Babel, React, Typescript',
-                    ]}
+                    ] }
                 />
                 <Experience
-                    title={(
+                    title={ (
                         <ExperienceTitleLink
                             linkTo='https://b-x-wu.itch.io/visual-novel-terminal'
                             title='Visual Novel Terminal'
                         />
-                    )}
+                    ) }
                     subtitle='A customizable visual novel reskin for the terminal'
-                    bulletPoints={[
+                    bulletPoints={ [
                         'Technologies used: C#, Unity, .NET',
-                    ]}
+                    ] }
                 />
             </div>
         </div>
