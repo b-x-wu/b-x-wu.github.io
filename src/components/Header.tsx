@@ -18,7 +18,7 @@ const Header: React.FC = () => {
                 <Link className='h-fit hover:underline hover:underline-offset-2' to='/resume'>/resume</Link>
             </div>
             <div className="flex flex-row justify-between md:hidden">
-                <button ref={clickOutsideNavbarRef} onClick={() => setIsNavbarOpen(!isNavbarOpen)}>
+                <button ref={ clickOutsideNavbarRef } onClick={ () => setIsNavbarOpen(!isNavbarOpen) }>
                     { isNavbarOpen
                         ? (
                             <img
@@ -41,14 +41,14 @@ const Header: React.FC = () => {
                 <div className='w-10 opacity-0'>TODO</div>
             </div>
             <div
-                className={isNavbarOpen
+                className={ isNavbarOpen
                     ? 'absolute my-2 flex w-2/5 flex-col space-y-0 border-2 border-dotted bg-white align-middle'
-                    : 'hidden'}
+                    : 'hidden' }
             >
-                <Link onClick={() => setIsNavbarOpen(false)} to='/' className='border-b-2 border-dotted p-2'>$HOME</Link>
-                <Link onClick={() => setIsNavbarOpen(false)} to='/blog' className='border-b-2 border-dotted p-2'>/blog</Link>
-                <Link onClick={() => setIsNavbarOpen(false)} to='/projects' className='border-b-2 border-dotted p-2'>/projects</Link>
-                <Link onClick={() => setIsNavbarOpen(false)} to='/resume' className='p-2'>/resume</Link>
+                <Link onClick={ () => setIsNavbarOpen(false) } to='/' className='border-b-2 border-dotted p-2'>$HOME</Link>
+                <Link onClick={ () => setIsNavbarOpen(false) } to='/blog' className='border-b-2 border-dotted p-2'>/blog</Link>
+                <Link onClick={ () => setIsNavbarOpen(false) } to='/projects' className='border-b-2 border-dotted p-2'>/projects</Link>
+                <Link onClick={ () => setIsNavbarOpen(false) } to='/resume' className='p-2'>/resume</Link>
             </div>
         </div>
     );
