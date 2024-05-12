@@ -4,17 +4,23 @@ import { Color } from './types';
 interface PixelCanvasProps {
     /**
      * the number of pixels on each side
-    */
+     */
     pixelsPerSide: number;
     /**
      * the array of pixels that make up what's in the grid
-    */
+     */
     pixelArray: Array<Array<Color | undefined>>;
+    /**
+     * callback handler for clicking on a pixel, defined by the x/y coords
+     * of the pixel clicked with respect to the current grid view window bounds
+     */
+    handlePixelClick: (x: number, y: number) => void;
 }
 
 const PixelCanvas: React.FC<PixelCanvasProps> = ({
     pixelsPerSide,
     pixelArray,
+    handlePixelClick,
 }: PixelCanvasProps) => {
     const containerRef = useRef<HTMLDivElement | null>(null);
     const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -78,9 +84,26 @@ const PixelCanvas: React.FC<PixelCanvasProps> = ({
 
     }, [ pixelsPerSide, containerWidth, pixelArray ]);
 
+    const handleCanvasClick = (event: React.MouseEvent<HTMLCanvasElement>) => {
+        const canvas = canvasRef.current;
+        if (canvas === null) {
+            return;
+        }
+
+        const rect = canvas.getBoundingClientRect();
+        const clickX = event.clientX - rect.left;
+        const clickY = event.clientY - rect.top;
+
+        const pixelSideLength = canvas.width / pixelsPerSide;
+        const pixelX = Math.floor(clickX / pixelSideLength);
+        const pixelY = Math.floor(clickY / pixelSideLength);
+
+        handlePixelClick(pixelX, pixelY);
+    };
+
     return (
         <div ref={containerRef} className='flex aspect-square h-full items-center justify-center'>
-            <canvas ref={canvasRef}></canvas>
+            <canvas ref={canvasRef} onClick={handleCanvasClick}></canvas>
         </div>
     );
 };
