@@ -21,7 +21,11 @@ const PixelPalette: React.FC<PixelPaletteProps> = ({
         return (<></>);
     }
 
-    const handlePickColor = (color: Color) => {
+    const handlePickColor = (color: Color | undefined) => {
+        if (color === undefined) {
+            return;
+        }
+
         setIsColorPickerOpen(false);
         onPickColor(color);
     };
@@ -38,7 +42,8 @@ const PixelPalette: React.FC<PixelPaletteProps> = ({
                     key={ `${val === undefined ? 'empty' : colorToString(val)}-${idx}` }
                     className='h-5 w-1/6'
                     style={ { backgroundColor: val === undefined ? 'rgba(0, 0, 0, 0%)' : colorToString(val) } }
-                ></div>
+                    onClick={ () => handlePickColor(val) }
+                />
             )).filter((_, idx) => idx < DEFAULT_COLOR_QUEUE_LENGTH) }
             { isColorPickerOpen
                 ? (

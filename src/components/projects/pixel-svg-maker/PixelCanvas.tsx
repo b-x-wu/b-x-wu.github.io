@@ -25,6 +25,7 @@ const PixelCanvas: React.FC<PixelCanvasProps> = ({
     const containerRef = useRef<HTMLDivElement | null>(null);
     const canvasRef = useRef<HTMLCanvasElement | null>(null);
     const [ containerWidth, setContainerWidth ] = useState<number | undefined>(undefined);
+    const [ isMouseDown, setIsMouseDown ] = useState<boolean>(false);
 
     const resizeObserver = new ResizeObserver((entries) => {
         const resizedElement = entries.at(0);
@@ -84,7 +85,7 @@ const PixelCanvas: React.FC<PixelCanvasProps> = ({
 
     }, [ pixelsPerSide, containerWidth, pixelArray ]);
 
-    const handleCanvasClick = (event: React.MouseEvent<HTMLCanvasElement>) => {
+    const drawPixel= (event: React.MouseEvent<HTMLCanvasElement>) => {
         const canvas = canvasRef.current;
         if (canvas === null) {
             return;
@@ -101,9 +102,25 @@ const PixelCanvas: React.FC<PixelCanvasProps> = ({
         handlePixelClick(pixelX, pixelY);
     };
 
+    const handleMouseDown = (event: React.MouseEvent<HTMLCanvasElement>) => {
+        setIsMouseDown(true);
+        drawPixel(event);
+    };
+
+    const handleMouseOver = (event: React.MouseEvent<HTMLCanvasElement>) => {
+        if (!isMouseDown) {
+            return;
+        }
+        drawPixel(event);
+    };
+
+    const handleMouseUp = () => {
+        setIsMouseDown(false);
+    };
+
     return (
         <div ref={ containerRef } className='flex aspect-square h-full items-center justify-center'>
-            <canvas ref={ canvasRef } onClick={ handleCanvasClick }></canvas>
+            <canvas ref={ canvasRef } onMouseDown={ handleMouseDown } onMouseMove={ handleMouseOver } onMouseUp={ handleMouseUp }></canvas>
         </div>
     );
 };
