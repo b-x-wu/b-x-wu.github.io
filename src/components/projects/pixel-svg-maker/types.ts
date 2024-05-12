@@ -1,7 +1,7 @@
 export interface Color {
-    red: number
-    green: number
-    blue: number
-    alpha: number
+    red: number | string
+    green: number | string
+    blue: number | string
+    alpha: number | string
 }
 
