@@ -9,6 +9,13 @@ export enum Mode {
     ERASER,
 }
 
+export interface Bounds {
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+}
+
 export const colorToRbgString = (color: Color) => {
     return `rgb(${color.red}, ${color.green}, ${color.blue})`;
 };
