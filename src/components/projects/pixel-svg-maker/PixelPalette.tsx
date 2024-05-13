@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Color, colorToString } from './types';
+import { Color, colorToRbgString } from './types';
 import ColorPicker from './ColorPicker';
 
 const DEFAULT_COLOR_QUEUE_LENGTH = 4;
@@ -34,14 +34,14 @@ const PixelPalette: React.FC<PixelPaletteProps> = ({
         <div className='relative flex w-full flex-row'>
             <div
                 className='h-10 w-2/6'
-                style={ { backgroundColor: colorToString(currentColor)} }
+                style={ { backgroundColor: colorToRbgString(currentColor)} }
                 onClick={ () => setIsColorPickerOpen(true) }
             ></div>
             { colorQueue.map((val, idx) => (
                 <div
-                    key={ `${val === undefined ? 'empty' : colorToString(val)}-${idx}` }
+                    key={ `${val === undefined ? 'empty' : colorToRbgString(val)}-${idx}` }
                     className='h-5 w-1/6'
-                    style={ { backgroundColor: val === undefined ? 'rgba(0, 0, 0, 0%)' : colorToString(val) } }
+                    style={ { backgroundColor: val === undefined ? 'rgba(0, 0, 0, 0%)' : colorToRbgString(val) } }
                     onClick={ () => handlePickColor(val) }
                 />
             )).filter((_, idx) => idx < DEFAULT_COLOR_QUEUE_LENGTH) }
