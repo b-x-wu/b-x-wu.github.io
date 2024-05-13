@@ -4,6 +4,10 @@ export interface Color {
     blue: number;
 }
 
+export enum Mode {
+    PENCIL,
+    ERASER,
+}
 
 export const colorToRbgString = (color: Color) => {
     return `rgb(${color.red}, ${color.green}, ${color.blue})`;

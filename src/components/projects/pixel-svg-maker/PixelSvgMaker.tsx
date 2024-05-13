@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import PixelCanvas from './PixelCanvas';
-import { Color, BLACK } from './types';
+import { Color, BLACK, Mode } from './types';
 import PixelPalette from './PixelPalette';
 
 const DEFAULT_PIXELS_PER_SIDE: number = 16;
@@ -10,6 +10,7 @@ const PixelSvgMaker: React.FC = () => {
         Array(DEFAULT_PIXELS_PER_SIDE).fill(Array(DEFAULT_PIXELS_PER_SIDE).fill(undefined)),
     );
     const [ colorQueue, setColorQueue ] = useState<Color[]>([ BLACK ]);
+    const [ mode, setMode ] = useState<Mode>(Mode.PENCIL);
 
     // pixel click handler
     const handlePixelClick = (pixelX: number, pixelY: number) => {
@@ -20,15 +21,15 @@ const PixelSvgMaker: React.FC = () => {
 
         const newPixelArray = pixelArray.map((pixelRow, yIndex) => {
             return pixelRow.map((pixel, xIndex) => {
-                if (xIndex === pixelX && yIndex === pixelY) {
-                    return currentColor;
+                if (xIndex !== pixelX || yIndex !== pixelY) {
+                    return pixel === undefined ? undefined : { ...pixel };
                 }
-                
-                if (pixel === undefined) {
+
+                if (mode === Mode.ERASER) {
                     return undefined;
                 }
 
-                return { ...pixel };
+                return currentColor;
             });
         });
         setPixelArray(newPixelArray);
@@ -42,6 +43,10 @@ const PixelSvgMaker: React.FC = () => {
 
     return (
         <div>
+            <div className='flex flex-row'>
+                <button onClick={ () => setMode(Mode.PENCIL) } style={ { border: mode === Mode.PENCIL ? '2px dotted' : undefined } }>PENCIL</button>
+                <button onClick={ () => setMode(Mode.ERASER) } style={ { border: mode === Mode.ERASER ? '2px dotted' : undefined } }>ERASER</button>
+            </div>
             <PixelCanvas
                 pixelsPerSide={ DEFAULT_PIXELS_PER_SIDE }
                 pixelArray={ pixelArray }
