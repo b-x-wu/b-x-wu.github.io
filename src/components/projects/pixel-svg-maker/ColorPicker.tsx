@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Color, colorToString } from './types';
+import { Color, colorToHexString, colorToRbgString, hexStringToColor } from './types';
 
 interface ColorPickerProps {
     initialColor: Color;
@@ -16,19 +16,37 @@ const ColorPicker: React.FC<ColorPickerProps> = ({
     const [ green, setGreen ] = useState<number>(0);
     const [ blue, setBlue ] = useState<number>(0);
 
+    const [ hexValue, setHexValue ] = useState<string>('');
+
     useEffect(() => {
         setRed(initialColor.red);
         setGreen(initialColor.green);
         setBlue(initialColor.blue);
+        setHexValue(colorToHexString(initialColor));
     }, [ initialColor ]);
 
+    const handleHexValueChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
+        const color = hexStringToColor(event.target.value);
+        console.log(color);
+        
+        if (color !== undefined) {
+            setRed(color.red);
+            setGreen(color.green);
+            setBlue(color.blue);
+            setHexValue(colorToHexString(color));
+            return;
+        }
+
+        setHexValue(event.target.value);
+    };
+
     return (
-        <div className='absolute top-12 flex flex-row gap-x-2 border-2 border-dotted bg-white'>
+        <div className='absolute flex w-64 flex-col gap-y-2 border-2 border-dotted bg-white p-2'>
             <div
-                className='size-10'
-                style={ { backgroundColor: colorToString({ red, green, blue}) } }
+                className='h-6 w-full'
+                style={ { backgroundColor: colorToRbgString({ red, green, blue}) } }
             ></div>
-            <div className='flex flex-col gap-y-2'>
+            <div className='flex basis-4/6 flex-col gap-y-2'>
                 <div className='flex flex-row justify-between'>
                     <input
                         type='range'
@@ -65,9 +83,22 @@ const ColorPicker: React.FC<ColorPickerProps> = ({
                     />
                     <label htmlFor='blue-slider'>Blue</label>
                 </div>
-                <div className='flex flex-row justify-end'>
-                    <button onClick={ onClose }>Cancel</button>
-                    <button onClick={ () => onPickColor({ red, green, blue }) }>Set Color</button>
+                <div className='flex flex-row justify-between gap-x-2'>
+                    <div className='flex w-9/12 flex-row gap-x-2'>
+                        <div>#</div>
+                        <input
+                            type='text'
+                            id='hex-input'
+                            value={ hexValue }
+                            onChange={ handleHexValueChange }
+                            className='grow border border-black pr-2 text-right'
+                        />
+                    </div>
+                    <div>Hex</div>
+                </div>
+                <div className='flex flex-row justify-between gap-x-2 text-sm'>
+                    <button className='text-disabled hover:underline hover:underline-offset-2' onClick={ onClose }>Cancel</button>
+                    <button className='text-enabled hover:underline hover:underline-offset-2' onClick={ () => onPickColor({ red, green, blue }) }>Set Color</button>
                 </div>
             </div>
         </div>
