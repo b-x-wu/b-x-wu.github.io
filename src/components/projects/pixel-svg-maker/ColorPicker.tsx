@@ -41,7 +41,7 @@ const ColorPicker: React.FC<ColorPickerProps> = ({
     };
 
     return (
-        <div className='absolute flex w-64 flex-col gap-y-2 border-2 border-dotted bg-white p-2'>
+        <div className='absolute bottom-0 flex w-64 flex-col gap-y-2 border-2 border-dotted bg-white p-2'>
             <div
                 className='h-6 w-full'
                 style={ { backgroundColor: colorToRbgString({ red, green, blue}) } }
