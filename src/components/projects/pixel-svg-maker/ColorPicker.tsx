@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Color, colorToHexString, colorToRbgString, hexStringToColor } from './types';
-import { useClickOutsideRef } from '../../../hooks';
 
 interface ColorPickerProps {
     initialColor: Color;
@@ -18,9 +17,22 @@ const ColorPicker: React.FC<ColorPickerProps> = ({
     const [ blue, setBlue ] = useState<number>(0);
 
     const [ hexValue, setHexValue ] = useState<string>('');
-    const ref = useClickOutsideRef<HTMLDivElement>(() => {
-        onClose();
-    });
+    const ref = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        if (ref.current === null) {
+            return;
+        }
+
+        const handleClick = (event: Event) => {
+            if (!ref.current?.contains(event.target as Node)) {
+                onClose();
+            }
+        };
+
+        document.addEventListener('mousedown', handleClick);
+        return () => document.removeEventListener('mousedown', handleClick);
+    }, []);
 
     useEffect(() => {
         setRed(initialColor.red);
