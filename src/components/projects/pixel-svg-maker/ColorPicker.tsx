@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Color, colorToHexString, colorToRbgString, hexStringToColor } from './types';
+import { useClickOutsideRef } from '../../../hooks';
 
 interface ColorPickerProps {
     initialColor: Color;
@@ -17,6 +18,9 @@ const ColorPicker: React.FC<ColorPickerProps> = ({
     const [ blue, setBlue ] = useState<number>(0);
 
     const [ hexValue, setHexValue ] = useState<string>('');
+    const ref = useClickOutsideRef<HTMLDivElement>(() => {
+        onClose();
+    });
 
     useEffect(() => {
         setRed(initialColor.red);
@@ -27,7 +31,6 @@ const ColorPicker: React.FC<ColorPickerProps> = ({
 
     const handleHexValueChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
         const color = hexStringToColor(event.target.value);
-        console.log(color);
         
         if (color !== undefined) {
             setRed(color.red);
@@ -41,7 +44,7 @@ const ColorPicker: React.FC<ColorPickerProps> = ({
     };
 
     return (
-        <div className='absolute bottom-0 flex w-64 flex-col gap-y-2 border-2 border-dotted bg-white p-2'>
+        <div ref={ ref } className='absolute bottom-0 flex w-64 flex-col gap-y-2 border-2 border-dotted bg-white p-2'>
             <div
                 className='h-6 w-full'
                 style={ { backgroundColor: colorToRbgString({ red, green, blue}) } }
