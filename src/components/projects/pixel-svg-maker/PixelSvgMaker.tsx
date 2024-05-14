@@ -13,6 +13,24 @@ const PixelSvgMaker: React.FC = () => {
     const [ mode, setMode ] = useState<Mode>(Mode.PENCIL);
     const [ svgString, setSvgString ] = useState<string>('');
 
+    useEffect(() => {
+        const handleKeyDown = (event: KeyboardEvent) => {
+            switch (event.key) {
+                case 'e':
+                    return setMode(Mode.ERASER);
+                case 'p':
+                case 'b':
+                    return setMode(Mode.PENCIL);
+                default:
+                    return;
+            };
+        };
+        
+        document.addEventListener('keydown', handleKeyDown);
+        
+        return () => document.removeEventListener('keydown', handleKeyDown);
+    }, []);
+
     const handlePixelClick = (pixelX: number, pixelY: number) => {
         const currentColor = colorQueue.at(0);
         if (currentColor === undefined) {
