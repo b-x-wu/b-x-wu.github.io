@@ -56,6 +56,10 @@ const ColorPicker: React.FC<ColorPickerProps> = ({
         setHexValue(event.target.value);
     };
 
+    useEffect(() => {
+        setHexValue(colorToHexString({ red, green, blue }));
+    }, [ red, green, blue ]);
+
     return (
         <div ref={ ref } className='absolute bottom-0 flex w-72 flex-col gap-y-4 border-2 border-dotted bg-white p-4'>
             <div
