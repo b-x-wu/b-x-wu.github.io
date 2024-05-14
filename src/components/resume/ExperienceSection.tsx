@@ -12,8 +12,8 @@ const ExperienceSection: React.FC<ExperienceSectionProps> = ({
 }: ExperienceSectionProps) => {
     const experienceComponents = experiences.map((experienceProps) => (
         <Experience
-            {...experienceProps}
-            key={`[${header ?? 'experience_section'}][${experienceProps.title}]`}
+            { ...experienceProps }
+            key={ `[${header ?? 'experience_section'}][${experienceProps.title}]` }
         />
     ));
 

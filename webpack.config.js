@@ -28,6 +28,7 @@ export default {
     output: {
         path: resolve(__dirname, 'dist'),
         filename: 'main.js',
+        publicPath: '/',
     },
     target: 'web',
     devServer: {
