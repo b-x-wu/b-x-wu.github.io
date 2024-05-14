@@ -23,14 +23,18 @@ export const useClickOutsideRef = <T extends HTMLElement>(callback: () => void):
     const ref = useRef<T>(null);
 
     useEffect(() => {
+        if (ref.current === null) {
+            return;
+        }
+
         const handleClick = (event: Event) => {
             if (!ref.current?.contains(event.target as Node)) {
                 callback();
             }
         };
 
-        document.addEventListener('click', handleClick);
-        return () => document.removeEventListener('click', handleClick);
+        document.addEventListener('mousedown', handleClick);
+        return () => document.removeEventListener('mousedown', handleClick);
     }, []);
 
     return ref;
