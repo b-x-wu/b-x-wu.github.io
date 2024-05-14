@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Color, colorToRbgString } from './types';
+import { Color, colorToRgbString } from './types';
 
 interface PixelCanvasProps {
     /**
@@ -57,7 +57,7 @@ const PixelCanvas: React.FC<PixelCanvasProps> = ({
                     context.fillRect(x * pixelSideLength, y * pixelSideLength, pixelSideLength, pixelSideLength);
                     continue;
                 }
-                context.fillStyle = colorToRbgString(color);
+                context.fillStyle = colorToRgbString(color);
                 context.fillRect(x * pixelSideLength, y * pixelSideLength, pixelSideLength, pixelSideLength);
             }
         };

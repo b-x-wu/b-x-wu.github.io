@@ -47,6 +47,11 @@ const Slider: React.FC<SliderProps> = ({
             return;
         }
 
+        if (value !== undefined) {
+            _setValue(value);
+            return;
+        }
+
         _setValue(min + (max - min) / 2);
     }, []);
 
@@ -141,7 +146,7 @@ const Slider: React.FC<SliderProps> = ({
             <div
                 className='absolute inset-y-0 size-1 bg-primary'
                 onMouseDown={ () => setIsSettingValue(true) } onTouchStart={ () => setIsSettingValue(true) }
-                style={ {...(thumbStyle ?? {}), left: `${_value * 100 / max}%` } }
+                style={ {...(thumbStyle ?? {}), left: thumbStyle?.width === undefined ? `${_value * 100 / max}%` : `calc(${_value * 100 / max}% - ${thumbStyle.width} / 2` } }
             ></div>
         </div>
     );

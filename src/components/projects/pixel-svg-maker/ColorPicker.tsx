@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Color, colorToHexString, colorToRbgString, hexStringToColor } from './types';
+import { Color, colorToHexString, colorToRgbString, hexStringToColor } from './types';
+import Slider from '../../common/Slider';
 
 interface ColorPickerProps {
     initialColor: Color;
@@ -56,45 +57,51 @@ const ColorPicker: React.FC<ColorPickerProps> = ({
     };
 
     return (
-        <div ref={ ref } className='absolute bottom-0 flex w-64 flex-col gap-y-2 border-2 border-dotted bg-white p-2'>
+        <div ref={ ref } className='absolute bottom-0 flex w-72 flex-col gap-y-4 border-2 border-dotted bg-white p-4'>
             <div
                 className='h-6 w-full'
-                style={ { backgroundColor: colorToRbgString({ red, green, blue}) } }
+                style={ { backgroundColor: colorToRgbString({ red, green, blue}) } }
             ></div>
             <div className='flex basis-4/6 flex-col gap-y-2'>
                 <div className='flex flex-row justify-between'>
-                    <input
-                        type='range'
+                    <Slider
+                        min={ 0 }
+                        max={ 255 }
                         id='red-slider'
-                        min='0' max='255'
-                        step='1'
+                        step={ 1 }
                         value={ red }
-                        className='w-9/12 cursor-pointer bg-disabled'
-                        onInput={ (event) => setRed(parseInt((event.target as HTMLInputElement).value)) }
+                        containerStyle={ { width: '75%', height: '4px', margin: 'auto 0' } }
+                        barStyle={ { background: `linear-gradient(90deg, ${colorToRgbString({ red: 0, green, blue })} 0%, ${colorToRgbString({ red: 255, green, blue})} 100%)`, cursor: 'pointer' } }
+                        thumbStyle={ { cursor: 'pointer', height: '12px', width: '12px', aspectRatio: '1 / 1', background: '#000', maskImage: 'url("/static/icons/crosshair.svg")', maskRepeat: 'no-repeat', WebkitMaskImage: 'url("/static/icons/crosshair.svg")', WebkitMaskRepeat: 'no-repeat', top: '-4px' } }
+                        onChange={ (value) => setRed(value) }
                     />
                     <label htmlFor='red-slider'>Red</label>
                 </div>
                 <div className='flex flex-row justify-between'>
-                    <input
-                        type='range'
+                    <Slider
+                        min={ 0 }
+                        max={ 255 }
                         id='green-slider'
-                        min='0' max='255'
-                        step='1'
+                        step={ 1 }
                         value={ green }
-                        className='w-9/12 cursor-pointer bg-disabled'
-                        onInput={ (event) => setGreen(parseInt((event.target as HTMLInputElement).value)) }
+                        containerStyle={ { width: '75%', height: '4px', margin: 'auto 0' } }
+                        barStyle={ { background: `linear-gradient(90deg, ${colorToRgbString({ red, green: 0, blue })} 0%, ${colorToRgbString({ red, green: 255, blue})} 100%)`, cursor: 'pointer' } }
+                        thumbStyle={ { cursor: 'pointer', height: '12px', width: '12px', aspectRatio: '1 / 1', background: '#000', maskImage: 'url("/static/icons/crosshair.svg")', maskRepeat: 'no-repeat', WebkitMaskImage: 'url("/static/icons/crosshair.svg")', WebkitMaskRepeat: 'no-repeat', top: '-4px' } }
+                        onChange={ (value) => setGreen(value) }
                     />
                     <label htmlFor='green-slider'>Green</label>
                 </div>
                 <div className='flex flex-row justify-between'>
-                    <input
-                        type='range'
+                    <Slider
+                        min={ 0 }
+                        max={ 255 }
                         id='blue-slider'
-                        min='0' max='255'
-                        step='1'
+                        step={ 1 }
                         value={ blue }
-                        className='w-9/12 cursor-pointer bg-disabled'
-                        onInput={ (event) => setBlue(parseInt((event.target as HTMLInputElement).value)) }
+                        containerStyle={ { width: '75%', height: '4px', margin: 'auto 0' } }
+                        barStyle={ { background: `linear-gradient(90deg, ${colorToRgbString({ red, green, blue: 0 })} 0%, ${colorToRgbString({ red, green, blue: 255 })} 100%)`, cursor: 'pointer' } }
+                        thumbStyle={ { cursor: 'pointer', height: '12px', width: '12px', aspectRatio: '1 / 1', background: '#000', maskImage: 'url("/static/icons/crosshair.svg")', maskRepeat: 'no-repeat', WebkitMaskImage: 'url("/static/icons/crosshair.svg")', WebkitMaskRepeat: 'no-repeat', top: '-4px' } }
+                        onChange={ (value) => setBlue(value) }
                     />
                     <label htmlFor='blue-slider'>Blue</label>
                 </div>
