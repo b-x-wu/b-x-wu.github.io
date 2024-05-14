@@ -85,15 +85,15 @@ const PixelCanvas: React.FC<PixelCanvasProps> = ({
 
     }, [ pixelsPerSide, containerWidth, pixelArray ]);
 
-    const drawPixel= (event: React.MouseEvent<HTMLCanvasElement>) => {
+    const drawPixel= (clientX: number, clientY: number) => {
         const canvas = canvasRef.current;
         if (canvas === null) {
             return;
         }
 
         const rect = canvas.getBoundingClientRect();
-        const clickX = event.clientX - rect.left;
-        const clickY = event.clientY - rect.top;
+        const clickX = clientX - rect.left;
+        const clickY = clientY - rect.top;
 
         const pixelSideLength = canvas.width / pixelsPerSide;
         const pixelX = Math.floor(clickX / pixelSideLength);
@@ -104,23 +104,44 @@ const PixelCanvas: React.FC<PixelCanvasProps> = ({
 
     const handleMouseDown = (event: React.MouseEvent<HTMLCanvasElement>) => {
         setIsMouseDown(true);
-        drawPixel(event);
+        drawPixel(event.clientX, event.clientY);
+    };
+
+    const handleTouchStart = (event: React.TouchEvent<HTMLCanvasElement>) => {
+        const touch = event.touches.item(0);
+        setIsMouseDown(true);
+        drawPixel(touch.clientX, touch.clientY);
     };
 
     const handleMouseOver = (event: React.MouseEvent<HTMLCanvasElement>) => {
         if (!isMouseDown) {
             return;
         }
-        drawPixel(event);
+        drawPixel(event.clientX, event.clientY);
     };
 
-    const handleMouseUp = () => {
+    const handleTouchEnd = (event: React.TouchEvent<HTMLCanvasElement>) => {
+        const touch = event.touches.item(0);
+        if (!isMouseDown) {
+            return;
+        }
+        drawPixel(touch.clientX, touch.clientY);
+    };
+    
+    const handleDrawEnd = () => {
         setIsMouseDown(false);
     };
 
     return (
         <div ref={ containerRef } className='flex aspect-square h-full items-center justify-center'>
-            <canvas ref={ canvasRef } onMouseDown={ handleMouseDown } onMouseMove={ handleMouseOver } onMouseUp={ handleMouseUp }></canvas>
+            <canvas
+                className='touch-none'
+                ref={ canvasRef }
+                onMouseDown={ handleMouseDown } onTouchStart={ handleTouchStart }
+                onMouseMove={ handleMouseOver } onTouchMove={ handleTouchEnd }
+                onMouseUp={ handleDrawEnd } onTouchEnd={ handleDrawEnd }
+            >
+            </canvas>
         </div>
     );
 };

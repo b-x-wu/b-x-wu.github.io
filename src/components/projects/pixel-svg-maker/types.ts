@@ -10,10 +10,10 @@ export enum Mode {
 }
 
 export interface Bounds {
-    x: number;
-    y: number;
-    width: number;
-    height: number;
+    xMin: number;
+    yMin: number;
+    xMax: number;
+    yMax: number;
 }
 
 export const colorToRbgString = (color: Color) => {
@@ -57,13 +57,14 @@ export const hexStringToColor = (s: string): Color | undefined => {
         const redVal = sixCharMatch.at(1);
         const greenVal = sixCharMatch.at(2);
         const blueVal = sixCharMatch.at(3);
+        console.log(redVal, greenVal, blueVal);
 
         return redVal === undefined || blueVal === undefined || greenVal === undefined
             ? undefined
             : {
-                red: parseInt(redVal + redVal, 16),
-                green: parseInt(greenVal + greenVal, 16),
-                blue: parseInt(blueVal + blueVal, 16),
+                red: parseInt(redVal, 16),
+                green: parseInt(greenVal, 16),
+                blue: parseInt(blueVal, 16),
             };
     }
 

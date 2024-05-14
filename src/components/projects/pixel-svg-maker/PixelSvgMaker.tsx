@@ -13,7 +13,6 @@ const PixelSvgMaker: React.FC = () => {
     const [ mode, setMode ] = useState<Mode>(Mode.PENCIL);
     const [ svgString, setSvgString ] = useState<string>('');
 
-    // pixel click handler
     const handlePixelClick = (pixelX: number, pixelY: number) => {
         const currentColor = colorQueue.at(0);
         if (currentColor === undefined) {
@@ -44,10 +43,10 @@ const PixelSvgMaker: React.FC = () => {
 
     const pixelArrayToSvgString = () => {
         const bounds: Partial<Bounds> = {
-            x: undefined,
-            y: undefined,
-            width: undefined,
-            height: undefined,
+            xMin: undefined,
+            yMin: undefined,
+            xMax: undefined,
+            yMax: undefined,
         };
 
         const rectStrings: string[] = pixelArray.reduce<string[]>((accumulator, pixelRow, yIndex) => {
@@ -56,17 +55,20 @@ const PixelSvgMaker: React.FC = () => {
                     return undefined;
                 }
 
-                if (bounds.x === undefined || bounds.y === undefined) {
-                    bounds.x = xIndex;
-                    bounds.y = yIndex;
-                }
-
-                if (bounds.width === undefined || (bounds.x !== undefined && bounds.width < xIndex - bounds.x)) {
-                    bounds.width = xIndex - bounds.x;
+                if (bounds.xMin === undefined || xIndex < bounds.xMin) {
+                    bounds.xMin = xIndex;
                 }
                 
-                if (bounds.height === undefined || (bounds.y !== undefined && bounds.height < yIndex - bounds.y)) {
-                    bounds.height = yIndex - bounds.y;
+                if (bounds.yMin === undefined || yIndex < bounds.yMin) {
+                    bounds.yMin = yIndex;
+                }
+
+                if (bounds.xMax === undefined || xIndex > bounds.xMax) {
+                    bounds.xMax = xIndex;
+                }
+                
+                if (bounds.yMax === undefined || yIndex > bounds.yMax) {
+                    bounds.yMax = yIndex;
                 }
 
                 return `<rect width="1" height="1" x="${xIndex}" y="${yIndex}" fill="${colorToRbgString(pixel)}"></rect>`;
@@ -75,12 +77,12 @@ const PixelSvgMaker: React.FC = () => {
             return [ ...accumulator, ...rowRectStrings ];
         }, []);
 
-        if (bounds.x === undefined || bounds.y === undefined || bounds.width === undefined || bounds.height === undefined) {
+        if (bounds.xMin === undefined || bounds.yMin === undefined || bounds.xMax === undefined || bounds.yMax === undefined) {
             return '<svg xmlns="http://www.w3.org/2000/svg" version="1.1"></svg>';
         }
 
         return '<svg xmlns="http://www.w3.org/2000/svg" version="1.1" '
-            + `viewBox="${bounds.x} ${bounds.y} ${bounds.width} ${bounds.height}" `
+            + `viewBox="${bounds.xMin} ${bounds.yMin} ${bounds.xMax - bounds.xMin + 1} ${bounds.yMax - bounds.yMin + 1}" `
             + `preserveAspectRatio="xMidYMid meet">${rectStrings.join('')}</svg>`;
     };
 
@@ -89,15 +91,23 @@ const PixelSvgMaker: React.FC = () => {
     }, [ pixelArray ]);
 
     return (
-        <div>
-            <div className='flex flex-row justify-between'>
-                <div className='flex flex-row gap-x-2'>
-                    <button onClick={ () => setMode(Mode.PENCIL) } style={ { border: mode === Mode.PENCIL ? '2px dotted' : undefined } }>PENCIL</button>
-                    <button onClick={ () => setMode(Mode.ERASER) } style={ { border: mode === Mode.ERASER ? '2px dotted' : undefined } }>ERASER</button>
+        <div className='relative flex flex-col gap-y-1'>
+            <div className='flex flex-row flex-wrap justify-between'>
+                <div className='flex max-w-1/5 flex-row gap-x-2'>
+                    <button className='w-10 max-w-1/2 p-1' onClick={ () => setMode(Mode.PENCIL) } style={ { border: mode === Mode.PENCIL ? '2px dotted' : '2px dotted white' } }>
+                        <img src='/static/icons/pencil.svg' alt='Pencil Icon' aria-labelledby='Set pencil mode' className='aspect-square w-full' />
+                    </button>
+                    <button className='w-10 max-w-1/2  p-1' onClick={ () => setMode(Mode.ERASER) } style={ { border: mode === Mode.ERASER ? '2px dotted' : '2px dotted white' } }>
+                        <img src='/static/icons/eraser.svg' alt='Eraser Icon' aria-labelledby='Set eraser mode' className='aspect-square w-full' />
+                    </button>
                 </div>
-                <div className='flex flex-row gap-x-2'>
-                    <a href={ URL.createObjectURL(new Blob([ svgString ], { type: 'image/svg+xml' })) } download='pixel-art.svg'>DOWNLOAD SVG</a>
-                    <button onClick={ () => navigator.clipboard.writeText(svgString) }>COPY TO CLIPBOARD</button>
+                <div className='flex max-w-1/5 flex-row gap-x-2'>
+                    <a href={ URL.createObjectURL(new Blob([ svgString ], { type: 'image/svg+xml' })) } download='pixel-art.svg' className='w-10 max-w-1/2 border-2 border-dotted border-white p-1'>
+                        <img src='/static/icons/download.svg' alt='Downlaod Icon' aria-labelledby='Download pixel art as svg' className='aspect-square w-full' />
+                    </a>
+                    <button onClick={ () => navigator.clipboard.writeText(svgString) } className='w-10 max-w-1/2 border-2 border-dotted border-white p-1'>
+                        <img src='/static/icons/clipboard.svg' alt='Clipboard Icon' aria-labelledby='Copy pixel art to clipboard' className='aspect-square w-full' />
+                    </button>
                 </div>
             </div>
             <PixelCanvas
