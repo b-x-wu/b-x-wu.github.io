@@ -46,6 +46,19 @@ export default tseslint.config(
                 'imports': 'always-multiline',
                 'exports': 'always-multiline',
                 'functions': 'always-multiline',
+                'enums': 'always-multiline',
+            }],
+            '@typescript-eslint/member-delimiter-style': [ 'error', {
+                'multiline': {
+                    'delimiter': 'semi',
+                    'requireLast': true,
+                },
+            }],
+            'react/jsx-curly-spacing': [ 'error', {
+                'when': 'always',
+                'children': {
+                    'when': 'always',
+                },
             }],
             ...reactlint.configs.recommended.rules,
             ...tailwindlint.configs.recommended.rules,

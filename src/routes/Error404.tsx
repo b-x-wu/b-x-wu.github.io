@@ -15,11 +15,11 @@ const Error404: React.FC = () => {
     return (
         <div className='flex flex-col space-y-4'>
             <div className='flex h-9 w-full items-center justify-center'>
-                <div className='text-disabled'>{dateString}</div>
+                <div className='text-disabled'>{ dateString }</div>
             </div>
-            <Chatbox content={<span className='text-secondary'>joined the room</span>} />
-            <Chatbox content={`sorry!! i don't think "${pathname}" exists yet...`} />
-            <Chatbox content={(
+            <Chatbox content={ <span className='text-secondary'>joined the room</span> } />
+            <Chatbox content={ `sorry!! i don't think "${pathname}" exists yet...` } />
+            <Chatbox content={ (
                 <span>
                     <span>if you think something should be here, lmk on </span>
                     <Link
@@ -28,7 +28,7 @@ const Error404: React.FC = () => {
                     >github</Link>
                     <span>!</span>
                 </span>
-            )} />
+            ) } />
         </div>
     );
 };
