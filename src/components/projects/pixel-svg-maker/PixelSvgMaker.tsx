@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import PixelCanvas from './PixelCanvas';
-import { Color, BLACK, Mode, Bounds, colorToRbgString } from './types';
+import { Color, BLACK, Mode, Bounds, colorToRgbString } from './types';
 import PixelPalette from './PixelPalette';
 
 const DEFAULT_PIXELS_PER_SIDE: number = 16;
@@ -71,7 +71,7 @@ const PixelSvgMaker: React.FC = () => {
                     bounds.yMax = yIndex;
                 }
 
-                return `<rect width="1" height="1" x="${xIndex}" y="${yIndex}" fill="${colorToRbgString(pixel)}"></rect>`;
+                return `<rect width="1" height="1" x="${xIndex}" y="${yIndex}" fill="${colorToRgbString(pixel)}"></rect>`;
             }).filter<string>((val): val is string => val !== undefined);
 
             return [ ...accumulator, ...rowRectStrings ];

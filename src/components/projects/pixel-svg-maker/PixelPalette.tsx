@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Color, colorToRbgString } from './types';
+import { Color, colorToRgbString } from './types';
 import ColorPicker from './ColorPicker';
 
 const DEFAULT_COLOR_QUEUE_LENGTH = 12;
@@ -31,19 +31,19 @@ const PixelPalette: React.FC<PixelPaletteProps> = ({
     };
 
     return (
-        <div className='flex w-full flex-col'>
+        <div className='flex w-full flex-col gap-y-1'>
             <div
                 className='aspect-square h-12 w-full border-2 border-dotted bg-clip-content p-1'
-                style={ { backgroundColor: colorToRbgString(currentColor)} }
+                style={ { backgroundColor: colorToRgbString(currentColor)} }
                 onClick={ () => setIsColorPickerOpen(true) }
             ></div>
-            <div className='flex w-full flex-row'>
+            <div className='flex w-full flex-row gap-x-1'>
                 { colorQueue.map((val, idx) => (
                     <div
-                        key={ `${val === undefined ? 'empty' : colorToRbgString(val)}-${idx}` }
-                        className='h-12 border-2 border-dotted bg-clip-content p-1'
+                        key={ `${val === undefined ? 'empty' : colorToRgbString(val)}-${idx}` }
+                        className='h-6 sm:h-12'
                         style={ { 
-                            backgroundColor: val === undefined ? 'rgba(0, 0, 0, 0%)' : colorToRbgString(val),
+                            backgroundColor: val === undefined ? 'rgba(0, 0, 0, 0%)' : colorToRgbString(val),
                             width: `${100/DEFAULT_COLOR_QUEUE_LENGTH}%`,
                         } }
                         onClick={ () => handlePickColor(val) }

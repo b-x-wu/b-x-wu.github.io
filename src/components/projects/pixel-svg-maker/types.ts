@@ -16,7 +16,7 @@ export interface Bounds {
     yMax: number;
 }
 
-export const colorToRbgString = (color: Color) => {
+export const colorToRgbString = (color: Color) => {
     return `rgb(${color.red}, ${color.green}, ${color.blue})`;
 };
 
