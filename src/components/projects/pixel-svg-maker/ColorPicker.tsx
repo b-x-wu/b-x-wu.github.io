@@ -122,7 +122,7 @@ const ColorPicker: React.FC<ColorPickerProps> = ({
                     </div>
                     <div>Hex</div>
                 </div>
-                <div className='flex flex-row justify-between gap-x-2 text-sm'>
+                <div className='flex flex-row justify-between gap-x-2'>
                     <button className='text-disabled hover:underline hover:underline-offset-2' onClick={ onClose }>Cancel</button>
                     <button className='text-enabled hover:underline hover:underline-offset-2' onClick={ () => onPickColor({ red, green, blue }) }>Set Color</button>
                 </div>

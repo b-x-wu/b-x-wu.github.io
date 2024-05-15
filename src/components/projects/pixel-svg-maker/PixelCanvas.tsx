@@ -14,13 +14,18 @@ interface PixelCanvasProps {
      * callback handler for clicking on a pixel, defined by the x/y coords
      * of the pixel clicked with respect to the current grid view window bounds
      */
-    handlePixelClick: (x: number, y: number) => void;
+    onPixelClick: (x: number, y: number) => void;
+    /**
+     * callback handler for finishing a draw
+     */
+    onDrawEnd: () => void;
 }
 
 const PixelCanvas: React.FC<PixelCanvasProps> = ({
     pixelsPerSide,
     pixelArray,
-    handlePixelClick,
+    onPixelClick,
+    onDrawEnd,
 }: PixelCanvasProps) => {
     const containerRef = useRef<HTMLDivElement | null>(null);
     const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -99,7 +104,7 @@ const PixelCanvas: React.FC<PixelCanvasProps> = ({
         const pixelX = Math.floor(clickX / pixelSideLength);
         const pixelY = Math.floor(clickY / pixelSideLength);
 
-        handlePixelClick(pixelX, pixelY);
+        onPixelClick(pixelX, pixelY);
     };
 
     const handleMouseDown = (event: React.MouseEvent<HTMLCanvasElement>) => {
@@ -130,6 +135,7 @@ const PixelCanvas: React.FC<PixelCanvasProps> = ({
     
     const handleDrawEnd = () => {
         setIsMouseDown(false);
+        onDrawEnd();
     };
 
     return (

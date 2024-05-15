@@ -9,6 +9,9 @@ const PixelSvgMaker: React.FC = () => {
     const [ pixelArray, setPixelArray ] = useState<Array<Array<Color | undefined>>>(
         Array(DEFAULT_PIXELS_PER_SIDE).fill(Array(DEFAULT_PIXELS_PER_SIDE).fill(undefined)),
     );
+    const [ history, setHistory ] = useState<Array<Array<Array<Color | undefined>>>>([
+        Array(DEFAULT_PIXELS_PER_SIDE).fill(Array(DEFAULT_PIXELS_PER_SIDE).fill(undefined)),
+    ]);
     const [ colorQueue, setColorQueue ] = useState<Color[]>([ BLACK ]);
     const [ mode, setMode ] = useState<Mode>(Mode.PENCIL);
     const [ svgString, setSvgString ] = useState<string>('');
@@ -52,6 +55,27 @@ const PixelSvgMaker: React.FC = () => {
         });
         setPixelArray(newPixelArray);
     };
+
+    const handleDrawEnd = () => {
+        const newHistory = [
+            pixelArray.map((row) => row.map((pixel) => pixel === undefined ? undefined : { ...pixel })),
+            ...history.map(
+                (state) => state.map((row) => row.map((pixel) => pixel === undefined ? undefined : { ...pixel }))
+            )
+        ]
+        setHistory(newHistory);
+    }
+
+    const handleUndo = () => {
+        const newHistory = history.slice(1).map((state) => state.map((row) => row.map((pixel) => pixel === undefined ? undefined : { ...pixel })))
+        const previousState = newHistory.at(0);
+        if (previousState === undefined) {
+            return;
+        }
+
+        setPixelArray(previousState.map((row) => row.map((pixel) => pixel === undefined ? undefined : { ...pixel })))
+        setHistory(newHistory)
+    }
 
     const handlePickColor = (color: Color) => {
         const newColorQueue = [ color ];
@@ -115,8 +139,11 @@ const PixelSvgMaker: React.FC = () => {
                     <button className='w-10 max-w-1/2 p-1' onClick={ () => setMode(Mode.PENCIL) } style={ { border: mode === Mode.PENCIL ? '2px dotted' : '2px dotted white' } }>
                         <img src='/static/icons/pencil.svg' alt='Pencil Icon' aria-labelledby='Set pencil mode' className='aspect-square w-full' />
                     </button>
-                    <button className='w-10 max-w-1/2  p-1' onClick={ () => setMode(Mode.ERASER) } style={ { border: mode === Mode.ERASER ? '2px dotted' : '2px dotted white' } }>
+                    <button className='w-10 max-w-1/2 p-1' onClick={ () => setMode(Mode.ERASER) } style={ { border: mode === Mode.ERASER ? '2px dotted' : '2px dotted white' } }>
                         <img src='/static/icons/eraser.svg' alt='Eraser Icon' aria-labelledby='Set eraser mode' className='aspect-square w-full' />
+                    </button>
+                    <button className='w-10 max-w-1/2 p-1 border-2 border-dotted border-white' onClick={ handleUndo }>
+                        <img src='/static/icons/undo.svg' alt='Undo Icon' aria-labelledby='Undo' className='aspect-square w-full' />
                     </button>
                 </div>
                 <div className='flex max-w-1/5 flex-row gap-x-2'>
@@ -131,7 +158,8 @@ const PixelSvgMaker: React.FC = () => {
             <PixelCanvas
                 pixelsPerSide={ DEFAULT_PIXELS_PER_SIDE }
                 pixelArray={ pixelArray }
-                handlePixelClick={ handlePixelClick }
+                onPixelClick={ handlePixelClick }
+                onDrawEnd={ handleDrawEnd }
             />
             <PixelPalette
                 currentColor={ colorQueue.at(0) }
