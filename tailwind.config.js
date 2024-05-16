@@ -1,9 +1,7 @@
 import plugin from 'tailwindcss/plugin';
 
-/** @param options { Record<string, Record<string, string> } */
 const autoAddSelectorVariantPlugin = plugin.withOptions((options = {}) => {
     const COLOR_UTILITIES_TO_PROPERTY = { 'bg': 'background-color', 'text': 'color' };
-    // options in the form of { "default": { ... }, "dark": { "primary": "#123", "secondary: "#234", ... }, "high-contrast": { "primary": "#123", ... } }
     return ({ addComponents, addVariant }) => {
         // add variants
         const variants = Object.keys(options);
@@ -52,10 +50,12 @@ export default {
                 '192': '48rem',
             },
             colors: {
+                'background': '#FFF',
+                'text': '#000',
                 'primary': '#FF8DB0',
                 'secondary': '#AF4D07',
                 'enabled': '#50C4D9',
-                'disabled': '#a3a5b0',
+                'disabled': '#0004',
             },
             minWidth: {
                 '1/5': '20%',
@@ -105,11 +105,13 @@ export default {
         }),
         // auto add selector based variants
         autoAddSelectorVariantPlugin({
-            'hc': {
-                'primary': '#F00',
-                'secondary': '#0F0',
-                'enabled': '#00F',
-                'disabled': '#888',
+            'dark': {
+                'background': '#000',
+                'text': '#FFF',
+                'primary': '#df3568',
+                'secondary': '#f8954f',
+                'enabled': '#279bb0',
+                'disabled': '#FFF7',
             },
         }),
     ],

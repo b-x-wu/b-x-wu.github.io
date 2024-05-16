@@ -1,17 +1,41 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Header from './Header';
 import { Outlet } from 'react-router-dom';
 import Footer from './Footer';
+import { DARK_MODE_CLASS_NAME, DARK_MODE_LOCAL_STORAGE_KEY, HIGH_CONTRAST_CLASS_NAME } from '../constants';
 
 const Layout: React.FC = () => {
+
+    const [ isDarkMode, setIsDarkMode ] = useState<boolean>(false);
+    const [ isHighContrastMode, setIsHighContrastMode ] = useState<boolean>(false);
+    useEffect(() => {
+        setIsDarkMode(document.documentElement.classList.contains(DARK_MODE_CLASS_NAME));
+        setIsHighContrastMode(document.documentElement.classList.contains(HIGH_CONTRAST_CLASS_NAME));
+    }, []);
+
+    const handleToggleDarkMode = () => {
+        if (isDarkMode) {
+            setIsDarkMode(false);
+            localStorage.setItem(DARK_MODE_LOCAL_STORAGE_KEY, 'false');
+            document.documentElement.classList.remove(DARK_MODE_CLASS_NAME);
+            return;
+        }
+
+        setIsDarkMode(true);
+        localStorage.setItem(DARK_MODE_LOCAL_STORAGE_KEY, 'true');
+        document.documentElement.classList.add(DARK_MODE_CLASS_NAME);
+    };
+
     return (
-        <div className='flex items-center justify-center'>
-            <div className='relative flex min-h-svh w-160 max-w-4/5 flex-col'>
-                <Header />
-                <div className='mb-auto grow'>
-                    <Outlet />
+        <div className='bg-background text-text'>
+            <div className='flex items-center justify-center'>
+                <div className='relative flex min-h-svh w-160 max-w-4/5 flex-col'>
+                    <Header onToggleDarkMode={ handleToggleDarkMode } />
+                    <div className='mb-auto grow'>
+                        <Outlet />
+                    </div>
+                    <Footer />
                 </div>
-                <Footer />
             </div>
         </div>
     );
