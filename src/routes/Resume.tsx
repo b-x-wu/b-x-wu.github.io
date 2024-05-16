@@ -23,6 +23,7 @@ const Resume: React.FC = () => {
                         {
                             title: 'Software Development Engineer',
                             dates: 'October 2023 - Today',
+                            subtitle: <div className='text-primary'>at Amazon Private Brands</div>,
                             bulletPoints: [
                                 'Designed and implemented a ticket routing system using React Router that collectively saved two hundred days a year of ticket dwell time',
                                 'Gathered stakeholder feedback to develop requirements and enhacements that eliminated user pain points responsible for 20 hours a week of churn',
@@ -31,6 +32,7 @@ const Resume: React.FC = () => {
                         {
                             title: 'Software Development Intern',
                             dates: 'June 2022 - August 2022',
+                            subtitle: <div className='text-primary'>at Amazon Distribution and Fulfillment Services</div>,
                             bulletPoints: [
                                 'Created a web app with a back end written in Java and a front-end written in React using Typescript all deployed with AWS Cloud Development Kit',
                                 'Delivered a 30-minute demo presentation to 20 clients and composed a three-page wiki article detailing the service for future developers',
@@ -43,6 +45,7 @@ const Resume: React.FC = () => {
                     experiences={ [
                         {
                             title: 'Program Director',
+                            subtitle: <div className='text-primary'>at Bit University</div>,
                             dates: 'February 2021 - July 2021',
                             bulletPoints: [
                                 'Oversaw a 5-person team through the development of a 9 week-long undergraduate level data science curriculum about applying NumPy, Pandas, and Scikit-learn to digital humanities',
@@ -56,6 +59,7 @@ const Resume: React.FC = () => {
                     experiences={ [
                         {
                             title: 'Learning Assistant',
+                            subtitle: <div className='text-primary'>at NYU University Learning Center</div>,
                             dates: 'January 2021 - December 2022',
                             bulletPoints: [
                                 'Instructed 260 students per semester in one-on-one and group sessions in algorithms, data structures, discrete mathematical logic, and linear algebra',
@@ -65,6 +69,7 @@ const Resume: React.FC = () => {
                         {
 
                             title: 'Grader',
+                            subtitle: <div className='text-primary'>at Courant Institute of Mathematical Sciences</div>,
                             dates: 'August 2021 - December 2022',
                             bulletPoints: [
                                 'Evaluated 110 assignments per week per semester with detailed feedback in calculus, mathematical logic, and statistical analysis',
