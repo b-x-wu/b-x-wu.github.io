@@ -2,7 +2,7 @@ import React from 'react';
 
 export interface ExperienceProps {
     title: string | React.JSX.Element;
-    subtitle?: string;
+    subtitle?: string | React.JSX.Element;
     dates?: string;
     bulletPoints: string[];
 }

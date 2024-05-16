@@ -19,8 +19,10 @@ const ExperienceSection: React.FC<ExperienceSectionProps> = ({
 
     return (
         <div className='flex flex-col gap-y-4'>
-            { header !== undefined ? <div className='text-xl text-secondary'>{ header }</div> : <></> }
-            { experienceComponents }
+            { header !== undefined ? <div className='text-secondary text-xl'>{ header }</div> : <></> }
+            <div className='flex flex-col gap-y-8'>
+                { experienceComponents }
+            </div>
         </div>
     );
 };
