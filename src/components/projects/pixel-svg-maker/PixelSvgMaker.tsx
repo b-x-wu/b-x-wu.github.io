@@ -60,22 +60,22 @@ const PixelSvgMaker: React.FC = () => {
         const newHistory = [
             pixelArray.map((row) => row.map((pixel) => pixel === undefined ? undefined : { ...pixel })),
             ...history.map(
-                (state) => state.map((row) => row.map((pixel) => pixel === undefined ? undefined : { ...pixel }))
-            )
-        ]
+                (state) => state.map((row) => row.map((pixel) => pixel === undefined ? undefined : { ...pixel })),
+            ),
+        ];
         setHistory(newHistory);
-    }
+    };
 
     const handleUndo = () => {
-        const newHistory = history.slice(1).map((state) => state.map((row) => row.map((pixel) => pixel === undefined ? undefined : { ...pixel })))
+        const newHistory = history.slice(1).map((state) => state.map((row) => row.map((pixel) => pixel === undefined ? undefined : { ...pixel })));
         const previousState = newHistory.at(0);
         if (previousState === undefined) {
             return;
         }
 
-        setPixelArray(previousState.map((row) => row.map((pixel) => pixel === undefined ? undefined : { ...pixel })))
-        setHistory(newHistory)
-    }
+        setPixelArray(previousState.map((row) => row.map((pixel) => pixel === undefined ? undefined : { ...pixel })));
+        setHistory(newHistory);
+    };
 
     const handlePickColor = (color: Color) => {
         const newColorQueue = [ color ];
@@ -142,7 +142,7 @@ const PixelSvgMaker: React.FC = () => {
                     <button className='w-10 max-w-1/2 p-1' onClick={ () => setMode(Mode.ERASER) } style={ { border: mode === Mode.ERASER ? '2px dotted' : '2px dotted white' } }>
                         <img src='/static/icons/eraser.svg' alt='Eraser Icon' aria-labelledby='Set eraser mode' className='aspect-square w-full' />
                     </button>
-                    <button className='w-10 max-w-1/2 p-1 border-2 border-dotted border-white' onClick={ handleUndo }>
+                    <button className='w-10 max-w-1/2 border-2 border-dotted border-white p-1' onClick={ handleUndo }>
                         <img src='/static/icons/undo.svg' alt='Undo Icon' aria-labelledby='Undo' className='aspect-square w-full' />
                     </button>
                 </div>

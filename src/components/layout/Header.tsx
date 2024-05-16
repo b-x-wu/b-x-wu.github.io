@@ -29,7 +29,7 @@ const Header: React.FC = () => {
     return (
         <div className='flex-none py-10'>
             <div className='hidden flex-row space-x-12 md:flex'>
-                <Link className='h-fit font-bold text-primary hover:underline hover:underline-offset-2' to='/'>
+                <Link className='text-primary h-fit font-bold hover:underline hover:underline-offset-2' to='/'>
                     b-x-wu.github.io!
                 </Link>
                 <Link className='h-fit hover:underline hover:underline-offset-2' to='/blog'>/blog</Link>
@@ -56,7 +56,7 @@ const Header: React.FC = () => {
                         )
                     }
                 </button>
-                <Link className='h-fit font-bold text-primary' to='/'>b-x-wu.github.io!</Link>
+                <Link className='text-primary h-fit font-bold' to='/'>b-x-wu.github.io!</Link>
                 <div className='w-10 opacity-0'>TODO</div>
             </div>
             <div
