@@ -3,10 +3,12 @@ import { Link } from 'react-router-dom';
 
 interface HeaderProps {
     onToggleDarkMode: () => void;
+    onToggleHighContrastMode: () => void;
 }
 
 const Header: React.FC<HeaderProps> = ({
     onToggleDarkMode,
+    onToggleHighContrastMode,
 }) => {
     const [ isNavbarOpen, setIsNavbarOpen ] = useState<boolean>(false);
     const navbarRef = useRef<HTMLButtonElement>(null);
@@ -26,7 +28,6 @@ const Header: React.FC<HeaderProps> = ({
         return () => document.removeEventListener('click', handleClick);
     }, []);
 
-
     const handleNavbarLinkClick = (event: React.MouseEvent) => {
         event.stopPropagation();
         setIsNavbarOpen(false);
@@ -43,6 +44,7 @@ const Header: React.FC<HeaderProps> = ({
                 <Link className='h-fit hover:underline hover:underline-offset-2' to='/resume'>/resume</Link>
                 <div className='flex grow flex-row justify-end gap-x-2'>
                     <button onClick={ onToggleDarkMode }>DARK</button>
+                    <button onClick={ onToggleHighContrastMode }>CONTRAST</button>
                 </div>
             </div>
             <div className="flex flex-row justify-between md:hidden">
