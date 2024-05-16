@@ -6,9 +6,14 @@ const autoAddSelectorVariantPlugin = plugin.withOptions((options = {}) => {
         // add variants
         const variants = Object.keys(options);
         variants.forEach((variant) => {
+            const name = variant.replace(' ', '-');
+            const definition = variant.split(' ')
+                .map((variantSelector) => `.${variantSelector}`)
+                .join('')
+                + ' &';
             addVariant(
-                variant,
-                `.${variant} &`,
+                name,
+                definition,
             );
         });
         
@@ -31,7 +36,10 @@ const autoAddSelectorVariantPlugin = plugin.withOptions((options = {}) => {
         addComponents(
             Object.fromEntries(
                 selectorObjects.map((selectorObject) => {
-                    const componentSelector = `.${selectorObject.variant} .${selectorObject.utility}-${selectorObject.color}`;
+                    const variantSelector = selectorObject.variant.split(' ')
+                        .map((variantSelector) => `.${variantSelector}`)
+                        .join('');
+                    const componentSelector = `${variantSelector} .${selectorObject.utility}-${selectorObject.color}`;
                     const componentValue = { [COLOR_UTILITIES_TO_PROPERTY[selectorObject.utility]]: options[selectorObject.variant][selectorObject.color] };
                     return [ componentSelector, componentValue ];
                 }),
@@ -55,7 +63,7 @@ export default {
                 'primary': '#FF8DB0',
                 'secondary': '#AF4D07',
                 'enabled': '#50C4D9',
-                'disabled': '#0004',
+                'disabled': '#aaa',
             },
             minWidth: {
                 '1/5': '20%',
@@ -111,7 +119,23 @@ export default {
                 'primary': '#df3568',
                 'secondary': '#f8954f',
                 'enabled': '#279bb0',
-                'disabled': '#FFF7',
+                'disabled': '#FFFFFF77',
+            },
+            'contrast': {
+                'background': '#ffffff',
+                'text': '#000000',
+                'primary': '#e02076',
+                'secondary': '#7f1d07',
+                'enabled': '#007acb',
+                'disabled': '#767676',
+            },
+            'dark contrast': {
+                'background': '#000',
+                'text': '#FFF',
+                'primary': '#df3568',
+                'secondary': '#f8954f',
+                'enabled': '#279bb0',
+                'disabled': '#FFFFFF77',
             },
         }),
     ],
