@@ -14,6 +14,9 @@ export default tseslint.config(
             globals: {
                 'browser': true,
                 'process': true,
+                'document': true,
+                'localStorage': true,
+                'window': true,
             },
             parserOptions: {
                 ecmaFeatures: {
