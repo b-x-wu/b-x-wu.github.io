@@ -144,7 +144,7 @@ const Slider: React.FC<SliderProps> = ({
                 onMouseDown={ handleSliderBarMouseDown } onTouchStart={ handleSliderBarTouchStart }
             ></div>
             <div
-                className='absolute inset-y-0 size-1 bg-primary'
+                className='bg-primary absolute inset-y-0 size-1'
                 onMouseDown={ () => setIsSettingValue(true) } onTouchStart={ () => setIsSettingValue(true) }
                 style={ {...(thumbStyle ?? {}), left: thumbStyle?.width === undefined ? `${_value * 100 / max}%` : `calc(${_value * 100 / max}% - ${thumbStyle.width} / 2` } }
             ></div>
