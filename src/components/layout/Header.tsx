@@ -1,7 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 
-const Header: React.FC = () => {
+interface HeaderProps {
+    onToggleDarkMode: () => void;
+}
+
+const Header: React.FC<HeaderProps> = ({
+    onToggleDarkMode,
+}) => {
     const [ isNavbarOpen, setIsNavbarOpen ] = useState<boolean>(false);
     const navbarRef = useRef<HTMLButtonElement>(null);
 
@@ -20,11 +26,11 @@ const Header: React.FC = () => {
         return () => document.removeEventListener('click', handleClick);
     }, []);
 
+
     const handleNavbarLinkClick = (event: React.MouseEvent) => {
         event.stopPropagation();
         setIsNavbarOpen(false);
     };
-
 
     return (
         <div className='flex-none py-10'>
@@ -35,6 +41,9 @@ const Header: React.FC = () => {
                 <Link className='h-fit hover:underline hover:underline-offset-2' to='/blog'>/blog</Link>
                 <Link className='h-fit hover:underline hover:underline-offset-2' to='/projects'>/projects</Link>
                 <Link className='h-fit hover:underline hover:underline-offset-2' to='/resume'>/resume</Link>
+                <div className='flex grow flex-row justify-end gap-x-2'>
+                    <button onClick={ onToggleDarkMode }>DARK</button>
+                </div>
             </div>
             <div className="flex flex-row justify-between md:hidden">
                 <button ref={ navbarRef } onClick={ () => setIsNavbarOpen(!isNavbarOpen) }>
