@@ -3,12 +3,16 @@ import { Link } from 'react-router-dom';
 
 interface HeaderProps {
     onToggleDarkMode: () => void;
+    isDarkMode: boolean;
     onToggleHighContrastMode: () => void;
+    isHighContrastMode: boolean;
 }
 
 const Header: React.FC<HeaderProps> = ({
     onToggleDarkMode,
     onToggleHighContrastMode,
+    isDarkMode,
+    isHighContrastMode,
 }) => {
     const [ isNavbarOpen, setIsNavbarOpen ] = useState<boolean>(false);
     const navbarRef = useRef<HTMLButtonElement>(null);
@@ -43,8 +47,37 @@ const Header: React.FC<HeaderProps> = ({
                 <Link className='h-fit hover:underline hover:underline-offset-2' to='/projects'>/projects</Link>
                 <Link className='h-fit hover:underline hover:underline-offset-2' to='/resume'>/resume</Link>
                 <div className='flex grow flex-row justify-end gap-x-2'>
-                    <button onClick={ onToggleDarkMode }>DARK</button>
-                    <button onClick={ onToggleHighContrastMode }>CONTRAST</button>
+                    <button onClick={ onToggleDarkMode }>
+                        { isDarkMode
+                            ? (
+                                <div
+                                    className='bg-text h-full w-5 bg-clip-[url(/static/icons/dark-mode.svg)]'
+                                    aria-describedby='Set light mode'
+                                />
+                            ) : (
+                                <div
+                                    className='bg-text h-full w-5 bg-clip-[url(/static/icons/light-mode.svg)]'
+                                    aria-describedby='Set dark mode'
+                                />
+                            )
+                        }
+                    </button>
+                    <button onClick={ onToggleHighContrastMode }>
+                        { isHighContrastMode
+                            ? (
+                                <div
+                                    className='bg-text h-full w-5 bg-clip-[url(/static/icons/high-contrast.svg)]'
+                                    aria-describedby='Set low contrast mode'
+                                />
+                            ) : (
+                                <div
+                                    className='bg-text h-full w-5 bg-clip-[url(/static/icons/low-contrast.svg)]'
+                                    aria-describedby='Set high contrast mode'
+                                />
+                            )
+                        }
+
+                    </button>
                 </div>
             </div>
             <div className="flex flex-row justify-between md:hidden">

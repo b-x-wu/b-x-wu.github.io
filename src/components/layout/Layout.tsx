@@ -49,7 +49,12 @@ const Layout: React.FC = () => {
         <div className='bg-background text-text'>
             <div className='flex items-center justify-center'>
                 <div className='relative flex min-h-svh w-160 max-w-4/5 flex-col'>
-                    <Header onToggleHighContrastMode={ handleToggleHighContrastMode } onToggleDarkMode={ handleToggleDarkMode } />
+                    <Header 
+                        onToggleHighContrastMode={ handleToggleHighContrastMode } 
+                        onToggleDarkMode={ handleToggleDarkMode }
+                        isHighContrastMode={ isHighContrastMode }
+                        isDarkMode={ isDarkMode }
+                    />
                     <div className='mb-auto grow'>
                         <Outlet />
                     </div>
