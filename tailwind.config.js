@@ -102,9 +102,11 @@ export default {
                         'mask-image': value,
                         'mask-repeat': 'no-repeat',
                         'mask-size': 'contain',
+                        'mask-position-y': 'center',
                         '-webkit-mask-image': value,
                         '-webkit-mask-repeat': 'no-repeat',
                         '-webkit-mask-size': 'contain',
+                        '-webkit-mask-position-y': 'center',
                     }),
                 }, {
                     type: [ 'url', 'image' ],

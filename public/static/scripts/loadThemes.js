@@ -8,6 +8,11 @@ const setDarkMode = () => {
         return;
     }
 
+    if (localStorage[DARK_MODE_KEY] === 'false') {
+        document.documentElement.classList.remove('dark');
+        return;
+    }
+
     // check prefers color scheme
     if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
         document.documentElement.classList.add('dark');
@@ -21,6 +26,11 @@ const setDarkMode = () => {
 const setHighContrastMode = () => {
     if (localStorage[HIGH_CONTRAST_MODE_KEY] === 'true') {
         document.documentElement.classList.add('contrast');
+        return;
+    }
+
+    if (localStorage[HIGH_CONTRAST_MODE_KEY] === 'false') {
+        document.documentElement.classList.remove('dark');
         return;
     }
 
