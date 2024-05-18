@@ -10,7 +10,6 @@ interface SliderProps {
     value?: number;
     barStyle?: React.CSSProperties;
     thumbStyle?: React.CSSProperties;
-    thumbClassName?: string;
     containerStyle?: React.CSSProperties;
 }
 
@@ -24,7 +23,6 @@ const Slider: React.FC<SliderProps> = ({
     value,
     barStyle,
     thumbStyle,
-    thumbClassName,
     containerStyle,
 }: SliderProps) => {
 
@@ -123,18 +121,28 @@ const Slider: React.FC<SliderProps> = ({
             event.preventDefault();
         };
             
-        const handleEnd = () => setIsSettingValue(false);
+        const handleMouseUp = () => {
+            setIsSettingValue(false);
+        };
+
+        const handleTouchEnd = (event: TouchEvent) => {
+            if (event.touches.length === 0) {
+                setIsSettingValue(false);
+            }
+        };
 
         document.addEventListener('mousemove', handleMouseMove);
-        document.addEventListener('mouseup', handleEnd);
+        document.addEventListener('mouseup', handleMouseUp);
         document.addEventListener('touchmove', handleTouchMove, { passive: false });
-        document.addEventListener('touchup', handleEnd);
+        document.addEventListener('touchend', handleTouchEnd);
+        document.addEventListener('touchcancel', handleTouchEnd);
 
         return () => {
             document.removeEventListener('mousemove', handleMouseMove);
-            document.removeEventListener('mouseup', handleEnd);
+            document.removeEventListener('mouseup', handleMouseUp);
             document.removeEventListener('touchmove', handleTouchMove);
-            document.removeEventListener('touchup', handleEnd);
+            document.removeEventListener('touchend', handleTouchEnd);
+            document.removeEventListener('touchcancel', handleTouchEnd);
         };
     }, [ isSettingValue ]);
 
