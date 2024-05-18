@@ -57,7 +57,6 @@ export const hexStringToColor = (s: string): Color | undefined => {
         const redVal = sixCharMatch.at(1);
         const greenVal = sixCharMatch.at(2);
         const blueVal = sixCharMatch.at(3);
-        console.log(redVal, greenVal, blueVal);
 
         return redVal === undefined || blueVal === undefined || greenVal === undefined
             ? undefined
