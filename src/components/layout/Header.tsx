@@ -84,17 +84,13 @@ const Header: React.FC<HeaderProps> = ({
                 <button ref={ navbarRef } onClick={ () => setIsNavbarOpen(!isNavbarOpen) }>
                     { isNavbarOpen
                         ? (
-                            <img
-                                className='h-full w-5'
-                                src='/static/icons/open-folder.svg'
-                                alt='Open folder'
+                            <div
+                                className='bg-text h-full w-5 bg-clip-[url(/static/icons/open-folder.svg)]'
                                 aria-describedby='Close navigation menu'
                             />
                         ) : (
-                            <img
-                                className='h-full w-5'
-                                src='/static/icons/closed-folder.svg'
-                                alt='Closed folder'
+                            <div
+                                className='bg-text h-full w-5 bg-clip-[url(/static/icons/closed-folder.svg)]'
                                 aria-describedby='Open navigation menu'
                             />
                         )
@@ -105,7 +101,7 @@ const Header: React.FC<HeaderProps> = ({
             </div>
             <div
                 className={ isNavbarOpen
-                    ? 'absolute z-50 my-2 flex w-2/5 flex-col space-y-0 border-2 border-dotted bg-white align-middle'
+                    ? 'bg-background border-text absolute z-50 my-2 flex w-2/5 flex-col space-y-0 border-2 border-dotted align-middle'
                     : 'hidden' }
             >
                 <Link onClick={ handleNavbarLinkClick } to='/' className='border-b-2 border-dotted p-2'>$HOME</Link>

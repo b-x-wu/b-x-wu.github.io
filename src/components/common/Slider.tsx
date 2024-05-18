@@ -10,6 +10,7 @@ interface SliderProps {
     value?: number;
     barStyle?: React.CSSProperties;
     thumbStyle?: React.CSSProperties;
+    thumbClassName?: string;
     containerStyle?: React.CSSProperties;
 }
 
@@ -23,6 +24,7 @@ const Slider: React.FC<SliderProps> = ({
     value,
     barStyle,
     thumbStyle,
+    thumbClassName,
     containerStyle,
 }: SliderProps) => {
 
@@ -61,10 +63,11 @@ const Slider: React.FC<SliderProps> = ({
         }
 
         const barBounds = barElement.getBoundingClientRect();
+
         const clickXPercent = Math.max(Math.min((clientX - barBounds.left) / barBounds.width, 1), 0);
 
         const rawValue = (max - min) * clickXPercent + min;
-        
+
         if (step === undefined) {
             onChange?.(rawValue);
             _setValue(rawValue);
@@ -102,7 +105,7 @@ const Slider: React.FC<SliderProps> = ({
             if (!isSettingValue) {
                 return;
             }
-            handleValueChange(barElement, event.screenX);
+            handleValueChange(barElement, event.clientX);
         };
 
         const handleTouchMove = (event: TouchEvent) => {
@@ -144,7 +147,7 @@ const Slider: React.FC<SliderProps> = ({
                 onMouseDown={ handleSliderBarMouseDown } onTouchStart={ handleSliderBarTouchStart }
             ></div>
             <div
-                className='bg-primary absolute inset-y-0 size-1'
+                className='bg-text absolute inset-y-0 size-1 cursor-pointer'
                 onMouseDown={ () => setIsSettingValue(true) } onTouchStart={ () => setIsSettingValue(true) }
                 style={ {...(thumbStyle ?? {}), left: thumbStyle?.width === undefined ? `${_value * 100 / max}%` : `calc(${_value * 100 / max}% - ${thumbStyle.width} / 2` } }
             ></div>

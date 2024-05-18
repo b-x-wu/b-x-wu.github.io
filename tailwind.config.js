@@ -1,7 +1,12 @@
 import plugin from 'tailwindcss/plugin';
 
 const autoAddSelectorVariantPlugin = plugin.withOptions((options = {}) => {
-    const COLOR_UTILITIES_TO_PROPERTY = { 'bg': 'background-color', 'text': 'color' };
+    const COLOR_UTILITIES_TO_PROPERTY = {
+        'bg': 'background-color',
+        'text': 'color',
+        'border': 'border-color',
+        'outline': 'outline-color',
+    };
     return ({ addComponents, addVariant }) => {
         // add variants
         const variants = Object.keys(options);
@@ -103,10 +108,12 @@ export default {
                         'mask-repeat': 'no-repeat',
                         'mask-size': 'contain',
                         'mask-position-y': 'center',
+                        'mask-position-x': 'center',
                         '-webkit-mask-image': value,
                         '-webkit-mask-repeat': 'no-repeat',
                         '-webkit-mask-size': 'contain',
                         '-webkit-mask-position-y': 'center',
+                        '-webkit-mask-position-x': 'center',
                     }),
                 }, {
                     type: [ 'url', 'image' ],

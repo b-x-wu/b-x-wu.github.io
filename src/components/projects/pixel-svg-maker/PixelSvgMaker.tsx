@@ -133,25 +133,25 @@ const PixelSvgMaker: React.FC = () => {
     }, [ pixelArray ]);
 
     return (
-        <div className='relative flex flex-col gap-y-1'>
+        <div className='relative flex flex-col gap-y-2'>
             <div className='flex flex-row flex-wrap justify-between'>
                 <div className='flex max-w-1/5 flex-row gap-x-2'>
-                    <button className='w-10 max-w-1/2 p-1' onClick={ () => setMode(Mode.PENCIL) } style={ { border: mode === Mode.PENCIL ? '2px dotted' : '2px dotted white' } }>
-                        <img src='/static/icons/pencil.svg' alt='Pencil Icon' aria-labelledby='Set pencil mode' className='aspect-square w-full' />
+                    <button className='outline-primary size-10 max-w-1/2 p-1 outline' onClick={ () => setMode(Mode.PENCIL) } style={ { outlineWidth: mode === Mode.PENCIL ? '2px' : '0px' } }>
+                        <div aria-description='Set pencil mode' className='bg-text m-auto size-5 bg-clip-[url(/static/icons/pencil.svg)]' />
                     </button>
-                    <button className='w-10 max-w-1/2 p-1' onClick={ () => setMode(Mode.ERASER) } style={ { border: mode === Mode.ERASER ? '2px dotted' : '2px dotted white' } }>
-                        <img src='/static/icons/eraser.svg' alt='Eraser Icon' aria-labelledby='Set eraser mode' className='aspect-square w-full' />
+                    <button className='outline-primary size-10 max-w-1/2 p-1 outline' onClick={ () => setMode(Mode.ERASER) } style={ { outlineWidth: mode === Mode.ERASER ? '2px' : '0px' } }>
+                        <div aria-description='Set eraser mode' className='bg-text m-auto size-5 bg-clip-[url(/static/icons/eraser.svg)]' />
                     </button>
-                    <button className='w-10 max-w-1/2 border-2 border-dotted border-white p-1' onClick={ handleUndo }>
-                        <img src='/static/icons/undo.svg' alt='Undo Icon' aria-labelledby='Undo' className='aspect-square w-full' />
+                    <button className='size-10 max-w-1/2 p-1' onClick={ handleUndo }>
+                        <div aria-description='Undo' className='bg-text m-auto size-5 bg-clip-[url(/static/icons/undo.svg)]' />
                     </button>
                 </div>
                 <div className='flex max-w-1/5 flex-row gap-x-2'>
-                    <a href={ URL.createObjectURL(new Blob([ svgString ], { type: 'image/svg+xml' })) } download='pixel-art.svg' className='w-10 max-w-1/2 border-2 border-dotted border-white p-1'>
-                        <img src='/static/icons/download.svg' alt='Downlaod Icon' aria-labelledby='Download pixel art as svg' className='aspect-square w-full' />
+                    <a href={ URL.createObjectURL(new Blob([ svgString ], { type: 'image/svg+xml' })) } download='pixel-art.svg' className='outline-enabled flex size-10 max-w-1/2 items-center justify-center p-1 outline outline-2'>
+                        <div aria-description='Download pixel art as svg' className='bg-text m-auto size-5 bg-clip-[url(/static/icons/download.svg)]' />
                     </a>
-                    <button onClick={ () => navigator.clipboard.writeText(svgString) } className='w-10 max-w-1/2 border-2 border-dotted border-white p-1'>
-                        <img src='/static/icons/clipboard.svg' alt='Clipboard Icon' aria-labelledby='Copy pixel art to clipboard' className='aspect-square w-full' />
+                    <button onClick={ () => navigator.clipboard.writeText(svgString) } className='outline-enabled flex size-10 max-w-1/2 items-center justify-center p-1 outline outline-2'>
+                        <div aria-description='Copy pixel art to clipboard' className='bg-text m-auto size-5 bg-clip-[url(/static/icons/clipboard.svg)]' />
                     </button>
                 </div>
             </div>
