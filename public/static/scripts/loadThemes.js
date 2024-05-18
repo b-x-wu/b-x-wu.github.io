@@ -34,7 +34,7 @@ const setHighContrastMode = () => {
         return;
     }
 
-    if (window.matchMedia('(prefers-contrast: mode)').matches) {
+    if (window.matchMedia('(prefers-contrast: more)').matches) {
         document.documentElement.classList.add('contrast');
         return;
     }
