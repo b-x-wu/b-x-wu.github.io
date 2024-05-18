@@ -8,6 +8,7 @@ import {
     HIGH_CONTRAST_CLASS_NAME,
     HIGH_CONTRAST_MODE_LOCAL_STORAGE_KEY,
 } from '../constants';
+import { DarkModeContext, HighContrastModeContext } from '../contexts';
 
 const Layout: React.FC = () => {
 
@@ -49,16 +50,20 @@ const Layout: React.FC = () => {
         <div className='bg-background text-text'>
             <div className='flex items-center justify-center'>
                 <div className='relative flex min-h-svh w-160 max-w-4/5 flex-col'>
-                    <Header 
-                        onToggleHighContrastMode={ handleToggleHighContrastMode } 
-                        onToggleDarkMode={ handleToggleDarkMode }
-                        isHighContrastMode={ isHighContrastMode }
-                        isDarkMode={ isDarkMode }
-                    />
-                    <div className='mb-auto grow'>
-                        <Outlet />
-                    </div>
-                    <Footer />
+                    <DarkModeContext.Provider value={ isDarkMode }>
+                        <HighContrastModeContext.Provider value={ isHighContrastMode } >
+                            <Header 
+                                onToggleHighContrastMode={ handleToggleHighContrastMode } 
+                                onToggleDarkMode={ handleToggleDarkMode }
+                                isHighContrastMode={ isHighContrastMode }
+                                isDarkMode={ isDarkMode }
+                            />
+                            <div className='mb-auto grow'>
+                                <Outlet />
+                            </div>
+                            <Footer />
+                        </HighContrastModeContext.Provider>
+                    </DarkModeContext.Provider>
                 </div>
             </div>
         </div>
