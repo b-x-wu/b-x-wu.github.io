@@ -1,7 +1,19 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 
-const Header: React.FC = () => {
+interface HeaderProps {
+    onToggleDarkMode: () => void;
+    isDarkMode: boolean;
+    onToggleHighContrastMode: () => void;
+    isHighContrastMode: boolean;
+}
+
+const Header: React.FC<HeaderProps> = ({
+    onToggleDarkMode,
+    onToggleHighContrastMode,
+    isDarkMode,
+    isHighContrastMode,
+}) => {
     const [ isNavbarOpen, setIsNavbarOpen ] = useState<boolean>(false);
     const navbarRef = useRef<HTMLButtonElement>(null);
 
@@ -25,43 +37,81 @@ const Header: React.FC = () => {
         setIsNavbarOpen(false);
     };
 
+    const darkModeButtonComponent = (
+        <button onClick={ onToggleDarkMode }>
+            { isDarkMode
+                ? (
+                    <div
+                        className='bg-text h-full w-5 bg-clip-[url(/static/icons/dark-mode.svg)]'
+                        aria-describedby='Set light mode'
+                    />
+                ) : (
+                    <div
+                        className='bg-text h-full w-5 bg-clip-[url(/static/icons/light-mode.svg)]'
+                        aria-describedby='Set dark mode'
+                    />
+                )
+            }
+        </button>
+    );
+
+    const highContrastButtonComponent = (
+        <button onClick={ onToggleHighContrastMode }>
+            { isHighContrastMode
+                ? (
+                    <div
+                        className='bg-text h-full w-5 bg-clip-[url(/static/icons/high-contrast.svg)]'
+                        aria-describedby='Set low contrast mode'
+                    />
+                ) : (
+                    <div
+                        className='bg-text h-full w-5 bg-clip-[url(/static/icons/low-contrast.svg)]'
+                        aria-describedby='Set high contrast mode'
+                    />
+                )
+            }
+        </button>
+    );
 
     return (
         <div className='flex-none py-10'>
             <div className='hidden flex-row space-x-12 md:flex'>
-                <Link className='h-fit font-bold text-primary hover:underline hover:underline-offset-2' to='/'>
+                <Link className='text-primary h-fit font-bold hover:underline hover:underline-offset-2' to='/'>
                     b-x-wu.github.io!
                 </Link>
                 <Link className='h-fit hover:underline hover:underline-offset-2' to='/blog'>/blog</Link>
                 <Link className='h-fit hover:underline hover:underline-offset-2' to='/projects'>/projects</Link>
                 <Link className='h-fit hover:underline hover:underline-offset-2' to='/resume'>/resume</Link>
+                <div className='flex grow flex-row justify-end gap-x-2'>
+                    { darkModeButtonComponent }
+                    { highContrastButtonComponent }
+                </div>
             </div>
             <div className="flex flex-row justify-between md:hidden">
                 <button ref={ navbarRef } onClick={ () => setIsNavbarOpen(!isNavbarOpen) }>
                     { isNavbarOpen
                         ? (
-                            <img
-                                className='h-full w-5'
-                                src='/static/icons/open-folder.svg'
-                                alt='Open folder'
+                            <div
+                                className='bg-text h-full w-5 bg-clip-[url(/static/icons/open-folder.svg)]'
                                 aria-describedby='Close navigation menu'
                             />
                         ) : (
-                            <img
-                                className='h-full w-5'
-                                src='/static/icons/closed-folder.svg'
-                                alt='Closed folder'
+                            <div
+                                className='bg-text h-full w-5 bg-clip-[url(/static/icons/closed-folder.svg)]'
                                 aria-describedby='Open navigation menu'
                             />
                         )
                     }
                 </button>
-                <Link className='h-fit font-bold text-primary' to='/'>b-x-wu.github.io!</Link>
-                <div className='w-10 opacity-0'>TODO</div>
+                <Link className='text-primary h-fit font-bold' to='/'>b-x-wu.github.io!</Link>
+                <div className='flex flex-row justify-end gap-x-2'>
+                    { darkModeButtonComponent }
+                    { highContrastButtonComponent }
+                </div>
             </div>
             <div
                 className={ isNavbarOpen
-                    ? 'absolute z-50 my-2 flex w-2/5 flex-col space-y-0 border-2 border-dotted bg-white align-middle'
+                    ? 'bg-background border-text absolute z-50 my-2 flex w-2/5 flex-col space-y-0 border-2 border-dotted align-middle'
                     : 'hidden' }
             >
                 <Link onClick={ handleNavbarLinkClick } to='/' className='border-b-2 border-dotted p-2'>$HOME</Link>

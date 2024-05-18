@@ -1,6 +1,7 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { Color, colorToHexString, colorToRgbString, hexStringToColor } from './types';
 import Slider from '../../common/Slider';
+import TextInput from '../../common/TextInput';
 
 interface ColorPickerProps {
     initialColor: Color;
@@ -17,6 +18,7 @@ const ColorPicker: React.FC<ColorPickerProps> = ({
     const [ green, setGreen ] = useState<number>(0);
     const [ blue, setBlue ] = useState<number>(0);
 
+    const [ currentHexValue, setCurrentHexValue ] = useState<string>('');
     const [ hexValue, setHexValue ] = useState<string>('');
     const ref = useRef<HTMLDivElement>(null);
 
@@ -39,33 +41,42 @@ const ColorPicker: React.FC<ColorPickerProps> = ({
         setRed(initialColor.red);
         setGreen(initialColor.green);
         setBlue(initialColor.blue);
-        setHexValue(colorToHexString(initialColor));
+        const hexString = colorToHexString(initialColor);
+        setCurrentHexValue(hexString);
+        setHexValue(hexString);
     }, [ initialColor ]);
 
-    const handleHexValueChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
-        const color = hexStringToColor(event.target.value);
+
+    const handleHexInputInteractionEnd = (value: string) => {
+        const color = hexStringToColor(value);
         
         if (color !== undefined) {
             setRed(color.red);
             setGreen(color.green);
             setBlue(color.blue);
-            setHexValue(colorToHexString(color));
+            const newHexString = colorToHexString(color);
+            setCurrentHexValue(newHexString);
+            setHexValue(newHexString);
             return;
         }
 
-        setHexValue(event.target.value);
+        setCurrentHexValue(hexValue);
+    };
+
+    const handleHexChange = (event: ChangeEvent<HTMLInputElement>) => {
+        setCurrentHexValue(event.target.value);
     };
 
     useEffect(() => {
-        setHexValue(colorToHexString({ red, green, blue }));
+        setCurrentHexValue(colorToHexString({ red, green, blue }));
     }, [ red, green, blue ]);
 
     return (
-        <div ref={ ref } className='absolute bottom-0 flex w-72 flex-col gap-y-4 border-2 border-dotted bg-white p-4'>
+        <div ref={ ref } className='bg-background text-text outline-text absolute bottom-0 flex w-80 flex-col gap-y-4 p-4 font-bold outline outline-2'>
             <div
-                className='h-6 w-full'
+                className='border-text h-12 w-full border-2 bg-clip-content p-2'
                 style={ { backgroundColor: colorToRgbString({ red, green, blue}) } }
-            ></div>
+            />
             <div className='flex basis-4/6 flex-col gap-y-2'>
                 <div className='flex flex-row justify-between'>
                     <Slider
@@ -76,7 +87,7 @@ const ColorPicker: React.FC<ColorPickerProps> = ({
                         value={ red }
                         containerStyle={ { width: '75%', height: '4px', margin: 'auto 0' } }
                         barStyle={ { background: `linear-gradient(90deg, ${colorToRgbString({ red: 0, green, blue })} 0%, ${colorToRgbString({ red: 255, green, blue})} 100%)`, cursor: 'pointer' } }
-                        thumbStyle={ { cursor: 'pointer', height: '12px', width: '12px', aspectRatio: '1 / 1', background: '#000', maskImage: 'url("/static/icons/crosshair.svg")', maskRepeat: 'no-repeat', WebkitMaskImage: 'url("/static/icons/crosshair.svg")', WebkitMaskRepeat: 'no-repeat', top: '-4px' } }
+                        thumbStyle={ { height: '12px', width: '12px', aspectRatio: '1 / 1', maskImage: 'url("/static/icons/crosshair.svg")', maskRepeat: 'no-repeat', WebkitMaskImage: 'url("/static/icons/crosshair.svg")', WebkitMaskRepeat: 'no-repeat', top: '-4px' } }
                         onChange={ (value) => setRed(value) }
                     />
                     <label htmlFor='red-slider'>Red</label>
@@ -90,7 +101,7 @@ const ColorPicker: React.FC<ColorPickerProps> = ({
                         value={ green }
                         containerStyle={ { width: '75%', height: '4px', margin: 'auto 0' } }
                         barStyle={ { background: `linear-gradient(90deg, ${colorToRgbString({ red, green: 0, blue })} 0%, ${colorToRgbString({ red, green: 255, blue})} 100%)`, cursor: 'pointer' } }
-                        thumbStyle={ { cursor: 'pointer', height: '12px', width: '12px', aspectRatio: '1 / 1', background: '#000', maskImage: 'url("/static/icons/crosshair.svg")', maskRepeat: 'no-repeat', WebkitMaskImage: 'url("/static/icons/crosshair.svg")', WebkitMaskRepeat: 'no-repeat', top: '-4px' } }
+                        thumbStyle={ { height: '12px', width: '12px', aspectRatio: '1 / 1', maskImage: 'url("/static/icons/crosshair.svg")', maskRepeat: 'no-repeat', WebkitMaskImage: 'url("/static/icons/crosshair.svg")', WebkitMaskRepeat: 'no-repeat', top: '-4px' } }
                         onChange={ (value) => setGreen(value) }
                     />
                     <label htmlFor='green-slider'>Green</label>
@@ -104,28 +115,28 @@ const ColorPicker: React.FC<ColorPickerProps> = ({
                         value={ blue }
                         containerStyle={ { width: '75%', height: '4px', margin: 'auto 0' } }
                         barStyle={ { background: `linear-gradient(90deg, ${colorToRgbString({ red, green, blue: 0 })} 0%, ${colorToRgbString({ red, green, blue: 255 })} 100%)`, cursor: 'pointer' } }
-                        thumbStyle={ { cursor: 'pointer', height: '12px', width: '12px', aspectRatio: '1 / 1', background: '#000', maskImage: 'url("/static/icons/crosshair.svg")', maskRepeat: 'no-repeat', WebkitMaskImage: 'url("/static/icons/crosshair.svg")', WebkitMaskRepeat: 'no-repeat', top: '-4px' } }
+                        thumbStyle={ { height: '12px', width: '12px', aspectRatio: '1 / 1', maskImage: 'url("/static/icons/crosshair.svg")', maskRepeat: 'no-repeat', WebkitMaskImage: 'url("/static/icons/crosshair.svg")', WebkitMaskRepeat: 'no-repeat', top: '-4px' } }
                         onChange={ (value) => setBlue(value) }
                     />
                     <label htmlFor='blue-slider'>Blue</label>
                 </div>
                 <div className='flex flex-row justify-between gap-x-2'>
-                    <div className='flex w-9/12 flex-row gap-x-2'>
-                        <div>#</div>
-                        <input
-                            type='text'
+                    <div className='flex w-9/12 flex-row align-baseline'>
+                        <div className='border-text h-full w-5 border-2 border-r-0 text-center'>#</div>
+                        <TextInput
                             id='hex-input'
-                            value={ hexValue }
-                            onChange={ handleHexValueChange }
-                            className='grow border border-black pr-2 text-right'
+                            className='bg-background border-text grow border-2 border-l-0 pr-2 text-right font-normal'
+                            onInputInteractionEnd={ handleHexInputInteractionEnd }
+                            value={ currentHexValue }
+                            onChange={ handleHexChange }
                         />
                     </div>
-                    <div>Hex</div>
+                    <label htmlFor='hex-input'>Hex</label>
                 </div>
-                <div className='flex flex-row justify-between gap-x-2'>
-                    <button className='text-disabled hover:underline hover:underline-offset-2' onClick={ onClose }>Cancel</button>
-                    <button className='text-enabled hover:underline hover:underline-offset-2' onClick={ () => onPickColor({ red, green, blue }) }>Set Color</button>
-                </div>
+            </div>
+            <div className='flex flex-row justify-between gap-x-2'>
+                <button className='text-disabled hover:underline hover:underline-offset-2' onClick={ onClose }>Cancel</button>
+                <button className='text-enabled hover:underline hover:underline-offset-2' onClick={ () => onPickColor({ red, green, blue }) }>Set Color</button>
             </div>
         </div>
     );

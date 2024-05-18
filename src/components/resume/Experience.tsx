@@ -22,7 +22,7 @@ const Experience: React.FC<ExperienceProps> = ({
                 </div>
                 { subtitle === undefined ? <></> : <div>{ subtitle }</div> }
             </div>
-            <ul className='flex list-inside list-image-bullet-disabled flex-col gap-y-2 text-disabled'>
+            <ul className='text-disabled flex list-inside list-image-bullet-disabled flex-col gap-y-2'>
                 { bulletPoints.map((bulletPoint, bulletPointIndex) => (
                     <li key={ `${bulletPoint.slice(5)}-${bulletPointIndex}` }>{ bulletPoint }</li>
                 )) }

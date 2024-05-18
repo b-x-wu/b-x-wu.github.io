@@ -61,10 +61,11 @@ const Slider: React.FC<SliderProps> = ({
         }
 
         const barBounds = barElement.getBoundingClientRect();
+
         const clickXPercent = Math.max(Math.min((clientX - barBounds.left) / barBounds.width, 1), 0);
 
         const rawValue = (max - min) * clickXPercent + min;
-        
+
         if (step === undefined) {
             onChange?.(rawValue);
             _setValue(rawValue);
@@ -102,7 +103,7 @@ const Slider: React.FC<SliderProps> = ({
             if (!isSettingValue) {
                 return;
             }
-            handleValueChange(barElement, event.screenX);
+            handleValueChange(barElement, event.clientX);
         };
 
         const handleTouchMove = (event: TouchEvent) => {
@@ -120,18 +121,28 @@ const Slider: React.FC<SliderProps> = ({
             event.preventDefault();
         };
             
-        const handleEnd = () => setIsSettingValue(false);
+        const handleMouseUp = () => {
+            setIsSettingValue(false);
+        };
+
+        const handleTouchEnd = (event: TouchEvent) => {
+            if (event.touches.length === 0) {
+                setIsSettingValue(false);
+            }
+        };
 
         document.addEventListener('mousemove', handleMouseMove);
-        document.addEventListener('mouseup', handleEnd);
+        document.addEventListener('mouseup', handleMouseUp);
         document.addEventListener('touchmove', handleTouchMove, { passive: false });
-        document.addEventListener('touchup', handleEnd);
+        document.addEventListener('touchend', handleTouchEnd);
+        document.addEventListener('touchcancel', handleTouchEnd);
 
         return () => {
             document.removeEventListener('mousemove', handleMouseMove);
-            document.removeEventListener('mouseup', handleEnd);
+            document.removeEventListener('mouseup', handleMouseUp);
             document.removeEventListener('touchmove', handleTouchMove);
-            document.removeEventListener('touchup', handleEnd);
+            document.removeEventListener('touchend', handleTouchEnd);
+            document.removeEventListener('touchcancel', handleTouchEnd);
         };
     }, [ isSettingValue ]);
 
@@ -144,7 +155,7 @@ const Slider: React.FC<SliderProps> = ({
                 onMouseDown={ handleSliderBarMouseDown } onTouchStart={ handleSliderBarTouchStart }
             ></div>
             <div
-                className='absolute inset-y-0 size-1 bg-primary'
+                className='bg-text absolute inset-y-0 size-1 cursor-pointer'
                 onMouseDown={ () => setIsSettingValue(true) } onTouchStart={ () => setIsSettingValue(true) }
                 style={ {...(thumbStyle ?? {}), left: thumbStyle?.width === undefined ? `${_value * 100 / max}%` : `calc(${_value * 100 / max}% - ${thumbStyle.width} / 2` } }
             ></div>

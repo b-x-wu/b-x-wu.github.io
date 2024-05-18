@@ -12,11 +12,11 @@ const ExperienceTitleLink: React.FC<ExperienceTitleLinkProps> = ({
 }: ExperienceTitleLinkProps) => {
     return (
         <Link
-            className='relative flex flex-row items-center gap-x-2 text-enabled underline-offset-2 has-[:hover]:underline'
+            className='text-enabled relative flex flex-row items-center gap-x-2 underline-offset-2 has-[:hover]:underline'
             to={ linkTo }
         >
-            <div className='shrink-0 text-lg text-enabled'>{ title }</div>
-            <div className='peer min-h-4 min-w-4 bg-enabled bg-clip-[url(/static/icons/link.svg)]' />
+            <div className='text-enabled shrink-0 text-lg'>{ title }</div>
+            <div className='peer bg-enabled min-h-4 min-w-4 bg-clip-[url(/static/icons/link.svg)]' />
         </Link>
     );
 };

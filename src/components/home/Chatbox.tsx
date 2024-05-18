@@ -11,7 +11,7 @@ const Chatbox: React.FC<ChatboxProps> = ({
 }: ChatboxProps) => {
     return (
         <div className='flex min-h-9 w-full flex-row flex-nowrap items-end space-x-4'>
-            <div className='shrink-0 text-primary'>{ `${username}:` }</div>
+            <div className='text-primary shrink-0'>{ `${username}:` }</div>
             <div>{ content }</div>
         </div>
     );
