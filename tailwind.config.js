@@ -125,10 +125,10 @@ export default {
             'dark': {
                 'background': '#000',
                 'text': '#FFF',
-                'primary': '#df3568',
-                'secondary': '#f8954f',
-                'enabled': '#279bb0',
-                'disabled': '#FFFFFF77',
+                'primary': '#a40029',
+                'secondary': '#cc5500',
+                'enabled': '#0a65a8',
+                'disabled': '#FFFFFF55',
             },
             'contrast': {
                 'background': '#ffffff',

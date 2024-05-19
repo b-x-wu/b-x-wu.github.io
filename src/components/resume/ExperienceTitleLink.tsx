@@ -15,7 +15,7 @@ const ExperienceTitleLink: React.FC<ExperienceTitleLinkProps> = ({
             className='text-enabled relative flex flex-row items-center gap-x-2 underline-offset-2 has-[:hover]:underline'
             to={ linkTo }
         >
-            <div className='text-enabled shrink-0 text-lg'>{ title }</div>
+            <div className='text-enabled shrink-0 text-lg font-bold'>{ title }</div>
             <div className='peer bg-enabled min-h-4 min-w-4 bg-clip-[url(/static/icons/link.svg)]' />
         </Link>
     );
