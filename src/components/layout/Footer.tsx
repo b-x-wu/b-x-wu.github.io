@@ -6,9 +6,10 @@ const Footer: React.FC = () => {
     const isHighContrastMode = useContext<boolean>(HighContrastModeContext);
     
     const heartIconUrl = useMemo(() => {
-        // return dark mode heart, even if high contrast is set
-        // there is no difference between dark-high contrast mode and dark mode
-        // this will have to change if that's ever introduced
+        if (isDarkMode && isHighContrastMode) {
+            return '/static/icons/heart-dark-high-contrast-mode.svg';
+        }
+
         if (isDarkMode) {
             return '/static/icons/heart-dark-mode.svg';
         }
