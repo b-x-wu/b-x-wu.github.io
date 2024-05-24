@@ -30,7 +30,7 @@ const setHighContrastMode = () => {
     }
 
     if (localStorage[HIGH_CONTRAST_MODE_KEY] === 'false') {
-        document.documentElement.classList.remove('dark');
+        document.documentElement.classList.remove('contrast');
         return;
     }
 
