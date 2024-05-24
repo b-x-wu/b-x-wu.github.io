@@ -79,7 +79,6 @@ const Header: React.FC<HeaderProps> = ({
                 <Link className='text-primary h-fit font-bold hover:underline hover:underline-offset-2' to='/'>
                     b-x-wu.github.io!
                 </Link>
-                <Link className='h-fit hover:underline hover:underline-offset-2' to='/blog'>/blog</Link>
                 <Link className='h-fit hover:underline hover:underline-offset-2' to='/projects'>/projects</Link>
                 <Link className='h-fit hover:underline hover:underline-offset-2' to='/resume'>/resume</Link>
                 <div className='flex grow flex-row justify-end gap-x-2'>
@@ -115,7 +114,6 @@ const Header: React.FC<HeaderProps> = ({
                     : 'hidden' }
             >
                 <Link onClick={ handleNavbarLinkClick } to='/' className='border-b-2 border-dotted p-2'>$HOME</Link>
-                <Link onClick={ handleNavbarLinkClick } to='/blog' className='border-b-2 border-dotted p-2'>/blog</Link>
                 <Link onClick={ handleNavbarLinkClick } to='/projects' className='border-b-2 border-dotted p-2'>/projects</Link>
                 <Link onClick={ handleNavbarLinkClick } to='/resume' className='p-2'>/resume</Link>
             </div>
