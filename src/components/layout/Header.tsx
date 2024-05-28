@@ -19,6 +19,9 @@ const Header: React.FC<HeaderProps> = ({
     isReducedMotionMode,
 }) => {
     const [ isNavbarOpen, setIsNavbarOpen ] = useState<boolean>(false);
+    const [ isConfigMenuOpen, setIsConfigMenuOpen ] = useState<boolean>(false);
+    const configMenuButtonRef = useRef<HTMLButtonElement>(null);
+    const configMenuRef = useRef<HTMLDivElement>(null);
     const navbarRef = useRef<HTMLButtonElement>(null);
 
     useEffect(() => {
@@ -36,64 +39,73 @@ const Header: React.FC<HeaderProps> = ({
         return () => document.removeEventListener('click', handleClick);
     }, []);
 
+    useEffect(() => {
+        if (configMenuButtonRef.current === null || configMenuRef.current === null) {
+            return;
+        }
+
+        const handleClick = (event: Event) => {
+            if (
+                !configMenuButtonRef.current?.contains(event.target as Node)
+                    && !configMenuRef.current?.contains(event.target as Node)
+            ) {
+                setIsConfigMenuOpen(false);
+            }
+        };
+
+        document.addEventListener('click', handleClick);
+        return () => document.removeEventListener('click', handleClick);
+    }, []);
+
     const handleNavbarLinkClick = (event: React.MouseEvent) => {
         event.stopPropagation();
         setIsNavbarOpen(false);
     };
+    
+    const darkModeIcon = isDarkMode
+        ? (
+            <div
+                className='bg-text h-full w-5 bg-clip-[url(/static/icons/dark-mode.svg)]'
+                aria-description='Set light mode'
+                title='Set light mode'
+            />
+        ) : (
+            <div
+                className='bg-text h-full w-5 bg-clip-[url(/static/icons/light-mode.svg)]'
+                aria-description='Set dark mode'
+                title='Set dark mode'
+            />
+        );
 
-    const darkModeButtonComponent = (
-        <button onClick={ onToggleDarkMode }>
-            { isDarkMode
-                ? (
-                    <div
-                        className='bg-text h-full w-5 bg-clip-[url(/static/icons/dark-mode.svg)]'
-                        aria-describedby='Set light mode'
-                    />
-                ) : (
-                    <div
-                        className='bg-text h-full w-5 bg-clip-[url(/static/icons/light-mode.svg)]'
-                        aria-describedby='Set dark mode'
-                    />
-                )
-            }
-        </button>
-    );
+    const highContrastModeIcon = isHighContrastMode
+        ? (
+            <div
+                className='bg-text h-full w-5 bg-clip-[url(/static/icons/high-contrast.svg)]'
+                aria-description='Set low contrast mode'
+                title='Set low contrast mode'
+            />
+        ) : (
+            <div
+                className='bg-text h-full w-5 bg-clip-[url(/static/icons/low-contrast.svg)]'
+                aria-description='Set high contrast mode'
+                title='Set high contrast mode'
+            />
+        );
 
-    const highContrastButtonComponent = (
-        <button onClick={ onToggleHighContrastMode }>
-            { isHighContrastMode
-                ? (
-                    <div
-                        className='bg-text h-full w-5 bg-clip-[url(/static/icons/high-contrast.svg)]'
-                        aria-describedby='Set low contrast mode'
-                    />
-                ) : (
-                    <div
-                        className='bg-text h-full w-5 bg-clip-[url(/static/icons/low-contrast.svg)]'
-                        aria-describedby='Set high contrast mode'
-                    />
-                )
-            }
-        </button>
-    );
-
-    const reducedMotionButtonComponent = (
-        <button onClick={ onToggleReducedMotionMode }>
-            { isReducedMotionMode
-                ? (
-                    <div
-                        className='bg-text h-full w-5 bg-clip-[url(/static/icons/reduced-motion.svg)]'
-                        aria-describedby='Turn off reduced motion mode'
-                    />
-                ) : (
-                    <div
-                        className='bg-text h-full w-5 bg-clip-[url(/static/icons/no-reduced-motion.svg)]'
-                        aria-describedby='Set reduced motion mode'
-                    />
-                )
-            }
-        </button>
-    );
+    const reducedMotionModeIcon = isReducedMotionMode
+        ? (
+            <div
+                className='bg-text h-full w-5 bg-clip-[url(/static/icons/reduced-motion.svg)]'
+                aria-description='Turn off reduced motion mode'
+                title='Turn off reduced motion mode'
+            />
+        ) : (
+            <div
+                className='bg-text h-full w-5 bg-clip-[url(/static/icons/no-reduced-motion.svg)]'
+                aria-description='Set reduced motion mode'
+                title='Set reduced motion mode'
+            />
+        );
 
     return (
         <div className='flex-none py-10'>
@@ -104,32 +116,56 @@ const Header: React.FC<HeaderProps> = ({
                 <Link className='h-fit hover:underline hover:underline-offset-2' to='/projects'>/projects</Link>
                 <Link className='h-fit hover:underline hover:underline-offset-2' to='/resume'>/resume</Link>
                 <div className='flex grow flex-row justify-end gap-x-2'>
-                    { darkModeButtonComponent }
-                    { highContrastButtonComponent }
-                    { reducedMotionButtonComponent }
+                    <button onClick={ onToggleDarkMode }>{ darkModeIcon }</button>
+                    <button onClick={ onToggleHighContrastMode }>{ highContrastModeIcon }</button>
+                    <button onClick={ onToggleReducedMotionMode }>{ reducedMotionModeIcon }</button>
                 </div>
             </div>
             <div className="flex flex-row justify-between md:hidden">
-                <button className='basis-1/4' ref={ navbarRef } onClick={ () => setIsNavbarOpen(!isNavbarOpen) }>
-                    { isNavbarOpen
-                        ? (
-                            <div
-                                className='bg-text h-full w-5 bg-clip-[url(/static/icons/open-folder.svg)]'
-                                aria-describedby='Close navigation menu'
-                            />
-                        ) : (
-                            <div
-                                className='bg-text h-full w-5 bg-clip-[url(/static/icons/closed-folder.svg)]'
-                                aria-describedby='Open navigation menu'
-                            />
-                        )
-                    }
-                </button>
-                <Link className='text-primary h-fit basis-1/2 font-bold' to='/'>b-x-wu.github.io!</Link>
-                <div className='flex basis-1/4 flex-row justify-end gap-x-2'>
-                    { darkModeButtonComponent }
-                    { highContrastButtonComponent }
-                    { reducedMotionButtonComponent }
+                <div className='basis-1/4'>
+                    <button
+                        className='block h-full'
+                        ref={ navbarRef }
+                        onClick={ () => setIsNavbarOpen(!isNavbarOpen) }
+                        title={ isNavbarOpen ? 'Close navigation menu' : 'Open navigation menu' }
+                    >
+                        { isNavbarOpen
+                            ? (
+                                <div
+                                    className='bg-text h-full w-5 bg-clip-[url(/static/icons/open-folder.svg)]'
+                                    aria-description='Close navigation menu'
+                                />
+                            ) : (
+                                <div
+                                    className='bg-text h-full w-5 bg-clip-[url(/static/icons/closed-folder.svg)]'
+                                    aria-description='Open navigation menu'
+                                />
+                            )
+                        }
+                    </button>
+                </div>
+                <Link className='text-primary h-fit basis-1/2 text-center font-bold' to='/'>b-x-wu.github.io!</Link>
+                <div className='basis-1/4'>
+                    <button
+                        className='ml-auto block h-full'
+                        ref={ configMenuButtonRef }
+                        onClick={ () => setIsConfigMenuOpen(!isConfigMenuOpen) }
+                        title={ isConfigMenuOpen ? 'Close configuration menu' : 'Open configuration menu' }
+                    >
+                        { isConfigMenuOpen
+                            ? (
+                                <div
+                                    className='bg-text h-full w-5 bg-clip-[url(/static/icons/config-menu-open.svg)]'
+                                    aria-description='Close navigation menu'
+                                />
+                            ) : (
+                                <div
+                                    className='bg-text h-full w-5 bg-clip-[url(/static/icons/config-menu-closed.svg)]'
+                                    aria-description='Open navigation menu'
+                                />
+                            )
+                        }
+                    </button>
                 </div>
             </div>
             <div
@@ -137,9 +173,28 @@ const Header: React.FC<HeaderProps> = ({
                     ? 'bg-background border-text absolute z-50 my-2 flex w-2/5 flex-col space-y-0 border-2 border-dotted align-middle'
                     : 'hidden' }
             >
-                <Link onClick={ handleNavbarLinkClick } to='/' className='border-b-2 border-dotted p-2'>$HOME</Link>
-                <Link onClick={ handleNavbarLinkClick } to='/projects' className='border-b-2 border-dotted p-2'>/projects</Link>
+                <Link onClick={ handleNavbarLinkClick } to='/' className='border-text border-b-2 border-dotted p-2'>$HOME</Link>
+                <Link onClick={ handleNavbarLinkClick } to='/projects' className='border-text border border-b-2 border-dotted p-2'>/projects</Link>
                 <Link onClick={ handleNavbarLinkClick } to='/resume' className='p-2'>/resume</Link>
+            </div>
+            <div
+                className={ isConfigMenuOpen
+                    ? 'bg-background border-text absolute right-0 z-50 my-2 flex w-11/12 flex-col space-y-0 border-2 border-dotted align-middle'
+                    : 'hidden' }
+                ref={ configMenuRef }
+            >
+                <div className='border-text flex cursor-pointer flex-row items-center gap-x-2 border-b-2 border-dotted p-2' onClick={ onToggleDarkMode }>
+                    <div className='h-5'>{ darkModeIcon }</div>
+                    <div>{ isDarkMode ? 'Toggle light mode' : 'Toggle dark mode' }</div>
+                </div>
+                <div className='border-text flex cursor-pointer flex-row items-center gap-x-2 border-b-2 border-dotted p-2' onClick={ onToggleHighContrastMode }>
+                    <div className='h-5'>{ highContrastModeIcon }</div>
+                    <div>{ isHighContrastMode ? 'Toggle high contrast mode off' : 'Toggle high contrast mode on' }</div>
+                </div>
+                <div className='flex cursor-pointer flex-row items-center gap-x-2 p-2' onClick={ onToggleReducedMotionMode }>
+                    <div className='h-5'>{ reducedMotionModeIcon }</div>
+                    <div>{ isReducedMotionMode ? 'Toggle reduced motion mode off' : 'Toggle reduced motion mode on' }</div>
+                </div>
             </div>
         </div>
     );
