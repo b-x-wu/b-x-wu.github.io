@@ -1,5 +1,6 @@
 const DARK_MODE_KEY = 'dark_mode';
 const HIGH_CONTRAST_MODE_KEY = 'high_contrast_mode';
+const REDUCED_MOTION_MODE_KEY = 'reduced_motion_mode';
 
 const setDarkMode = () => {
     // check stored user preference
@@ -42,6 +43,26 @@ const setHighContrastMode = () => {
     document.documentElement.classList.remove('contrast');
 };
 
+const setReducedMotionMode = () => {
+    if (localStorage[REDUCED_MOTION_MODE_KEY] === 'true') {
+        document.documentElement.classList.add('reduced-motion');
+        return;
+    }
+
+    if (localStorage[REDUCED_MOTION_MODE_KEY] === 'false') {
+        document.documentElement.classList.remove('reduced-motion');
+        return;
+    }
+
+    if (window.matchMedia('(prefers-reduced-motion)').matches) {
+        document.documentElement.classList.add('reduced-motion');
+        return;
+    }
+
+    document.documentElement.classList.remove('reduced-motion');
+};
+
 setDarkMode();
 setHighContrastMode();
+setReducedMotionMode();
 

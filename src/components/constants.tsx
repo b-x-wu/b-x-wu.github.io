@@ -19,4 +19,6 @@ export const DARK_MODE_CLASS_NAME = 'dark';
 export const HIGH_CONTRAST_CLASS_NAME = 'contrast';
 export const DARK_MODE_LOCAL_STORAGE_KEY = 'dark_mode';
 export const HIGH_CONTRAST_MODE_LOCAL_STORAGE_KEY = 'high_contrast_mode';
+export const REDUCED_MOTION_MODE_CLASS_NAME = 'reduced-motion';
+export const REDUCED_MOTION_MODE_LOCAL_STORAGE_KEY = 'reduced_motion_mode';
 
