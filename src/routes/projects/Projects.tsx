@@ -90,20 +90,11 @@ const Projects: React.FC = () => {
                                 className='h-full object-cover object-top'
                             />
                         ): (
-                            <>
-                                <img
-                                    aria-hidden="true"
-                                    src='/static/images/project-previews/visual-novel-terminal-preview.gif'
-                                    alt='Visual Novel Terminal preview background'
-                                    className='absolute h-full object-cover'
-                                />
-                                <div className='absolute size-full backdrop-blur-sm' />
-                                <ImageSuspense
-                                    src='/static/images/project-previews/visual-novel-terminal-preview.gif'
-                                    alt='Visual Novel Terminal preview'
-                                    className='absolute top-1/2 -translate-y-1/2'
-                                />
-                            </>
+                            <ImageSuspense
+                                src='/static/images/project-previews/visual-novel-terminal-preview.gif'
+                                alt='Visual Novel Terminal preview'
+                                className='h-full object-cover object-top'
+                            />
                         ) }
                     </Link>
                 </Window>
