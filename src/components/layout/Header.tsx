@@ -66,14 +66,14 @@ const Header: React.FC<HeaderProps> = ({
         ? (
             <div
                 className='bg-text h-full w-5 bg-clip-[url(/static/icons/dark-mode.svg)]'
-                aria-description='Set light mode'
-                title='Set light mode'
+                aria-description='Toggle light mode'
+                title='Toggle light mode'
             />
         ) : (
             <div
                 className='bg-text h-full w-5 bg-clip-[url(/static/icons/light-mode.svg)]'
-                aria-description='Set dark mode'
-                title='Set dark mode'
+                aria-description='Toggle dark mode'
+                title='Toggle dark mode'
             />
         );
 
@@ -81,14 +81,14 @@ const Header: React.FC<HeaderProps> = ({
         ? (
             <div
                 className='bg-text h-full w-5 bg-clip-[url(/static/icons/high-contrast.svg)]'
-                aria-description='Set low contrast mode'
-                title='Set low contrast mode'
+                aria-description='Toggle high contrast mode off'
+                title='Toggle high contrast mode off'
             />
         ) : (
             <div
                 className='bg-text h-full w-5 bg-clip-[url(/static/icons/low-contrast.svg)]'
-                aria-description='Set high contrast mode'
-                title='Set high contrast mode'
+                aria-description='Toggle high contrast mode on'
+                title='Toggle high contrast mode on'
             />
         );
 
@@ -96,14 +96,14 @@ const Header: React.FC<HeaderProps> = ({
         ? (
             <div
                 className='bg-text h-full w-5 bg-clip-[url(/static/icons/reduced-motion.svg)]'
-                aria-description='Turn off reduced motion mode'
-                title='Turn off reduced motion mode'
+                aria-description='Toggle reduced motion mode off'
+                title='Toggle reduced motion mode off'
             />
         ) : (
             <div
                 className='bg-text h-full w-5 bg-clip-[url(/static/icons/no-reduced-motion.svg)]'
-                aria-description='Set reduced motion mode'
-                title='Set reduced motion mode'
+                aria-description='Toggle reduced motion mode on'
+                title='Toggle reduced motion mode on'
             />
         );
 

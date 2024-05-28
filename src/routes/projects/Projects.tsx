@@ -19,7 +19,7 @@ const Projects: React.FC = () => {
             <Chatbox content={ <span className='text-secondary'>joined the room</span> } />
             <Chatbox content={ 'here’s some stuff i\'ve worked on in my free time' } />
             <Chatbox content='check it out !!' />
-            <div className='flex flex-col gap-4 sm:grid sm:grid-cols-2'>
+            <div className='flex flex-col gap-4 md:grid md:grid-cols-2'>
                 <Window
                     title='Pixel SVG Maker'
                     optionsBar='A web app for exporting pixel art to SVG'
