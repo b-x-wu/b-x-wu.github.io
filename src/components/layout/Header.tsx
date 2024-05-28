@@ -6,13 +6,17 @@ interface HeaderProps {
     isDarkMode: boolean;
     onToggleHighContrastMode: () => void;
     isHighContrastMode: boolean;
+    onToggleReducedMotionMode: () => void;
+    isReducedMotionMode: boolean;
 }
 
 const Header: React.FC<HeaderProps> = ({
     onToggleDarkMode,
     onToggleHighContrastMode,
+    onToggleReducedMotionMode,
     isDarkMode,
     isHighContrastMode,
+    isReducedMotionMode,
 }) => {
     const [ isNavbarOpen, setIsNavbarOpen ] = useState<boolean>(false);
     const navbarRef = useRef<HTMLButtonElement>(null);
@@ -73,6 +77,24 @@ const Header: React.FC<HeaderProps> = ({
         </button>
     );
 
+    const reducedMotionButtonComponent = (
+        <button onClick={ onToggleReducedMotionMode }>
+            { isReducedMotionMode
+                ? (
+                    <div
+                        className='bg-text h-full w-5 bg-clip-[url(/static/icons/reduced-motion.svg)]'
+                        aria-describedby='Turn off reduced motion mode'
+                    />
+                ) : (
+                    <div
+                        className='bg-text h-full w-5 bg-clip-[url(/static/icons/no-reduced-motion.svg)]'
+                        aria-describedby='Set reduced motion mode'
+                    />
+                )
+            }
+        </button>
+    );
+
     return (
         <div className='flex-none py-10'>
             <div className='hidden flex-row space-x-12 md:flex'>
@@ -84,10 +106,11 @@ const Header: React.FC<HeaderProps> = ({
                 <div className='flex grow flex-row justify-end gap-x-2'>
                     { darkModeButtonComponent }
                     { highContrastButtonComponent }
+                    { reducedMotionButtonComponent }
                 </div>
             </div>
             <div className="flex flex-row justify-between md:hidden">
-                <button ref={ navbarRef } onClick={ () => setIsNavbarOpen(!isNavbarOpen) }>
+                <button className='basis-1/4' ref={ navbarRef } onClick={ () => setIsNavbarOpen(!isNavbarOpen) }>
                     { isNavbarOpen
                         ? (
                             <div
@@ -102,10 +125,11 @@ const Header: React.FC<HeaderProps> = ({
                         )
                     }
                 </button>
-                <Link className='text-primary h-fit font-bold' to='/'>b-x-wu.github.io!</Link>
-                <div className='flex flex-row justify-end gap-x-2'>
+                <Link className='text-primary h-fit basis-1/2 font-bold' to='/'>b-x-wu.github.io!</Link>
+                <div className='flex basis-1/4 flex-row justify-end gap-x-2'>
                     { darkModeButtonComponent }
                     { highContrastButtonComponent }
+                    { reducedMotionButtonComponent }
                 </div>
             </div>
             <div
