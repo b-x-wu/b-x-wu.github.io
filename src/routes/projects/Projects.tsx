@@ -2,8 +2,8 @@ import React, { useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import Chatbox from '../../components/home/Chatbox';
 import Window from '../../components/common/Window';
+import ImageSuspense from '../../components/common/ImageSuspense';
 
-// TODO: make this pretty. this is a placeholder for now
 const Projects: React.FC = () => {
 
     const dateString = useMemo(() => (new Date()).toUTCString(), []);
@@ -23,8 +23,12 @@ const Projects: React.FC = () => {
                         <div className="bg-text size-4 bg-clip-[url('/static/icons/link.svg')]" />
                     </Link>,
                 ] }
+                containerStyle={ { width: 'fit-content' } }
             >
-                <img src='/static/images/project-previews/pixel-svg-maker-preview.png' alt='Pixel SVG Maker preview' />
+                <ImageSuspense
+                    src='/static/images/project-previews/pixel-svg-maker-preview.png'
+                    alt='Pixel SVG Maker preview'
+                />
             </Window>
         </div>
     );
