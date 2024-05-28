@@ -10,7 +10,7 @@ const Chatbox: React.FC<ChatboxProps> = ({
     content,
 }: ChatboxProps) => {
     return (
-        <div className='flex min-h-9 w-full flex-row flex-nowrap items-end space-x-4'>
+        <div className='flex w-full flex-row flex-nowrap items-end space-x-4'>
             <div className='text-primary shrink-0'>{ `${username}:` }</div>
             <div>{ content }</div>
         </div>
