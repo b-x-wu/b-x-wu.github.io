@@ -13,7 +13,7 @@ const Error404: React.FC = () => {
     const pathname = useLocation().pathname;
 
     return (
-        <div className='flex flex-col space-y-4'>
+        <div className='flex flex-col gap-y-6'>
             <div className='flex h-9 w-full items-center justify-center'>
                 <div className='text-disabled'>{ dateString }</div>
             </div>

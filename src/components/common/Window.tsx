@@ -35,7 +35,7 @@ const Window: React.FC<WindowProps> = ({
     };
 
     return (
-        <div className='border-text flex h-fit min-w-fit flex-col border-2' style={ containerStyle }>
+        <div className='border-text flex h-fit flex-col border-2' style={ containerStyle }>
             <div className='border-text flex w-full flex-row justify-between border-b-2 p-2'>
                 <div className='flex flex-row'>
                     { iconUrl && <div className='bg-text min-h-4 min-w-4' style={ iconStyle } /> }
@@ -48,9 +48,7 @@ const Window: React.FC<WindowProps> = ({
             <div className='border-text text-disabled w-full border-b-2 px-2 py-1 text-sm'>
                 { optionsBar }
             </div>
-            <div className=''>
-                { children }
-            </div>
+            { children }
         </div>
     );
 };
