@@ -3,11 +3,12 @@ import { Link } from 'react-router-dom';
 import Chatbox from '../../components/home/Chatbox';
 import Window from '../../components/common/Window';
 import ImageSuspense from '../../components/common/ImageSuspense';
-import { DarkModeContext } from '../../components/contexts';
+import { DarkModeContext, ReducedMotionModeContext } from '../../components/contexts';
 
 const Projects: React.FC = () => {
 
     const isDarkMode = useContext(DarkModeContext);
+    const isReducedMotion = useContext(ReducedMotionModeContext);
     const dateString = useMemo(() => (new Date()).toUTCString(), []);
 
     return (
@@ -52,13 +53,21 @@ const Projects: React.FC = () => {
                     <Link to='https://www.npmjs.com/package/create-react-sandbox' target='_blank' rel="noopener noreferrer" className='relative block h-64'>
                         <img
                             aria-hidden="true"
-                            src='/static/images/project-previews/create-react-sandbox-preview.gif'
+                            src={
+                                isReducedMotion 
+                                    ? 'static/images/project-previews/create-react-sandbox-preview-reduced-motion.png' 
+                                    : '/static/images/project-previews/create-react-sandbox-preview.gif'
+                            }
                             alt='Create React Sandbox preview background'
                             className='absolute h-full object-cover'
                         />
                         <div className='absolute size-full backdrop-blur-sm' />
                         <ImageSuspense
-                            src='/static/images/project-previews/create-react-sandbox-preview.gif'
+                            src={
+                                isReducedMotion 
+                                    ? 'static/images/project-previews/create-react-sandbox-preview-reduced-motion.png' 
+                                    : '/static/images/project-previews/create-react-sandbox-preview.gif'
+                            }
                             alt='Create React Sandbox preview'
                             className='absolute top-1/2 -translate-y-1/2'
                         />
@@ -74,18 +83,28 @@ const Projects: React.FC = () => {
                     ] }
                 >
                     <Link to='https://bruce-x-wu.itch.io/visual-novel-terminal' target='_blank' rel="noopener noreferrer" className='relative block h-64'>
-                        <img
-                            aria-hidden="true"
-                            src='/static/images/project-previews/visual-novel-terminal-preview.gif'
-                            alt='Visual Novel Terminal preview background'
-                            className='absolute h-full object-cover'
-                        />
-                        <div className='absolute size-full backdrop-blur-sm' />
-                        <ImageSuspense
-                            src='/static/images/project-previews/visual-novel-terminal-preview.gif'
-                            alt='Visual Novel Terminal preview'
-                            className='absolute top-1/2 -translate-y-1/2'
-                        />
+                        { isReducedMotion ? (
+                            <ImageSuspense
+                                src='/static/images/project-previews/visual-novel-terminal-preview-reduced-motion.png'
+                                alt='Visual Novel Terminal preview'
+                                className='h-full object-cover object-top'
+                            />
+                        ): (
+                            <>
+                                <img
+                                    aria-hidden="true"
+                                    src='/static/images/project-previews/visual-novel-terminal-preview.gif'
+                                    alt='Visual Novel Terminal preview background'
+                                    className='absolute h-full object-cover'
+                                />
+                                <div className='absolute size-full backdrop-blur-sm' />
+                                <ImageSuspense
+                                    src='/static/images/project-previews/visual-novel-terminal-preview.gif'
+                                    alt='Visual Novel Terminal preview'
+                                    className='absolute top-1/2 -translate-y-1/2'
+                                />
+                            </>
+                        ) }
                     </Link>
                 </Window>
             </div>
