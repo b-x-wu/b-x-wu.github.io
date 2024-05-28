@@ -19,7 +19,7 @@ const Projects: React.FC = () => {
             <Chatbox content={ <span className='text-secondary'>joined the room</span> } />
             <Chatbox content={ 'here’s some stuff i\'ve worked on in my free time' } />
             <Chatbox content='check it out !!' />
-            <div className='flex flex-col gap-4 md:grid md:grid-cols-2'>
+            <div className='flex flex-col gap-4 sm:grid sm:grid-cols-2'>
                 <Window
                     title='Pixel SVG Maker'
                     optionsBar='A web app for exporting pixel art to SVG'
@@ -37,7 +37,7 @@ const Projects: React.FC = () => {
                                     : '/static/images/project-previews/pixel-svg-maker-preview.png'
                             }
                             alt='Pixel SVG Maker preview'
-                            className='h-full object-cover object-top'
+                            className='size-full object-cover object-top'
                         />
                     </Link>
                 </Window>
@@ -59,7 +59,7 @@ const Projects: React.FC = () => {
                                     : '/static/images/project-previews/create-react-sandbox-preview.gif'
                             }
                             alt='Create React Sandbox preview background'
-                            className='absolute h-full object-cover'
+                            className='absolute size-full object-fill'
                         />
                         <div className='absolute size-full backdrop-blur-sm' />
                         <ImageSuspense
@@ -69,7 +69,7 @@ const Projects: React.FC = () => {
                                     : '/static/images/project-previews/create-react-sandbox-preview.gif'
                             }
                             alt='Create React Sandbox preview'
-                            className='absolute top-1/2 -translate-y-1/2'
+                            className='absolute left-1/2 top-1/2 max-h-full max-w-full -translate-x-1/2 -translate-y-1/2'
                         />
                     </Link>
                 </Window>
@@ -83,19 +83,15 @@ const Projects: React.FC = () => {
                     ] }
                 >
                     <Link to='https://bruce-x-wu.itch.io/visual-novel-terminal' target='_blank' rel="noopener noreferrer" className='relative block h-64'>
-                        { isReducedMotion ? (
-                            <ImageSuspense
-                                src='/static/images/project-previews/visual-novel-terminal-preview-reduced-motion.png'
-                                alt='Visual Novel Terminal preview'
-                                className='h-full object-cover object-top'
-                            />
-                        ): (
-                            <ImageSuspense
-                                src='/static/images/project-previews/visual-novel-terminal-preview.gif'
-                                alt='Visual Novel Terminal preview'
-                                className='h-full object-cover object-top'
-                            />
-                        ) }
+                        <ImageSuspense
+                            src={
+                                isReducedMotion
+                                    ? '/static/images/project-previews/visual-novel-terminal-preview-reduced-motion.png'
+                                    : '/static/images/project-previews/visual-novel-terminal-preview.gif'
+                            }
+                            alt='Visual Novel Terminal preview'
+                            className='size-full object-cover object-bottom'
+                        />
                     </Link>
                 </Window>
             </div>
