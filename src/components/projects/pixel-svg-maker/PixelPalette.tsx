@@ -36,7 +36,7 @@ const PixelPalette: React.FC<PixelPaletteProps> = ({
                 className='border-text aspect-square h-12 w-full cursor-pointer border-2 bg-clip-content p-1'
                 style={ { backgroundColor: colorToRgbString(currentColor)} }
                 onClick={ () => setIsColorPickerOpen(true) }
-            ></div>
+            />
             <div className='flex w-full flex-row gap-x-1'>
                 { colorQueue.map((val, idx) => (
                     <div
