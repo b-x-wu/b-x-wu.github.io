@@ -5,12 +5,12 @@ interface ImageSuspenseProps extends React.ImgHTMLAttributes<HTMLImageElement> {
     errorFallback?: React.ReactNode;
 }
 
-const DEFAULT_IMAGE_FALLBACK = (<div className='bg-disabled size-full' />);
 
 const ImageSuspense: React.FC<ImageSuspenseProps> = ({
     src: srcUrl,
-    fallback = DEFAULT_IMAGE_FALLBACK,
-    errorFallback = DEFAULT_IMAGE_FALLBACK,
+    alt,
+    fallback,
+    errorFallback,
     ...imgProps
 }) => {
     const [ isLoading, setIsLoading ] = useState<boolean>(true);
@@ -38,11 +38,21 @@ const ImageSuspense: React.FC<ImageSuspenseProps> = ({
     }, [ srcUrl ]);
 
     if (isLoading) {
-        return fallback;
+        return fallback ?? (
+            <div className='bg-disabled flex size-full flex-col items-center justify-center'>
+                <div>{ 'Loading image...' }</div>
+                <div>{ alt && `[${alt}]` }</div>
+            </div>
+        );
     }
 
     if (isLoadingError) {
-        return errorFallback;
+        return errorFallback ?? (
+            <div className='bg-disabled flex size-full flex-col items-center justify-center'>
+                <div>{ 'Error loading image' }</div>
+                <div>{ alt && `[${alt}]` }</div>
+            </div>
+        );
     }
 
     return (<img { ...{ ...imgProps, src: srcUrl } } />);
