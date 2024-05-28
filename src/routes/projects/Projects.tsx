@@ -1,11 +1,13 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import Chatbox from '../../components/home/Chatbox';
 import Window from '../../components/common/Window';
 import ImageSuspense from '../../components/common/ImageSuspense';
+import { DarkModeContext } from '../../components/contexts';
 
 const Projects: React.FC = () => {
 
+    const isDarkMode = useContext(DarkModeContext);
     const dateString = useMemo(() => (new Date()).toUTCString(), []);
 
     return (
@@ -25,10 +27,16 @@ const Projects: React.FC = () => {
                 ] }
                 containerStyle={ { width: 'fit-content' } }
             >
-                <ImageSuspense
-                    src='/static/images/project-previews/pixel-svg-maker-preview.png'
-                    alt='Pixel SVG Maker preview'
-                />
+                <Link to='/projects/pixel-svg-maker' className='block size-64'>
+                    <ImageSuspense
+                        src={
+                            isDarkMode
+                                ? '/static/images/project-previews/pixel-svg-maker-preview-dark.png'
+                                : '/static/images/project-previews/pixel-svg-maker-preview.png'
+                        }
+                        alt='Pixel SVG Maker preview'
+                    />
+                </Link>
             </Window>
         </div>
     );
