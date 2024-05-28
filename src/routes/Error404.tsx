@@ -19,16 +19,20 @@ const Error404: React.FC = () => {
             </div>
             <Chatbox content={ <span className='text-secondary'>joined the room</span> } />
             <Chatbox content={ `sorry!! i don't think "${pathname}" exists yet...` } />
-            <Chatbox content={ (
-                <span>
-                    <span>if you think something should be here, lmk on </span>
-                    <Link
-                        to='https://github.com/b-x-wu/b-x-wu.github.io/issues/new'
-                        className='text-enabled hover:underline hover:underline-offset-2'
-                    >github</Link>
-                    <span>!</span>
-                </span>
-            ) } />
+            <Chatbox
+                content={ (
+                    <span>
+                        <span>if you think something should be here, lmk on </span>
+                        <Link
+                            to='https://github.com/b-x-wu/b-x-wu.github.io/issues/new'
+                            className='text-enabled hover:underline hover:underline-offset-2'
+                        >
+                            github
+                        </Link>
+                        <span>!</span>
+                    </span>
+                ) }
+            />
         </div>
     );
 };

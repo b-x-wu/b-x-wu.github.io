@@ -143,11 +143,13 @@ const PixelCanvas: React.FC<PixelCanvasProps> = ({
             <canvas
                 className='touch-none'
                 ref={ canvasRef }
-                onMouseDown={ handleMouseDown } onTouchStart={ handleTouchStart }
-                onMouseMove={ handleMouseOver } onTouchMove={ handleTouchEnd }
-                onMouseUp={ handleDrawEnd } onTouchEnd={ handleDrawEnd }
-            >
-            </canvas>
+                onMouseDown={ handleMouseDown }
+                onTouchStart={ handleTouchStart }
+                onMouseMove={ handleMouseOver }
+                onTouchMove={ handleTouchEnd }
+                onMouseUp={ handleDrawEnd }
+                onTouchEnd={ handleDrawEnd }
+            />
         </div>
     );
 };
