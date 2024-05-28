@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import PixelCanvas from './PixelCanvas';
 import { Color, BLACK, Mode, Bounds, colorToRgbString } from './types';
 import PixelPalette from './PixelPalette';
+import PixelSvgMakerControls from './PixelSvgMakerControls';
 
 const DEFAULT_PIXELS_PER_SIDE: number = 16;
 
@@ -15,24 +16,6 @@ const PixelSvgMaker: React.FC = () => {
     const [ colorQueue, setColorQueue ] = useState<Color[]>([ BLACK ]);
     const [ mode, setMode ] = useState<Mode>(Mode.PENCIL);
     const [ svgString, setSvgString ] = useState<string>('');
-
-    useEffect(() => {
-        const handleKeyDown = (event: KeyboardEvent) => {
-            switch (event.key) {
-                case 'e':
-                    return setMode(Mode.ERASER);
-                case 'p':
-                case 'b':
-                    return setMode(Mode.PENCIL);
-                default:
-                    return;
-            };
-        };
-        
-        document.addEventListener('keydown', handleKeyDown);
-        
-        return () => document.removeEventListener('keydown', handleKeyDown);
-    }, []);
 
     const handlePixelClick = (pixelX: number, pixelY: number) => {
         const currentColor = colorQueue.at(0);
@@ -132,29 +115,35 @@ const PixelSvgMaker: React.FC = () => {
         setSvgString(pixelArrayToSvgString());
     }, [ pixelArray ]);
 
+    useEffect(() => {
+        const handleKeyDown = (event: KeyboardEvent) => {
+            switch (event.key) {
+                case 'e':
+                    return setMode(Mode.ERASER);
+                case 'p':
+                case 'b':
+                    return setMode(Mode.PENCIL);
+                case 'z':
+                    return event.ctrlKey && handleUndo();
+                default:
+                    return;
+            };
+        };
+        
+        document.addEventListener('keydown', handleKeyDown);
+        
+        return () => document.removeEventListener('keydown', handleKeyDown);
+    }, [ history ]);
+
     return (
         <div className='relative flex flex-col gap-y-2'>
-            <div className='flex flex-row flex-wrap justify-between'>
-                <div className='flex max-w-1/5 flex-row gap-x-2'>
-                    <button className='outline-primary size-10 max-w-1/2 p-1 outline' onClick={ () => setMode(Mode.PENCIL) } style={ { outlineWidth: mode === Mode.PENCIL ? '2px' : '0px' } }>
-                        <div aria-description='Set pencil mode' className='bg-text m-auto size-5 bg-clip-[url(/static/icons/pencil.svg)]' />
-                    </button>
-                    <button className='outline-primary size-10 max-w-1/2 p-1 outline' onClick={ () => setMode(Mode.ERASER) } style={ { outlineWidth: mode === Mode.ERASER ? '2px' : '0px' } }>
-                        <div aria-description='Set eraser mode' className='bg-text m-auto size-5 bg-clip-[url(/static/icons/eraser.svg)]' />
-                    </button>
-                    <button className='size-10 max-w-1/2 p-1' onClick={ handleUndo }>
-                        <div aria-description='Undo' className='bg-text m-auto size-5 bg-clip-[url(/static/icons/undo.svg)]' />
-                    </button>
-                </div>
-                <div className='flex max-w-1/5 flex-row gap-x-2'>
-                    <a href={ URL.createObjectURL(new Blob([ svgString ], { type: 'image/svg+xml' })) } download='pixel-art.svg' className='outline-enabled flex size-10 max-w-1/2 items-center justify-center p-1 outline outline-2'>
-                        <div aria-description='Download pixel art as svg' className='bg-text m-auto size-5 bg-clip-[url(/static/icons/download.svg)]' />
-                    </a>
-                    <button onClick={ () => navigator.clipboard.writeText(svgString) } className='outline-enabled flex size-10 max-w-1/2 items-center justify-center p-1 outline outline-2'>
-                        <div aria-description='Copy pixel art to clipboard' className='bg-text m-auto size-5 bg-clip-[url(/static/icons/clipboard.svg)]' />
-                    </button>
-                </div>
-            </div>
+            <PixelSvgMakerControls
+                mode={ mode }
+                onPencilButtonClick={ () => setMode(Mode.PENCIL) }
+                onEraserButtonClick={ () => setMode(Mode.ERASER) }
+                onUndo={ handleUndo }
+                svgString={ svgString }
+            />
             <PixelCanvas
                 pixelsPerSide={ DEFAULT_PIXELS_PER_SIDE }
                 pixelArray={ pixelArray }
