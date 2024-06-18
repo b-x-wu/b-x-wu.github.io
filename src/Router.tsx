@@ -6,6 +6,7 @@ import Home from './routes/Home';
 import Resume from './routes/Resume';
 import Projects from './routes/projects/Projects';
 import PixelSvgMakerPage from './routes/projects/PixelSvgMakerPage';
+import ShaderToyPage from './routes/projects/ShaderToyPage';
 
 const Router = (
     <BrowserRouter>
@@ -16,6 +17,7 @@ const Router = (
                 <Route path='projects'>
                     <Route index element={ <Projects /> } />
                     <Route path='pixel-svg-maker' element={ <PixelSvgMakerPage /> } />
+                    <Route path='shader-toy' element={ <ShaderToyPage /> } />
                 </Route>
                 <Route path='*' element={ <Error404 /> } />
             </Route>
