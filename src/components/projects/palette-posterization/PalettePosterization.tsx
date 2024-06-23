@@ -1,9 +1,12 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import { type Color } from '../pixel-svg-maker/types';
+import PalettePicker from './PalettePicker';
 
 const TEST_IMAGE_URL = 'https://pbs.twimg.com/media/GQPis7wWsAIuRj5?format=jpg&name=large';
 
 const PaletePosterization: React.FC = () => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
+    const [ palette, setPalette ] = useState<Color[]>([]);
 
     useEffect(() => {
         const canvas = canvasRef.current ?? undefined;
@@ -25,6 +28,10 @@ const PaletePosterization: React.FC = () => {
     return (
         <div>
             <canvas ref={ canvasRef } className='size-full' />
+            <PalettePicker
+                onPaletteChange={ (newPalette) => setPalette(newPalette) }
+                palette={ palette }
+            />
         </div>
     );
 };
