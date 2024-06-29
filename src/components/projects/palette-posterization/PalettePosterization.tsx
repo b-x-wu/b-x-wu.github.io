@@ -4,15 +4,12 @@ import { RgbColor, toHslColor, toRgbColor } from '../../common/colorUtils';
 import { hueColorMetric } from './utils';
 import ImageUploader from '../../common/ImageUploader';
 
-// const TEST_IMAGE_URL = 'https://pbs.twimg.com/media/GQPis7wWsAIuRj5?format=jpg&name=large';
-const TEST_IMAGE_URL = 'https://pbs.twimg.com/media/GQnUldvakAIlCL9?format=jpg&name=medium';
-
 const PaletePosterization: React.FC = () => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const [ palette, setPalette ] = useState<RgbColor[]>([]);
     const [ imageColors, setImageColors ] = useState<RgbColor[]>([]);
 
-    useEffect(() => {
+    const handleImageLoad = (image: HTMLImageElement) => {
         const canvas = canvasRef.current ?? undefined;
         const context = canvas?.getContext('2d') ?? undefined;
 
@@ -20,36 +17,31 @@ const PaletePosterization: React.FC = () => {
             return;
         }
 
-        const image = new Image();
-        image.addEventListener('load', () => {
-            const devicePixelRatio = window.devicePixelRatio;
+        const devicePixelRatio = window.devicePixelRatio;
 
-            canvas.width = image.width * devicePixelRatio;
-            canvas.height = image.height * devicePixelRatio;
-            context.drawImage(image, 0, 0, canvas.width, canvas.height);
+        canvas.width = image.width * devicePixelRatio;
+        canvas.height = image.height * devicePixelRatio;
+        context.drawImage(image, 0, 0, canvas.width, canvas.height);
 
-            const imageData = context.getImageData(0, 0, canvas.width, canvas.height, { colorSpace: 'srgb' });
-            const colors = imageData.data.reduce<RgbColor[]>((accumulator, _, index, array) => {
-                if (index % 4 === 0) {
-                    const red = array.at(index);
-                    const green = array.at(index + 1);
-                    const blue = array.at(index + 2);
-                    // skip alpha
+        const imageData = context.getImageData(0, 0, canvas.width, canvas.height, { colorSpace: 'srgb' });
+        const colors = imageData.data.reduce<RgbColor[]>((accumulator, _, index, array) => {
+            if (index % 4 === 0) {
+                const red = array.at(index);
+                const green = array.at(index + 1);
+                const blue = array.at(index + 2);
+                // skip alpha
 
-                    if (red === undefined || green === undefined || blue === undefined) {
-                        throw new Error('Unable to parse image data.');
-                    }
-
-                    accumulator.push({ red, green, blue });
+                if (red === undefined || green === undefined || blue === undefined) {
+                    throw new Error('Unable to parse image data.');
                 }
-                return accumulator;
-            }, []);
 
-            setImageColors(colors);
-        }, false);
-        image.crossOrigin = 'anonymous';
-        image.src = TEST_IMAGE_URL;
-    }, []);
+                accumulator.push({ red, green, blue });
+            }
+            return accumulator;
+        }, []);
+
+        setImageColors(colors);
+    };
 
     useEffect(() => {
         const canvas = canvasRef.current ?? undefined;
@@ -91,15 +83,18 @@ const PaletePosterization: React.FC = () => {
 
     return (
         <div>
-            <ImageUploader
-                onImageLoad={ (image) => console.log(`loaded ${image.src}`) }
-                onImageLoadError={ (image, event) => console.log(`failed to load ${image.src}. ${event.message}`) }
-            />
-            <canvas ref={ canvasRef } className='size-full' />
-            <PalettePicker
-                onPaletteChange={ (newPalette) => setPalette(newPalette) }
-                palette={ palette }
-            />
+            { imageColors.length === 0 && (
+                <ImageUploader
+                    onImageLoad={ handleImageLoad }
+                />
+            ) }
+            <canvas ref={ canvasRef } className={ imageColors.length === 0 ? 'hidden' : 'size-full' } />
+            { imageColors.length > 0 && (
+                <PalettePicker
+                    onPaletteChange={ (newPalette) => setPalette(newPalette) }
+                    palette={ palette }
+                />
+            ) }
         </div>
     );
 };
