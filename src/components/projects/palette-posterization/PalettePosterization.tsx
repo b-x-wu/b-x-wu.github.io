@@ -1,12 +1,16 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { type Color } from '../pixel-svg-maker/types';
 import PalettePicker from './PalettePicker';
+import { RgbColor, toHslColor, toRgbColor } from '../../common/colorUtils';
+import { hueColorMetric } from './utils';
 
-const TEST_IMAGE_URL = 'https://pbs.twimg.com/media/GQPis7wWsAIuRj5?format=jpg&name=large';
+// const TEST_IMAGE_URL = 'https://pbs.twimg.com/media/GQPis7wWsAIuRj5?format=jpg&name=large';
+const TEST_IMAGE_URL = 'https://pbs.twimg.com/media/GQnUldvakAIlCL9?format=jpg&name=medium';
 
 const PaletePosterization: React.FC = () => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
-    const [ palette, setPalette ] = useState<Color[]>([]);
+    const [ palette, setPalette ] = useState<RgbColor[]>([]);
+    const [ imageColors, setImageColors ] = useState<RgbColor[]>([]);
+
 
     useEffect(() => {
         const canvas = canvasRef.current ?? undefined;
@@ -21,9 +25,67 @@ const PaletePosterization: React.FC = () => {
             const aspectRatio = canvas.width / image.width;
             canvas.height = image.height * aspectRatio;
             context.drawImage(image, 0, 0, canvas.width, canvas.height);
+
+            const imageData = context.getImageData(0, 0, canvas.width, canvas.height, { colorSpace: 'srgb' });
+            const colors = imageData.data.reduce<RgbColor[]>((accumulator, _, index, array) => {
+                if (index % 4 === 0) {
+                    const red = array.at(index);
+                    const green = array.at(index + 1);
+                    const blue = array.at(index + 2);
+                    // skip alpha
+
+                    if (red === undefined || green === undefined || blue === undefined) {
+                        throw new Error('Unable to parse image data.');
+                    }
+
+                    accumulator.push({ red, green, blue });
+                }
+                return accumulator;
+            }, []);
+
+            setImageColors(colors);
         }, false);
+        image.crossOrigin = 'anonymous';
         image.src = TEST_IMAGE_URL;
-    });
+    }, []);
+
+    useEffect(() => {
+        const canvas = canvasRef.current ?? undefined;
+        const context = canvas?.getContext('2d') ?? undefined;
+
+        if (canvas === undefined || context === undefined || palette.length === 0) {
+            return;
+        }
+
+        const adjustedColors = imageColors.map((color) => {
+            const closestPaletteColor = palette.reduce<{ color: RgbColor | undefined; distance: number }>((previousClosest, paletteColor) => {
+                const distance = hueColorMetric(color, paletteColor);
+                if (previousClosest.color === undefined) {
+                    return { color: paletteColor, distance };
+                }
+
+                if (distance < previousClosest.distance) {
+                    return { color: paletteColor, distance };
+                }
+
+                return previousClosest;
+            }, { color: undefined, distance: Infinity }).color!;
+
+            // TODO: implement a function of the shape (color, closestPaletteColor) => color to set
+            // return closestPaletteColor;
+            return ((currentColor: RgbColor, closestPaletteColor: RgbColor) => {
+                const currentHslColor = toHslColor(currentColor);
+                const closestPaletteHslColor = toHslColor(closestPaletteColor);
+
+                return toRgbColor({ ...currentHslColor, hue: closestPaletteHslColor.hue });
+            })(color, closestPaletteColor);
+        });
+
+        const newRawImageData = new Uint8ClampedArray(canvas.width * canvas.height * 4);
+        newRawImageData.set(adjustedColors.flatMap((color) => ([ color.red, color.green, color.blue, 255 ])));
+        const newImageData = new ImageData(newRawImageData, canvas.width, canvas.height, { colorSpace: 'srgb' });
+        context.putImageData(newImageData, 0, 0);
+    }, [ palette ]);
 
     return (
         <div>

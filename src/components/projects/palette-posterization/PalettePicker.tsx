@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import { BLACK, Color, colorToHexString } from '../pixel-svg-maker/types';
-import ColorPicker from '../pixel-svg-maker/ColorPicker';
+import ColorPicker from '../../common/ColorPicker';
+import { BLACK, RgbColor, colorToHexString } from '../../common/colorUtils';
 
 interface PalettePickerProps {
     /** the current palette */
-    palette: Color[];
+    palette: RgbColor[];
     /** handler for palette changes. arg is the new palette) */
-    onPaletteChange: (palette: Color[]) => void;
+    onPaletteChange: (palette: RgbColor[]) => void;
 }
 
 const PalettePicker: React.FC<PalettePickerProps> = ({
@@ -15,7 +15,7 @@ const PalettePicker: React.FC<PalettePickerProps> = ({
 }: PalettePickerProps) => {
     const [ currentOpenPickerIndex, setCurrentOpenPickerIndex ] = useState<number | undefined>(undefined);
 
-    const handlePickColor = (color: Color, paletteIndex: number) => {
+    const handlePickColor = (color: RgbColor, paletteIndex: number) => {
         const newPalette = palette.map((oldPaletteColor, oldPaletteIndex) => {
             if (paletteIndex === oldPaletteIndex) {
                 return color;
@@ -27,7 +27,6 @@ const PalettePicker: React.FC<PalettePickerProps> = ({
     };
 
     const paletteElements = palette.map((color, paletteIndex) => {
-        console.log(colorToHexString(color));
         return (
             <div key={ `palette-picker-${paletteIndex}` }>
                 <div 

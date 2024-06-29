@@ -1,5 +1,5 @@
 import React from 'react';
-import { Mode } from './types';
+import { Mode } from './utils';
 
 interface PixelSvgMakerControlsProps {
     mode: Mode;
