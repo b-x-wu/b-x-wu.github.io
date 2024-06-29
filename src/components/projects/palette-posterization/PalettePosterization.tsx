@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import PalettePicker from './PalettePicker';
 import { RgbColor, toHslColor, toRgbColor } from '../../common/colorUtils';
 import { hueColorMetric } from './utils';
+import ImageUploader from '../../common/ImageUploader';
 
 // const TEST_IMAGE_URL = 'https://pbs.twimg.com/media/GQPis7wWsAIuRj5?format=jpg&name=large';
 const TEST_IMAGE_URL = 'https://pbs.twimg.com/media/GQnUldvakAIlCL9?format=jpg&name=medium';
@@ -90,6 +91,10 @@ const PaletePosterization: React.FC = () => {
 
     return (
         <div>
+            <ImageUploader
+                onImageLoad={ (image) => console.log(`loaded ${image.src}`) }
+                onImageLoadError={ (image, event) => console.log(`failed to load ${image.src}. ${event.message}`) }
+            />
             <canvas ref={ canvasRef } className='size-full' />
             <PalettePicker
                 onPaletteChange={ (newPalette) => setPalette(newPalette) }
