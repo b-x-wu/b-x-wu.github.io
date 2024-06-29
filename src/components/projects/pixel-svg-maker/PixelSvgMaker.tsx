@@ -96,7 +96,7 @@ const PixelSvgMaker: React.FC = () => {
                     bounds.yMax = yIndex;
                 }
 
-                return `<rect width="1" height="1" x="${xIndex}" y="${yIndex}" fill="${colorToRgbString(pixel)}"></rect>`;
+                return `<rect width="1" height="1" x="${xIndex}" y="${yIndex}" shape-rendering="geometricPrecision" fill="${colorToRgbString(pixel)}"></rect>`;
             }).filter<string>((val): val is string => val !== undefined);
 
             return [ ...accumulator, ...rowRectStrings ];
