@@ -11,7 +11,6 @@ const PaletePosterization: React.FC = () => {
     const [ palette, setPalette ] = useState<RgbColor[]>([]);
     const [ imageColors, setImageColors ] = useState<RgbColor[]>([]);
 
-
     useEffect(() => {
         const canvas = canvasRef.current ?? undefined;
         const context = canvas?.getContext('2d') ?? undefined;
@@ -22,8 +21,10 @@ const PaletePosterization: React.FC = () => {
 
         const image = new Image();
         image.addEventListener('load', () => {
-            const aspectRatio = canvas.width / image.width;
-            canvas.height = image.height * aspectRatio;
+            const devicePixelRatio = window.devicePixelRatio;
+
+            canvas.width = image.width * devicePixelRatio;
+            canvas.height = image.height * devicePixelRatio;
             context.drawImage(image, 0, 0, canvas.width, canvas.height);
 
             const imageData = context.getImageData(0, 0, canvas.width, canvas.height, { colorSpace: 'srgb' });
