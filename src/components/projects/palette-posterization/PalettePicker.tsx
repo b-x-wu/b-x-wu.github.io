@@ -28,34 +28,36 @@ const PalettePicker: React.FC<PalettePickerProps> = ({
 
     const paletteElements = palette.map((color, paletteIndex) => {
         return (
-            <div key={ `palette-picker-${paletteIndex}` }>
+            <div key={ `palette-picker-${paletteIndex}` } className='relative w-full sm:w-fit' >
                 <div 
-                    className='size-10'
+                    className='h-10 w-full hover:cursor-pointer sm:size-10'
                     style={ { backgroundColor: `#${colorToHexString(color)}` } }
                     onClick={ () => setCurrentOpenPickerIndex(paletteIndex) }
+                    aria-description='Change current color'
+                    title='Change current color'
                 />
-                { paletteIndex === currentOpenPickerIndex ? (
+                { paletteIndex === currentOpenPickerIndex && (
                     <ColorPicker
                         onPickColor={ (color) => handlePickColor(color, paletteIndex) }
                         initialColor={ color }
                         onClose={ () => setCurrentOpenPickerIndex(undefined) }
                     />
-                ) : (<></>) }
+                ) }
             </div>
         );
     });
 
     const newColorElement = (
-        <div key='palette-picker-new'>
+        <div key='palette-picker-new' className='relative w-full sm:w-fit' >
             <div
-                className='size-10 border-2'
+                className='h-10 w-full border-2 hover:cursor-pointer sm:size-10'
                 aria-description='Add a new color'
+                title='Add a new color'
                 onClick={ () => setCurrentOpenPickerIndex(-1) }
             >
-                { /** Replace with symbol */ }
-                +
+                <div className='bg-text m-auto h-full w-4 bg-clip-[url(/static/icons/add.svg)]' aria-hidden={ true }/>
             </div>
-            { currentOpenPickerIndex === -1 ? (
+            { currentOpenPickerIndex === -1 && (
                 <ColorPicker
                     onPickColor={ (newColor) => {
                         onPaletteChange([ ...palette.map((color) => ({ ...color })), newColor ]);
@@ -64,14 +66,14 @@ const PalettePicker: React.FC<PalettePickerProps> = ({
                     initialColor={ BLACK }
                     onClose={ () => setCurrentOpenPickerIndex(undefined) }
                 />
-            ): (<></>) }
+            ) }
         </div>
     );
 
     paletteElements.push(newColorElement);
 
     return (
-        <div className='flex flex-row space-x-2'>
+        <div className='flex flex-col space-y-2 sm:flex-row sm:space-x-2 sm:space-y-0'>
             { paletteElements }
         </div>
     );
