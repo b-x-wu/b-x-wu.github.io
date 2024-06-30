@@ -8,6 +8,7 @@ const PaletePosterization: React.FC = () => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const [ palette, setPalette ] = useState<RgbColor[]>([]);
     const [ imageColors, setImageColors ] = useState<RgbColor[]>([]);
+    const [ isPaletteChangeLoading, setIsPaletteChangeLoading ] = useState<boolean>(false);
 
     const putImageData = useCallback((colors: RgbColor[], canvas: HTMLCanvasElement, context: CanvasRenderingContext2D) => {
         const newRawImageData = new Uint8ClampedArray(canvas.width * canvas.height * 4);
@@ -57,11 +58,14 @@ const PaletePosterization: React.FC = () => {
             return;
         }
 
+        setIsPaletteChangeLoading(true);
+
         if (window.Worker) {
             const worker = new Worker(new URL('./paletteChangeWorker.ts', import.meta.url));
 
             worker.addEventListener('message', (messageEvent: MessageEvent<ColorPaletteChangeResponseData>) => {
                 putImageData(messageEvent.data.adjustedColors, canvas, context);
+                setIsPaletteChangeLoading(false);
             });
 
             worker.postMessage({
@@ -74,6 +78,7 @@ const PaletePosterization: React.FC = () => {
 
         const adjustedColors = getAdjustedColors(imageColors, palette);
         putImageData(adjustedColors, canvas, context);
+        setIsPaletteChangeLoading(false);
     }, [ palette ]);
 
     return (
@@ -83,7 +88,14 @@ const PaletePosterization: React.FC = () => {
                     onImageLoad={ handleImageLoad }
                 />
             ) }
-            <canvas ref={ canvasRef } className={ imageColors.length === 0 ? 'hidden' : 'size-full' } />
+            <div className='relative size-fit'>
+                <canvas ref={ canvasRef } className={ imageColors.length === 0 ? 'hidden' : 'size-full' } />
+                { isPaletteChangeLoading && (
+                    <div className='bg-background absolute left-0 top-0 z-10 flex size-full opacity-85'>
+                        <div className='m-auto'>Loading...</div>
+                    </div>
+                ) }
+            </div>
             { imageColors.length > 0 && (
                 <PalettePicker
                     onPaletteChange={ (newPalette) => setPalette(newPalette) }
