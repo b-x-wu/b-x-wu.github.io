@@ -1,13 +1,20 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import PalettePicker from './PalettePicker';
-import { RgbColor, toHslColor, toRgbColor } from '../../common/colorUtils';
-import { hueColorMetric } from './utils';
+import { RgbColor } from '../../common/colorUtils';
+import { ColorPaletteChangeRequestData, ColorPaletteChangeResponseData, getAdjustedColors } from './utils';
 import ImageUploader from '../../common/ImageUploader';
 
 const PaletePosterization: React.FC = () => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const [ palette, setPalette ] = useState<RgbColor[]>([]);
     const [ imageColors, setImageColors ] = useState<RgbColor[]>([]);
+
+    const putImageData = useCallback((colors: RgbColor[], canvas: HTMLCanvasElement, context: CanvasRenderingContext2D) => {
+        const newRawImageData = new Uint8ClampedArray(canvas.width * canvas.height * 4);
+        newRawImageData.set(colors.flatMap((color) => ([ color.red, color.green, color.blue, 255 ])));
+        const newImageData = new ImageData(newRawImageData, canvas.width, canvas.height, { colorSpace: 'srgb' });
+        context.putImageData(newImageData, 0, 0);
+    }, []);
 
     const handleImageLoad = (image: HTMLImageElement) => {
         const canvas = canvasRef.current ?? undefined;
@@ -34,7 +41,6 @@ const PaletePosterization: React.FC = () => {
                 if (red === undefined || green === undefined || blue === undefined) {
                     throw new Error('Unable to parse image data.');
                 }
-
                 accumulator.push({ red, green, blue });
             }
             return accumulator;
@@ -51,34 +57,23 @@ const PaletePosterization: React.FC = () => {
             return;
         }
 
-        const adjustedColors = imageColors.map((color) => {
-            const closestPaletteColor = palette.reduce<{ color: RgbColor | undefined; distance: number }>((previousClosest, paletteColor) => {
-                const distance = hueColorMetric(color, paletteColor);
-                if (previousClosest.color === undefined) {
-                    return { color: paletteColor, distance };
-                }
+        if (window.Worker) {
+            const worker = new Worker(new URL('./paletteChangeWorker.ts', import.meta.url));
 
-                if (distance < previousClosest.distance) {
-                    return { color: paletteColor, distance };
-                }
+            worker.addEventListener('message', (messageEvent: MessageEvent<ColorPaletteChangeResponseData>) => {
+                putImageData(messageEvent.data.adjustedColors, canvas, context);
+            });
 
-                return previousClosest;
-            }, { color: undefined, distance: Infinity }).color!;
+            worker.postMessage({
+                colors: imageColors,
+                palette,
+            } as ColorPaletteChangeRequestData);
 
-            // TODO: implement a function of the shape (color, closestPaletteColor) => color to set
-            // return closestPaletteColor;
-            return ((currentColor: RgbColor, closestPaletteColor: RgbColor) => {
-                const currentHslColor = toHslColor(currentColor);
-                const closestPaletteHslColor = toHslColor(closestPaletteColor);
+            return;
+        }
 
-                return toRgbColor({ ...currentHslColor, hue: closestPaletteHslColor.hue });
-            })(color, closestPaletteColor);
-        });
-
-        const newRawImageData = new Uint8ClampedArray(canvas.width * canvas.height * 4);
-        newRawImageData.set(adjustedColors.flatMap((color) => ([ color.red, color.green, color.blue, 255 ])));
-        const newImageData = new ImageData(newRawImageData, canvas.width, canvas.height, { colorSpace: 'srgb' });
-        context.putImageData(newImageData, 0, 0);
+        const adjustedColors = getAdjustedColors(imageColors, palette);
+        putImageData(adjustedColors, canvas, context);
     }, [ palette ]);
 
     return (
