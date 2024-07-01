@@ -38,7 +38,7 @@ const PalettePosterizationOptions: React.FC<PalettePosterizationOptionsProps> = 
 
     const createToggleElement = (renderedTitle: string, htmlTitle: string, isMenuOpen: boolean) => (
         <div
-            className='flex h-6 flex-row gap-x-3 hover:cursor-pointer hover:underline hover:underline-offset-2 max-w-min'
+            className='flex h-6 max-w-min flex-row gap-x-3 hover:cursor-pointer hover:underline hover:underline-offset-2'
             title={ htmlTitle }
             aria-description={ htmlTitle }
         >
