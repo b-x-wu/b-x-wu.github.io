@@ -1,5 +1,5 @@
 import React from 'react';
-import { BLACK, BLUE, CYAN, GREEN, MAGENTA, RED, RgbColor, WHITE, YELLOW, colorToHexString, hexStringToColor } from '../../common/colorUtils';
+import { BLACK, BLUE, CYAN, GREEN, MAGENTA, RED, RgbColor, WHITE, YELLOW, colorToHexString } from '../../common/colorUtils';
 
 interface DefaultPaletteOptionProps {
     name: string;

@@ -28,8 +28,8 @@ export const weightedEuclideanRgbColorMetric: ColorMetric = (color1, color2) => 
 
 export const COLOR_METRIC_MAP: Map<ColorMetricType, ColorMetric> = new Map<ColorMetricType, ColorMetric>([
     [ ColorMetricType.EUCLIDEAN_RGB, euclideanRgbColorMetric ],
-    [ ColorMetricType.HUE, hueColorMetric ],
     [ ColorMetricType.WEIGHTED_EUCLIDEAN_RGB, weightedEuclideanRgbColorMetric ],
+    [ ColorMetricType.HUE, hueColorMetric ],
 ]);
 
 export enum RenderedColorReducerType {

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import ColorPicker from '../../common/ColorPicker';
-import { BLACK, BLUE, GREEN, RED, RgbColor, colorToHexString } from '../../common/colorUtils';
+import { BLACK, RgbColor, colorToHexString } from '../../common/colorUtils';
 import Dropdown from '../../common/Dropdown';
 import DefaultPaletteOption, { DEFAULT_PALETTE_OPTIONS } from './DefaultPaletteOption';
 
