@@ -35,7 +35,7 @@ const PalettePicker: React.FC<PalettePickerProps> = ({
     };
 
     const paletteElements = palette.map((color, paletteIndex) => (
-        <div key={ `palette-picker-${paletteIndex}` } className='w-full pt-2 sm:w-fit' >
+        <div key={ `palette-picker-${paletteIndex}` } className='w-fit pt-2' >
             <div className='relative'>
                 <div 
                     className='border-text size-10 border-2 hover:cursor-pointer'
