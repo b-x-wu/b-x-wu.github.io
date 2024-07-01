@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
-import { Color, colorToRgbString } from './types';
-import ColorPicker from './ColorPicker';
+import ColorPicker from '../../common/ColorPicker';
+import { RgbColor, colorToRgbString } from '../../common/colorUtils';
 
 const DEFAULT_COLOR_QUEUE_LENGTH = 12;
 
 interface PixelPaletteProps {
-    currentColor: Color | undefined;
-    colorQueue: Array<Color | undefined>;
-    onPickColor: (color: Color) => void;
+    currentColor: RgbColor | undefined;
+    colorQueue: Array<RgbColor | undefined>;
+    onPickColor: (color: RgbColor) => void;
 }
 
 const PixelPalette: React.FC<PixelPaletteProps> = ({
@@ -21,7 +21,7 @@ const PixelPalette: React.FC<PixelPaletteProps> = ({
         return (<></>);
     }
 
-    const handlePickColor = (color: Color | undefined) => {
+    const handlePickColor = (color: RgbColor | undefined) => {
         if (color === undefined) {
             return;
         }

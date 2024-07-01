@@ -1,19 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import PixelCanvas from './PixelCanvas';
-import { Color, BLACK, Mode, Bounds, colorToRgbString } from './types';
 import PixelPalette from './PixelPalette';
 import PixelSvgMakerControls from './PixelSvgMakerControls';
+import { BLACK, RgbColor, colorToRgbString } from '../../common/colorUtils';
+import { Bounds, Mode } from './utils';
 
 const DEFAULT_PIXELS_PER_SIDE: number = 16;
 
 const PixelSvgMaker: React.FC = () => {
-    const [ pixelArray, setPixelArray ] = useState<Array<Array<Color | undefined>>>(
+    const [ pixelArray, setPixelArray ] = useState<Array<Array<RgbColor | undefined>>>(
         Array(DEFAULT_PIXELS_PER_SIDE).fill(Array(DEFAULT_PIXELS_PER_SIDE).fill(undefined)),
     );
-    const [ history, setHistory ] = useState<Array<Array<Array<Color | undefined>>>>([
+    const [ history, setHistory ] = useState<Array<Array<Array<RgbColor | undefined>>>>([
         Array(DEFAULT_PIXELS_PER_SIDE).fill(Array(DEFAULT_PIXELS_PER_SIDE).fill(undefined)),
     ]);
-    const [ colorQueue, setColorQueue ] = useState<Color[]>([ BLACK ]);
+    const [ colorQueue, setColorQueue ] = useState<RgbColor[]>([ BLACK ]);
     const [ mode, setMode ] = useState<Mode>(Mode.PENCIL);
     const [ svgString, setSvgString ] = useState<string>('');
 
@@ -60,7 +61,7 @@ const PixelSvgMaker: React.FC = () => {
         setHistory(newHistory);
     };
 
-    const handlePickColor = (color: Color) => {
+    const handlePickColor = (color: RgbColor) => {
         const newColorQueue = [ color ];
         colorQueue.forEach((color) => newColorQueue.push({ ...color }));
         setColorQueue(newColorQueue);

@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Color, colorToRgbString } from './types';
+import { RgbColor, colorToRgbString } from '../../common/colorUtils';
 
 interface PixelCanvasProps {
     /**
@@ -9,7 +9,7 @@ interface PixelCanvasProps {
     /**
      * the array of pixels that make up what's in the grid
      */
-    pixelArray: Array<Array<Color | undefined>>;
+    pixelArray: Array<Array<RgbColor | undefined>>;
     /**
      * callback handler for clicking on a pixel, defined by the x/y coords
      * of the pixel clicked with respect to the current grid view window bounds
