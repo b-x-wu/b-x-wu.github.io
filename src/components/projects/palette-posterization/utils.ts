@@ -1,8 +1,9 @@
 import { RgbColor, toHslColor, toRgbColor } from '../../common/colorUtils';
 
 export enum ColorMetricType {
-    EUCLIDEAN_RGB = 'Euclidean RGB Distance',
-    HUE = 'Hue Distance',
+    EUCLIDEAN_RGB = 'Euclidean RGB',
+    HUE = 'Hue Difference',
+    WEIGHTED_EUCLIDEAN_RGB = 'Weighted Euclidean RGB',
 }
 
 export type ColorMetric = (color1: RgbColor, color2: RgbColor) => number;
@@ -18,9 +19,17 @@ export const euclideanRgbColorMetric: ColorMetric = (color1, color2) => {
     return (color1.red - color2.red) ** 2 + (color1.green - color2.green) ** 2 + (color1.blue - color2.blue) ** 2;
 };
 
+export const weightedEuclideanRgbColorMetric: ColorMetric = (color1, color2) => {
+    const redMean = (color1.red + color2.red) / 2;
+    return (2 + redMean / 256) * (color1.red - color2.red) ** 2
+        + 4 * (color1.green - color2.green) ** 2
+        + (2 + (255 - redMean) / 256) * (color1.blue - color2.blue) ** 2;
+};
+
 export const COLOR_METRIC_MAP: Map<ColorMetricType, ColorMetric> = new Map<ColorMetricType, ColorMetric>([
     [ ColorMetricType.EUCLIDEAN_RGB, euclideanRgbColorMetric ],
     [ ColorMetricType.HUE, hueColorMetric ],
+    [ ColorMetricType.WEIGHTED_EUCLIDEAN_RGB, weightedEuclideanRgbColorMetric ],
 ]);
 
 export enum RenderedColorReducerType {
