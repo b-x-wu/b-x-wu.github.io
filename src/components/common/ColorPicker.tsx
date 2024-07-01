@@ -1,11 +1,11 @@
 import React, { ChangeEvent, useEffect, useRef, useState } from 'react';
-import { Color, colorToHexString, colorToRgbString, hexStringToColor } from './types';
-import Slider from '../../common/Slider';
-import TextInput from '../../common/TextInput';
+import Slider from './Slider';
+import TextInput from './TextInput';
+import { RgbColor, colorToHexString, colorToRgbString, hexStringToColor } from './colorUtils';
 
 interface ColorPickerProps {
-    initialColor: Color;
-    onPickColor: (color: Color) => void;
+    initialColor: RgbColor;
+    onPickColor: (color: RgbColor) => void;
     onClose: () => void;
 }
 
@@ -72,7 +72,7 @@ const ColorPicker: React.FC<ColorPickerProps> = ({
     }, [ red, green, blue ]);
 
     return (
-        <div ref={ ref } className='bg-background text-text outline-text absolute bottom-0 flex w-80 flex-col gap-y-4 p-4 font-bold outline outline-2'>
+        <div ref={ ref } className='bg-background text-text outline-text absolute bottom-0 z-10 flex w-80 flex-col gap-y-4 p-4 font-bold outline outline-2'>
             <div
                 className='border-text h-12 w-full border-2 bg-clip-content p-2'
                 style={ { backgroundColor: colorToRgbString({ red, green, blue}) } }

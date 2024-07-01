@@ -14,6 +14,8 @@ interface TextInputProps {
     onInputInteractionEnd?: (value: string) => void;
     /** classname of the input element */
     className?: string;
+    /** placeholder text */
+    placeholder?: string;
 }
 
 const TextInput: React.FC<TextInputProps> = ({
@@ -22,6 +24,7 @@ const TextInput: React.FC<TextInputProps> = ({
     onChange,
     onInputInteractionEnd,
     className,
+    placeholder,
 }) => {
     const [ _value, _setValue ] = useState<string>('');
     const inputRef = useRef<HTMLInputElement>(null);
@@ -74,6 +77,7 @@ const TextInput: React.FC<TextInputProps> = ({
             className={ className }
             value={ value ?? _value }
             onChange={ _handleChange }
+            placeholder={ placeholder }
         />
     );
 };
