@@ -1,5 +1,6 @@
 import { clamp, frac, int } from './mathUtils';
 
+/** all fields from 0 to 255 inclusive */
 export interface RgbColor {
     red: number;
     green: number;
@@ -21,6 +22,7 @@ export const colorToHexString = (color: RgbColor): string => {
 /**
  * converts a given hex string to the corresponding color
  * returns undefined if the hex string is not valie
+ * string should contain leading hash (#)
  */
 export const hexStringToColor = (s: string): RgbColor | undefined => {
     const sanitizedString = s.trim().toLowerCase();
@@ -90,6 +92,25 @@ export const WHITE: RgbColor = {
     blue: 255,
 };
 
+export const CYAN: RgbColor = {
+    red: 0,
+    green: 255,
+    blue: 255,
+};
+
+export const MAGENTA: RgbColor = {
+    red: 255,
+    green: 0,
+    blue: 255,
+};
+
+export const YELLOW: RgbColor = {
+    red: 255,
+    green: 255,
+    blue: 0,
+};
+
+/** all fields from 0 to 1 */
 export interface HslColor {
     hue: number;
     saturation: number;
@@ -191,5 +212,49 @@ export const toHslColor = (color: RgbColor): HslColor => {
         default:
             return { hue: 0, saturation, lightness };
     }
+};
+
+export interface LabColor {
+    /** lightness, between 0 and 100 */
+    l: number;
+    /** red-green, between -127 and 127 */
+    a: number;
+    /** blue-yellow, between -127 and 127 */
+    b: number;
+}
+
+const toLabColorHelper = (val: number) => {
+    if (val > 0.008856) {
+        return Math.pow(val, 1 / 3);
+    }
+
+    return 7.787 * val + 16 / 116;
+};
+
+/**
+ * Converts an RGB Color to a L*a*b* Color
+ * From OpenCV Docs
+ * @see {@link https://docs.opencv.org/2.4/modules/imgproc/doc/miscellaneous_transformations.html?highlight=cvtcolor#cvtcolor | here} for more
+ *
+ * @param color: a color in RGB representation. all values are integers in [0, 255]
+ * @returns a color in L*a*b* representation
+ */
+export const toLabColor = (color: RgbColor): LabColor => {
+    const normedRed = color.red / 255;
+    const normedGreen = color.green / 255;
+    const normedBlue = color.blue / 255;
+
+    const x = (0.412453 * normedRed + 0.357580 * normedGreen + 0.180423 * normedBlue) / 0.950456;
+    const y = (0.212671 * normedRed + 0.715160 * normedGreen + 0.072169 * normedBlue);
+    const z = (0.019334 * normedRed + 0.119193 * normedGreen + 0.950227 * normedBlue) / 1.088754;
+
+    const l = y > 0.008856
+        ? 116 * Math.pow(y, 1 / 3)
+        : 903.3 * y;
+
+    const a = 500 * (toLabColorHelper(x) - toLabColorHelper(y));
+    const b = 200 * (toLabColorHelper(y) - toLabColorHelper(z));
+
+    return { l, a, b };
 };
 
