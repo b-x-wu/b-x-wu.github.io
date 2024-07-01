@@ -26,31 +26,29 @@ const PalettePicker: React.FC<PalettePickerProps> = ({
         onPaletteChange(newPalette);
     };
 
-    const paletteElements = palette.map((color, paletteIndex) => {
-        return (
-            <div key={ `palette-picker-${paletteIndex}` } className='relative w-full sm:w-fit' >
-                <div 
-                    className='h-10 w-full hover:cursor-pointer sm:size-10'
-                    style={ { backgroundColor: `#${colorToHexString(color)}` } }
-                    onClick={ () => setCurrentOpenPickerIndex(paletteIndex) }
-                    aria-description='Change current color'
-                    title='Change current color'
+    const paletteElements = palette.map((color, paletteIndex) => (
+        <div key={ `palette-picker-${paletteIndex}` } className='relative w-full sm:w-fit' >
+            <div 
+                className='border-text h-10 w-full border-2 bg-clip-content p-1 hover:cursor-pointer sm:size-10'
+                style={ { backgroundColor: `#${colorToHexString(color)}` } }
+                onClick={ () => setCurrentOpenPickerIndex(paletteIndex) }
+                aria-description='Change current color'
+                title='Change current color'
+            />
+            { paletteIndex === currentOpenPickerIndex && (
+                <ColorPicker
+                    onPickColor={ (color) => handlePickColor(color, paletteIndex) }
+                    initialColor={ color }
+                    onClose={ () => setCurrentOpenPickerIndex(undefined) }
                 />
-                { paletteIndex === currentOpenPickerIndex && (
-                    <ColorPicker
-                        onPickColor={ (color) => handlePickColor(color, paletteIndex) }
-                        initialColor={ color }
-                        onClose={ () => setCurrentOpenPickerIndex(undefined) }
-                    />
-                ) }
-            </div>
-        );
-    });
+            ) }
+        </div>
+    ));
 
     const newColorElement = (
         <div key='palette-picker-new' className='relative w-full sm:w-fit' >
             <div
-                className='h-10 w-full border-2 hover:cursor-pointer sm:size-10'
+                className='border-text h-10 w-full border-2 hover:cursor-pointer sm:size-10'
                 aria-description='Add a new color'
                 title='Add a new color'
                 onClick={ () => setCurrentOpenPickerIndex(-1) }
@@ -70,7 +68,7 @@ const PalettePicker: React.FC<PalettePickerProps> = ({
         </div>
     );
 
-    paletteElements.push(newColorElement);
+    paletteElements.unshift(newColorElement);
 
     return (
         <div className='flex flex-col space-y-2 sm:flex-row sm:space-x-2 sm:space-y-0'>
