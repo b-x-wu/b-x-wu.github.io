@@ -1,8 +1,12 @@
-import { RgbColor, toHslColor, toRgbColor } from '../../common/colorUtils';
+import { RgbColor, toHslColor, toLabColor, toRgbColor } from '../../common/colorUtils';
 
 export enum ColorMetricType {
-    EUCLIDEAN_RGB = 'Euclidean RGB Distance',
-    HUE = 'Hue Distance',
+    EUCLIDEAN_RGB = 'Euclidean RGB',
+    WEIGHTED_EUCLIDEAN_RGB = 'Weighted Euclidean RGB',
+    DELTA_E = 'Delta E',
+    HUE = 'Hue Difference',
+    SATURATION = 'Saturation Difference',
+    LIGHTNESS = 'Lightness Difference',
 }
 
 export type ColorMetric = (color1: RgbColor, color2: RgbColor) => number;
@@ -14,18 +18,52 @@ export const hueColorMetric: ColorMetric = (color1, color2) => {
     return Math.abs(hue1 - hue2);
 };
 
+export const saturationColorMetric: ColorMetric = (color1, color2) => {
+    const saturation1 = toHslColor(color1).saturation;
+    const saturation2 = toHslColor(color2).saturation;
+
+    return Math.abs(saturation1 - saturation2);
+};
+
+export const lightnessColorMetric: ColorMetric = (color1, color2) => {
+    const lightness1 = toHslColor(color1).lightness;
+    const lightness2 = toHslColor(color2).lightness;
+
+    return Math.abs(lightness1 - lightness2);
+};
+
 export const euclideanRgbColorMetric: ColorMetric = (color1, color2) => {
     return (color1.red - color2.red) ** 2 + (color1.green - color2.green) ** 2 + (color1.blue - color2.blue) ** 2;
 };
 
+export const weightedEuclideanRgbColorMetric: ColorMetric = (color1, color2) => {
+    const redMean = (color1.red + color2.red) / 2;
+    return (2 + redMean / 256) * (color1.red - color2.red) ** 2
+        + 4 * (color1.green - color2.green) ** 2
+        + (2 + (255 - redMean) / 256) * (color1.blue - color2.blue) ** 2;
+};
+
+export const deltaEColorMetric: ColorMetric = (color1, color2) => {
+    const labColor1 = toLabColor(color1);
+    const labColor2 = toLabColor(color2);
+
+    return (labColor1.l - labColor2.l) ** 2 + (labColor1.a - labColor2.a) ** 2 + (labColor1.b - labColor2.b) ** 2;
+};
+
 export const COLOR_METRIC_MAP: Map<ColorMetricType, ColorMetric> = new Map<ColorMetricType, ColorMetric>([
     [ ColorMetricType.EUCLIDEAN_RGB, euclideanRgbColorMetric ],
+    [ ColorMetricType.WEIGHTED_EUCLIDEAN_RGB, weightedEuclideanRgbColorMetric ],
+    [ ColorMetricType.DELTA_E, deltaEColorMetric ],
     [ ColorMetricType.HUE, hueColorMetric ],
+    [ ColorMetricType.SATURATION, saturationColorMetric ],
+    [ ColorMetricType.LIGHTNESS, lightnessColorMetric ],
 ]);
 
 export enum RenderedColorReducerType {
     PALETTE = 'Render palette color',
     PRESERVE_SL = 'Preserve saturation and lightness',
+    PRESERVE_HUE = 'Preserve hue',
+    AVERAGE = 'Average by color channel',
 }
 
 export type ColorReducer = (color1: RgbColor, color2: RgbColor) => RgbColor;
@@ -39,9 +77,26 @@ export const slPreservingColorReducer: ColorReducer = (color1, color2) => {
     return toRgbColor({ ...hslColor1, hue: hslColor2.hue });
 };
 
+export const huePreservingColorReducer: ColorReducer = (color1, color2) => {
+    const hslColor1 = toHslColor(color1);
+    const hslColor2 = toHslColor(color2);
+
+    return toRgbColor({ ...hslColor2, hue: hslColor1.hue });
+};
+
+export const averageColorReducer: ColorReducer = (color1, color2) => {
+    return {
+        red: (color1.red + color2.red) / 2,
+        green: (color1.green + color2.green) / 2,
+        blue: (color1.blue + color2.blue) / 2,
+    };
+};
+
 export const RENDERED_COLOR_REDUCER_MAP: Map<RenderedColorReducerType, ColorReducer> = new Map<RenderedColorReducerType, ColorReducer>([
     [ RenderedColorReducerType.PALETTE, identityColorReducer ],
     [ RenderedColorReducerType.PRESERVE_SL, slPreservingColorReducer ],
+    [ RenderedColorReducerType.PRESERVE_HUE, huePreservingColorReducer ],
+    [ RenderedColorReducerType.AVERAGE, averageColorReducer ],
 ]);
 
 /**

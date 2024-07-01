@@ -57,13 +57,21 @@ const PaletePosterization: React.FC = () => {
         const canvas = canvasRef.current ?? undefined;
         const context = canvas?.getContext('2d') ?? undefined;
 
-        if (canvas === undefined || context === undefined || palette.length === 0 || imageColors.length === 0) {
+        if (canvas === undefined || context === undefined || imageColors.length === 0) {
             return;
         }
 
         setIsImageChangeLoading(true);
 
+        if (palette.length === 0) {
+            // no palette colors. reset to original image
+            putImageData(imageColors, canvas, context);
+            setIsImageChangeLoading(false);
+            return;
+        }
+
         if (window.Worker) {
+            // if available, push work onto a webworker thread
             const worker = new Worker(new URL('./paletteChangeWorker.ts', import.meta.url));
 
             worker.addEventListener('message', (messageEvent: MessageEvent<ColorPaletteChangeResponseData>) => {
