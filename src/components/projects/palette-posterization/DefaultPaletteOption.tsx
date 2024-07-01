@@ -16,13 +16,13 @@ const DefaultPaletteOption: React.FC<DefaultPaletteOptionProps> = ({
         <div className='flex h-6 min-w-max flex-row justify-between gap-x-4 hover:cursor-pointer' onClick={ onClick }>
             <div>{ name }</div>
             <div className='border-text flex max-w-[calc(100vw/2)] flex-row gap-x-0 overflow-x-auto border-2'>
-                { palette.map((color) => {
+                { palette.map((color, idx) => {
                     const colorHexString = colorToHexString(color);
                     return (
                         <div
                             className='my-auto size-5 min-w-5'
                             style={ { backgroundColor: `#${colorHexString}` } }
-                            key={ `${name}-${colorHexString}` }
+                            key={ `${name}-${colorHexString}-${idx}` }
                         />
                     );
                 }) }
@@ -35,6 +35,9 @@ export const DEFAULT_PALETTE_OPTIONS: Omit<DefaultPaletteOptionProps, 'onClick'>
     { name: 'Monochrome', palette: [ BLACK, WHITE ] },
     { name: '2-bit Grayscale', palette: [ ...Array(3).fill(0).map(
         (_, idx) => ({ red: 85 * idx, green: 85 * idx, blue: 85 * idx }),
+    ), WHITE ] },
+    { name: '4-bit Grayscale', palette: [ ...Array(15).fill(0).map(
+        (_, idx) => ({ red: 17 * idx, green: 17 * idx, blue: 17 * idx }),
     ), WHITE ] },
     { name: 'RGB', palette: [ RED, GREEN, BLUE ] },
     { name: 'CMYK', palette: [ CYAN, MAGENTA, YELLOW, BLACK ] },
