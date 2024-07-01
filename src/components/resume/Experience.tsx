@@ -22,9 +22,14 @@ const Experience: React.FC<ExperienceProps> = ({
                 </div>
                 { subtitle === undefined ? <></> : <div>{ subtitle }</div> }
             </div>
-            <ul className='text-disabled flex list-inside list-image-bullet-disabled flex-col gap-y-2'>
+            <ul className='text-disabled flex list-inside flex-col gap-y-2'>
                 { bulletPoints.map((bulletPoint, bulletPointIndex) => (
-                    <li key={ `${bulletPoint.slice(5)}-${bulletPointIndex}` }>{ bulletPoint }</li>
+                    <li
+                        key={ `${bulletPoint.slice(5)}-${bulletPointIndex}` }
+                        className='list-image-clip-[url(/static/icons/bullet.svg)] list-image-clip-size-2.5 list-image-clip-color-disabled'
+                    >
+                        { bulletPoint }
+                    </li>
                 )) }
             </ul>
         </div>

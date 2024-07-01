@@ -1,5 +1,33 @@
 import plugin from 'tailwindcss/plugin';
 
+
+const VARIANT_TO_COLORS_MAP = {
+    'dark': {
+        'background': '#000',
+        'text': '#FFF',
+        'primary': '#a40029',
+        'secondary': '#cc5500',
+        'enabled': '#0a65a8',
+        'disabled': '#FFFFFF55',
+    },
+    'contrast': {
+        'background': '#ffffff',
+        'text': '#000000',
+        'primary': '#e02076',
+        'secondary': '#7f1d07',
+        'enabled': '#007acb',
+        'disabled': '#767676',
+    },
+    'dark contrast': {
+        'background': '#000',
+        'text': '#FFF',
+        'primary': '#df3568',
+        'secondary': '#f8954f',
+        'enabled': '#279bb0',
+        'disabled': '#FFFFFF77',
+    },
+};
+
 const autoAddSelectorVariantPlugin = plugin.withOptions((options = {}) => {
     const COLOR_UTILITIES_TO_PROPERTY = {
         'bg': 'background-color',
@@ -90,9 +118,6 @@ export default {
                 '3/5': '60%',
                 '4/5': '80%',
             },
-            listStyleImage: {
-                'bullet-disabled': 'url("static/icons/bullet-disabled.svg")',
-            },
         },
     },
     variants: {
@@ -120,32 +145,51 @@ export default {
             );
         }),
         // auto add selector based variants
-        autoAddSelectorVariantPlugin({
-            'dark': {
-                'background': '#000',
-                'text': '#FFF',
-                'primary': '#a40029',
-                'secondary': '#cc5500',
-                'enabled': '#0a65a8',
-                'disabled': '#FFFFFF55',
-            },
-            'contrast': {
-                'background': '#ffffff',
-                'text': '#000000',
-                'primary': '#e02076',
-                'secondary': '#7f1d07',
-                'enabled': '#007acb',
-                'disabled': '#767676',
-            },
-            'dark contrast': {
-                'background': '#000',
-                'text': '#FFF',
-                'primary': '#df3568',
-                'secondary': '#f8954f',
-                'enabled': '#279bb0',
-                'disabled': '#FFFFFF77',
-            },
+        autoAddSelectorVariantPlugin(VARIANT_TO_COLORS_MAP),
+        // add functionality for custom background clip based list images
+        plugin(({ matchUtilities, addUtilities, theme }) => {
+            matchUtilities(
+                {
+                    'list-image-clip': (value) => ({
+                        'list-style': 'none',
+                        '&:before': {
+                            'content': '""',
+                            'mask-image': value,
+                            'mask-repeat': 'no-repeat',
+                            'mask-size': 'contain',
+                            'mask-position': 'center',
+                            '-webkit-mask-image': value,
+                            '-webkit-mask-repeat': 'no-repeat',
+                            '-webkit-mask-size': 'contain',
+                            '-webkit-mask-position-y': 'center',
+                            '-webkit-mask-position-x': 'center',
+                            'vertical-align': 'middle',
+                            'display': 'inline-block',
+                            'margin-right': '12px',
+                        },
+                    }),
+                }, {
+                    type: [ 'url', 'image' ],
+                },
+            );
+            matchUtilities(
+                {
+                    'list-image-clip-size': (value) => ({
+                        '&:before': {
+                            'height': value,
+                            'width': value,
+                        },
+                    }),
+                }, { values: theme('size') },
+            );
+            addUtilities(Object.fromEntries(
+                Object.entries(VARIANT_TO_COLORS_MAP).flatMap(([ variant, colorsObject ]) => (
+                    Object.entries(colorsObject).map(([ className, hexString ]) => ([
+                        `${variant.split(' ').map(v => `.${v}`).join('')} .list-image-clip-color-${className}`,
+                        { '&:before': { 'background-color': hexString } },
+                    ]))
+                )),
+            ));
         }),
     ],
 };
-
