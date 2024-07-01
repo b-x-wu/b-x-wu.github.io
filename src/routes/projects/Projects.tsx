@@ -4,12 +4,15 @@ import Chatbox from '../../components/home/Chatbox';
 import Window from '../../components/common/Window';
 import ImageSuspense from '../../components/common/ImageSuspense';
 import { DarkModeContext, ReducedMotionModeContext } from '../../components/contexts';
+import { useTitle } from '../../hooks';
 
 const Projects: React.FC = () => {
 
     const isDarkMode = useContext(DarkModeContext);
     const isReducedMotion = useContext(ReducedMotionModeContext);
     const dateString = useMemo(() => (new Date()).toUTCString(), []);
+
+    useTitle('b-x-wu | Projects');
 
     return (
         <div className='flex w-full flex-col gap-y-6'>

@@ -1,8 +1,11 @@
 import React from 'react';
 import PaletePosterization from '../../components/projects/palette-posterization/PalettePosterization';
 import { Link } from 'react-router-dom';
+import { useTitle } from '../../hooks';
 
 const PalettePosterizationPage: React.FC = () => {
+    useTitle('b-x-wu | Palette Posterization [WIP]');
+
     return (
         <div className='flex w-full flex-col gap-y-8'>
             <PaletePosterization />
