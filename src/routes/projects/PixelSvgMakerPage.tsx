@@ -1,8 +1,11 @@
 import React from 'react';
 import PixelSvgMaker from '../../components/projects/pixel-svg-maker/PixelSvgMaker';
 import { Link } from 'react-router-dom';
+import { useTitle } from '../../hooks';
 
 const PixelSvgMakerPage: React.FC = () => {
+    useTitle('b-x-wu | Pixel SVG Maker');
+
     return (
         <div className='flex w-full flex-col gap-y-8'>
             <PixelSvgMaker />
