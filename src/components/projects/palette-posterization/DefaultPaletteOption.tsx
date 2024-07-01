@@ -15,12 +15,12 @@ const DefaultPaletteOption: React.FC<DefaultPaletteOptionProps> = ({
     return (
         <div className='flex h-6 min-w-max flex-row justify-between gap-x-4 hover:cursor-pointer' onClick={ onClick }>
             <div>{ name }</div>
-            <div className='border-text flex flex-row gap-x-0 border-2'>
+            <div className='border-text flex max-w-[calc(100vw/2)] flex-row gap-x-0 overflow-x-auto border-2'>
                 { palette.map((color) => {
                     const colorHexString = colorToHexString(color);
                     return (
                         <div
-                            className='my-auto size-5'
+                            className='my-auto size-5 min-w-5'
                             style={ { backgroundColor: `#${colorHexString}` } }
                             key={ `${name}-${colorHexString}` }
                         />
@@ -40,6 +40,14 @@ export const DEFAULT_PALETTE_OPTIONS: Omit<DefaultPaletteOptionProps, 'onClick'>
     { name: 'CMYK', palette: [ CYAN, MAGENTA, YELLOW, BLACK ] },
     { name: 'RYB', palette: [ RED, YELLOW, BLUE ] },
     { name: 'Teletext', palette: [ RED, GREEN, BLUE, CYAN, MAGENTA, YELLOW, BLACK, WHITE ] },
+    { name: '4-bit RGBI', palette: [
+        ...Array(8).fill(0).map((_, idx) => ({
+            red: idx >= 4 ? 170 : 0,
+            green: (idx % 4) >= 2 ? 170 : 0,
+            blue: (idx % 2) >= 1 ? 170 : 0,
+        })),
+        RED, GREEN, BLUE, CYAN, MAGENTA, YELLOW, BLACK, WHITE,
+    ] },
     { name: 'Apple II', palette: [
         BLACK, MAGENTA, GREEN, WHITE,
         { red: 0, green: 170, blue: 255 }, // blue
