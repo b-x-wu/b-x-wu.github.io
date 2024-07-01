@@ -6,7 +6,7 @@ import Home from './routes/Home';
 import Resume from './routes/Resume';
 import Projects from './routes/projects/Projects';
 import PixelSvgMakerPage from './routes/projects/PixelSvgMakerPage';
-import PalettePosterizationPage from './routes/projects/PalettePosterization';
+import PalettePosterizationPage from './routes/projects/PalettePosterizationPage';
 
 const Router = (
     <BrowserRouter>
