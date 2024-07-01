@@ -3,6 +3,8 @@ import React, { ReactNode, useEffect, useRef, useState } from 'react';
 interface DropdownProps {
     /** id of dropdown menu, applied to the container of the whole component */
     id: string;
+    /** any class name to be applied for the container of the whole dropdown */
+    containerClassName?: string;
     /** any class name to be applied for the container of all children in the dropdown */
     menuClassName?: string;
     /** any class name to be applied for the container of each child in the dropdown */
@@ -19,6 +21,7 @@ interface DropdownProps {
 
 const Dropdown: React.FC<DropdownProps> = ({
     id,
+    containerClassName,
     menuClassName,
     menuItemClassName,
     children,
@@ -60,7 +63,7 @@ const Dropdown: React.FC<DropdownProps> = ({
     ) : children;
 
     return (
-        <div id={ id } className='relative'>
+        <div id={ id } className={ containerClassName ?? 'relative w-fit' }>
             <div ref={ toggleRef } onClick={ () => setIsMenuOpen(!isMenuOpen) }>
                 { (isMenuOpen && menuOpenToggleElement) ? menuOpenToggleElement : toggleElement }
             </div>

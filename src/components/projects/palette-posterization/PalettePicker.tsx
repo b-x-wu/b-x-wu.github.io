@@ -35,21 +35,23 @@ const PalettePicker: React.FC<PalettePickerProps> = ({
     };
 
     const paletteElements = palette.map((color, paletteIndex) => (
-        <div key={ `palette-picker-${paletteIndex}` } className='relative w-full sm:w-fit' >
-            <div 
-                className='border-text h-10 w-full border-2 hover:cursor-pointer sm:size-10'
-                style={ { backgroundColor: `#${colorToHexString(color)}` } }
-                onClick={ () => setCurrentOpenPickerIndex(paletteIndex) }
-                aria-description='Change color'
-                title='Change color'
-            />
-            <div
-                className='bg-background border-text absolute -right-1 -top-1 flex size-5 border-2 hover:cursor-pointer'
-                onClick={ () => handleRemoveColor(paletteIndex) }
-                aria-description='Remove color'
-                title='Remove color'
-            >
-                <div className='bg-text m-auto size-2 bg-clip-[url(/static/icons/crosshair.svg)]' />
+        <div key={ `palette-picker-${paletteIndex}` } className='w-full pt-2 sm:w-fit' >
+            <div className='relative'>
+                <div 
+                    className='border-text size-10 border-2 hover:cursor-pointer'
+                    style={ { backgroundColor: `#${colorToHexString(color)}` } }
+                    onClick={ () => setCurrentOpenPickerIndex(paletteIndex) }
+                    aria-description='Change color'
+                    title='Change color'
+                />
+                <div
+                    className='bg-background border-text absolute -right-1 -top-1 flex size-5 border-2 hover:cursor-pointer'
+                    onClick={ () => handleRemoveColor(paletteIndex) }
+                    aria-description='Remove color'
+                    title='Remove color'
+                >
+                    <div className='bg-text m-auto size-2 bg-clip-[url(/static/icons/crosshair.svg)]' />
+                </div>
             </div>
             { paletteIndex === currentOpenPickerIndex && (
                 <ColorPicker
@@ -62,7 +64,7 @@ const PalettePicker: React.FC<PalettePickerProps> = ({
     ));
 
     const newColorElement = (
-        <div key='palette-picker-new' className='relative w-full sm:w-fit' >
+        <div key='palette-picker-new' className='w-full pt-2 sm:w-fit' >
             <div
                 className='border-text h-10 w-full border-2 hover:cursor-pointer sm:size-10'
                 aria-description='Add a new color'
@@ -83,8 +85,6 @@ const PalettePicker: React.FC<PalettePickerProps> = ({
             ) }
         </div>
     );
-
-    paletteElements.unshift(newColorElement);
 
     const defaultPalettesDropdownElement = (
         <Dropdown 
@@ -107,6 +107,7 @@ const PalettePicker: React.FC<PalettePickerProps> = ({
                     <div className='bg-text m-auto h-full w-4 bg-clip-[url(/static/icons/dropdown-open.svg)]' aria-hidden={ true }/>
                 </div>
             ) }
+            containerClassName='relative'
         >
             { DEFAULT_PALETTE_OPTIONS.map(({ name, palette }) => (
                 <DefaultPaletteOption
@@ -119,11 +120,13 @@ const PalettePicker: React.FC<PalettePickerProps> = ({
         </Dropdown>
     );
 
-    paletteElements.unshift(defaultPalettesDropdownElement);
-
     return (
-        <div className='flex flex-col space-y-2 sm:flex-row sm:space-x-2 sm:space-y-0'>
-            { paletteElements }
+        <div className='relative flex flex-col space-y-2 sm:flex-row sm:space-x-2 sm:space-y-0'>
+            <div className='pt-2'>{ defaultPalettesDropdownElement }</div>
+            { newColorElement }
+            <div className='flex w-full flex-row space-x-2 space-y-0 overflow-x-auto'>
+                { paletteElements }
+            </div>
         </div>
     );
 };
