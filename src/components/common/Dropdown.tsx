@@ -13,6 +13,8 @@ interface DropdownProps {
     toggleElement: ReactNode;
     /** the element that renders when the menu is open that can trigger the menu */
     menuOpenToggleElement?: ReactNode;
+    /** flag to close the menu when an option is selected. defaults to true */
+    closeOnOptionSelect?: boolean;
 }
 
 const Dropdown: React.FC<DropdownProps> = ({
@@ -22,6 +24,7 @@ const Dropdown: React.FC<DropdownProps> = ({
     children,
     toggleElement,
     menuOpenToggleElement,
+    closeOnOptionSelect = true,
 }) => {
     const menuRef = useRef<HTMLDivElement>(null);
     const toggleRef = useRef<HTMLDivElement>(null);
@@ -46,7 +49,11 @@ const Dropdown: React.FC<DropdownProps> = ({
     
     const childrenElement = Array.isArray(children) ? (
         children.map((child, idx) => (
-            <div key={ `${id}-dropdown-${idx}` } className={ menuItemClassName ?? (idx === 0 ? 'p-2' : 'border-text border-t-2 border-dotted p-2') }>
+            <div
+                key={ `${id}-dropdown-${idx}` }
+                className={ menuItemClassName ?? (idx === 0 ? 'p-2' : 'border-text border-t-2 border-dotted p-2') }
+                onClick={ closeOnOptionSelect ? () => setIsMenuOpen(false) : undefined }
+            >
                 { child }
             </div>
         ))
@@ -54,7 +61,7 @@ const Dropdown: React.FC<DropdownProps> = ({
 
     return (
         <div id={ id } className='relative'>
-            <div className='size-fit' ref={ toggleRef } onClick={ () => setIsMenuOpen(!isMenuOpen) }>
+            <div ref={ toggleRef } onClick={ () => setIsMenuOpen(!isMenuOpen) }>
                 { (isMenuOpen && menuOpenToggleElement) ? menuOpenToggleElement : toggleElement }
             </div>
             <div className={ isMenuOpen ? (menuClassName ?? 'bg-background border-text left-0 z-50 my-2 flex flex-col space-y-0 border-2 border-dotted') : 'hidden' } style={ { position: 'absolute' } } ref={ menuRef } >
