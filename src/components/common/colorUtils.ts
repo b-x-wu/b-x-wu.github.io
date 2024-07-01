@@ -21,6 +21,7 @@ export const colorToHexString = (color: RgbColor): string => {
 /**
  * converts a given hex string to the corresponding color
  * returns undefined if the hex string is not valie
+ * string should contain leading hash (#)
  */
 export const hexStringToColor = (s: string): RgbColor | undefined => {
     const sanitizedString = s.trim().toLowerCase();
@@ -88,6 +89,24 @@ export const WHITE: RgbColor = {
     red: 255,
     green: 255,
     blue: 255,
+};
+
+export const CYAN: RgbColor = {
+    red: 0,
+    green: 255,
+    blue: 255,
+};
+
+export const MAGENTA: RgbColor = {
+    red: 255,
+    green: 0,
+    blue: 255,
+};
+
+export const YELLOW: RgbColor = {
+    red: 255,
+    green: 255,
+    blue: 0,
 };
 
 export interface HslColor {
