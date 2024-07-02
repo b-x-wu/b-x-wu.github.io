@@ -1,5 +1,5 @@
-import { RgbColor, toHslColor, toLabColor, toRgbColor } from '../../common/colorUtils';
-import mixbox from 'mixbox';
+import { BLACK, RgbColor, toHslColor, toLabColor, toRgbColor } from '../../common/colorUtils';
+import mixbox, { RgbArray } from 'mixbox';
 
 export enum ColorMetricType {
     EUCLIDEAN_RGB = 'Euclidean RGB',
@@ -95,10 +95,15 @@ export const averageColorReducer: ColorReducer = (color1, color2) => {
 };
 
 export const mixboxAverageColorReducer: ColorReducer = (color1, color2) => {
-    const mixboxColor1: number[] = Array.from(Object.values(color1));
-    const mixboxColor2: number[] = Array.from(Object.values(color2));
+    const mixboxColor1: RgbArray = [ color1.red, color1.green, color1.blue ];
+    const mixboxColor2: RgbArray = [ color2.red, color2.green, color2.blue ];
 
-    const mixboxLerpResult: [ number, number, number ] = mixbox.lerp(mixboxColor1, mixboxColor2, 0.5);
+    const mixboxLerpResult = mixbox.lerp(mixboxColor1, mixboxColor2, 0.5);
+    if (mixboxLerpResult === undefined) {
+        // this shouldn't happen
+        return BLACK;
+    }
+
     return { red: mixboxLerpResult[0], green: mixboxLerpResult[1], blue: mixboxLerpResult[2] };
 };
 
