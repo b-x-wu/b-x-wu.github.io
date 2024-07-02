@@ -19,7 +19,7 @@ const Router = (
                     <Route index element={ <Projects /> } />
                     <Route path='pixel-svg-maker' element={ <PixelSvgMakerPage /> } />
                     <Route path='shader-toy' element={ <ShaderToyPage /> } />
-                    <Route path='palette-posterization' element={ <PalettePosterizationPage /> } />
+                    <Route path='palette-posterizer' element={ <PalettePosterizationPage /> } />
                 </Route>
                 <Route path='*' element={ <Error404 /> } />
             </Route>

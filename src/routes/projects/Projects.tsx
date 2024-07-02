@@ -97,6 +97,27 @@ const Projects: React.FC = () => {
                         />
                     </Link>
                 </Window>
+                <Window
+                    title='Palette Posterizer'
+                    optionsBar='A web app for customizable posterization'
+                    controlButtons={ [
+                        <Link to='/projects/palette-posterizer' key='palette-posterizer-link'>
+                            <div className="bg-text size-4 bg-clip-[url('/static/icons/link.svg')]" />
+                        </Link>,
+                    ] }
+                >
+                    <Link to='/projects/palette-posterizer' className='h-64'>
+                        <ImageSuspense
+                            src={
+                                isDarkMode
+                                    ? '/static/images/project-previews/palette-posterization-preview-dark.png'
+                                    : '/static/images/project-previews/palette-posterization-preview.png'
+                            }
+                            alt='Palette Posterizer preview'
+                            className='size-full object-cover object-center'
+                        />
+                    </Link>
+                </Window>
             </div>
         </div>
     );
