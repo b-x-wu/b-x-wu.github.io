@@ -1,4 +1,5 @@
 import { RgbColor, toHslColor, toLabColor, toRgbColor } from '../../common/colorUtils';
+import mixbox from 'mixbox';
 
 export enum ColorMetricType {
     EUCLIDEAN_RGB = 'Euclidean RGB',
@@ -64,6 +65,7 @@ export enum RenderedColorReducerType {
     PRESERVE_SL = 'Preserve saturation and lightness',
     PRESERVE_HUE = 'Preserve hue',
     AVERAGE = 'Average by color channel',
+    MIXBOX = 'Mixbox average',
 }
 
 export type ColorReducer = (color1: RgbColor, color2: RgbColor) => RgbColor;
@@ -92,11 +94,20 @@ export const averageColorReducer: ColorReducer = (color1, color2) => {
     };
 };
 
+export const mixboxAverageColorReducer: ColorReducer = (color1, color2) => {
+    const mixboxColor1: number[] = Array.from(Object.values(color1));
+    const mixboxColor2: number[] = Array.from(Object.values(color2));
+
+    const mixboxLerpResult: [ number, number, number ] = mixbox.lerp(mixboxColor1, mixboxColor2, 0.5);
+    return { red: mixboxLerpResult[0], green: mixboxLerpResult[1], blue: mixboxLerpResult[2] };
+};
+
 export const RENDERED_COLOR_REDUCER_MAP: Map<RenderedColorReducerType, ColorReducer> = new Map<RenderedColorReducerType, ColorReducer>([
     [ RenderedColorReducerType.PALETTE, identityColorReducer ],
     [ RenderedColorReducerType.PRESERVE_SL, slPreservingColorReducer ],
     [ RenderedColorReducerType.PRESERVE_HUE, huePreservingColorReducer ],
     [ RenderedColorReducerType.AVERAGE, averageColorReducer ],
+    [ RenderedColorReducerType.MIXBOX, mixboxAverageColorReducer ],
 ]);
 
 /**
