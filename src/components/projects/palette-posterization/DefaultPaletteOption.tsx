@@ -15,7 +15,7 @@ const DefaultPaletteOption: React.FC<DefaultPaletteOptionProps> = ({
     return (
         <div className='flex h-6 min-w-max flex-row justify-between gap-x-4 hover:cursor-pointer' onClick={ onClick }>
             <div>{ name }</div>
-            <div className='border-text flex max-w-[calc(100vw/2)] flex-row gap-x-0 overflow-x-auto border-2'>
+            <div className='border-text flex max-w-[calc(100vw/3)] flex-row gap-x-0 overflow-x-auto border-2'>
                 { palette.map((color, idx) => {
                     const colorHexString = colorToHexString(color);
                     return (
@@ -56,11 +56,67 @@ export const DEFAULT_PALETTE_OPTIONS: Omit<DefaultPaletteOptionProps, 'onClick'>
         { red: 0, green: 170, blue: 255 }, // blue
         { red: 255, green: 80, blue: 0 }, // orange
     ] },
+    { name: 'PICO-8', palette: [
+        { red: 0, green: 0, blue: 0 },
+        { red: 29, green: 43, blue: 83 },
+        { red: 126, green: 37, blue: 83 },
+        { red: 0, green: 135, blue: 81 },
+        { red: 171, green: 82, blue: 54 },
+        { red: 95, green: 87, blue: 79 },
+        { red: 194, green: 195, blue: 199 },
+        { red: 255, green: 241, blue: 232 },
+        { red: 255, green: 0, blue: 77 },
+        { red: 255, green: 163, blue: 0 },
+        { red: 255, green: 236, blue: 39 },
+        { red: 0, green: 228, blue: 54 },
+        { red: 41, green: 173, blue: 255 },
+        { red: 131, green: 118, blue: 156 },
+        { red: 255, green: 119, blue: 168 },
+        { red: 255, green: 204, blue: 170 },
+    ] },
+    { name: 'Matplotlib', palette: [
+        { red: 31, green: 119, blue: 180 },
+        { red: 255, green: 127, blue: 14 },
+        { red: 44, green: 160, blue: 44 },
+        { red: 214, green: 39, blue: 40 },
+        { red: 148, green: 103, blue: 189 },
+        { red: 140, green: 86, blue: 75 },
+        { red: 227, green: 119, blue: 194 },
+        { red: 127, green: 127, blue: 127 },
+        { red: 188, green: 189, blue: 34 },
+        { red: 23, green: 190, blue: 207 },
+    ] },
     { name: 'Game Boy', palette: [
         { red: 41, green: 65, blue: 57 },
         { red: 57, green: 89, blue: 65 },
         { red: 90, green: 121, blue: 66 },
         { red: 123, green: 130, blue: 16 },
+    ] },
+    { name: 'Crayola 8-Pack', palette: [
+        { red: 237, green: 10, blue: 63 }, // red
+        { red: 1, green: 163, blue: 104 }, // green
+        { red: 0, green: 102, blue: 255 }, // blue
+        { red: 175, green: 89, blue: 62 }, // brown
+        BLACK,
+        { red: 255, green: 104, blue: 31 }, // orange
+        { red: 131, green: 89, blue: 163 }, // purple
+    ] },
+    { name: 'Animal Crossing Designs', palette: [
+        { red: 255, green: 255, blue: 255 },
+        { red: 136, green: 136, blue: 136 },
+        { red: 0, green: 0, blue: 0 },
+        { red: 255, green: 0, blue: 0 },
+        { red: 255, green: 102, blue: 0 },
+        { red: 255, green: 255, blue: 0 },
+        { red: 34, green: 221, blue: 34 },
+        { red: 0, green: 136, blue: 51 },
+        { red: 0, green: 205, blue: 255 },
+        { red: 16, green: 119, blue: 255 },
+        { red: 0, green: 0, blue: 255 },
+        { red: 204, green: 0, blue: 255 },
+        { red: 255, green: 0, blue: 204 },
+        { red: 255, green: 170, blue: 136 },
+        { red: 153, green: 50, blue: 0 },
     ] },
     { name: 'Trans Pride', palette: [
         { red: 91, green: 206, blue: 250 }, // blue
