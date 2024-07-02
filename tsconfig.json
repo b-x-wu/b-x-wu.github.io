@@ -8,6 +8,11 @@
         "esModuleInterop": true,
         "forceConsistentCasingInFileNames": true,
         "strict": true,
-        "jsx": "react"
-    }
+        "jsx": "react",
+        "baseUrl": "./",
+        "paths": {
+            "*": [ "@custom-types/*" ]
+        }
+    },
+    "exclude": [ "node_modules", "@custom-types" ]
 }
