@@ -108,6 +108,7 @@ const PalettePicker: React.FC<PalettePickerProps> = ({
                 </div>
             ) }
             containerClassName='relative'
+            menuClassName='bg-background border-text left-0 z-50 my-2 flex flex-col space-y-0 border-2 border-dotted max-h-128 overflow-y-auto'
         >
             { DEFAULT_PALETTE_OPTIONS.map(({ name, palette }) => (
                 <DefaultPaletteOption
