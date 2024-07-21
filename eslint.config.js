@@ -36,6 +36,7 @@ export default tseslint.config(
         },
         // @ts-expect-error reactlint typing is wrong
         rules: {
+            'function-paren-newline': [ 'error', 'multiline-arguments' ],
             '@stylistic/quotes': [ 'error', 'single' ],
             '@stylistic/indent': [ 'error', 4 ],
             '@stylistic/array-bracket-spacing': [ 'error', 'always', {

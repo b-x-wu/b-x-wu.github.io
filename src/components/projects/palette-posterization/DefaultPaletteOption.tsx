@@ -33,12 +33,8 @@ const DefaultPaletteOption: React.FC<DefaultPaletteOptionProps> = ({
 
 export const DEFAULT_PALETTE_OPTIONS: Omit<DefaultPaletteOptionProps, 'onClick'>[] = [
     { name: 'Monochrome', palette: [ BLACK, WHITE ] },
-    { name: '2-bit Grayscale', palette: [ ...Array(3).fill(0).map(
-        (_, idx) => ({ red: 85 * idx, green: 85 * idx, blue: 85 * idx }),
-    ), WHITE ] },
-    { name: '4-bit Grayscale', palette: [ ...Array(15).fill(0).map(
-        (_, idx) => ({ red: 17 * idx, green: 17 * idx, blue: 17 * idx }),
-    ), WHITE ] },
+    { name: '2-bit Grayscale', palette: [ ...Array(3).fill(0).map((_, idx) => ({ red: 85 * idx, green: 85 * idx, blue: 85 * idx })), WHITE ] },
+    { name: '4-bit Grayscale', palette: [ ...Array(15).fill(0).map((_, idx) => ({ red: 17 * idx, green: 17 * idx, blue: 17 * idx })), WHITE ] },
     { name: 'RGB', palette: [ RED, GREEN, BLUE ] },
     { name: 'CMYK', palette: [ CYAN, MAGENTA, YELLOW, BLACK ] },
     { name: 'RYB', palette: [ RED, YELLOW, BLUE ] },

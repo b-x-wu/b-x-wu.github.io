@@ -8,9 +8,7 @@ import { Bounds, Mode } from './utils';
 const DEFAULT_PIXELS_PER_SIDE: number = 16;
 
 const PixelSvgMaker: React.FC = () => {
-    const [ pixelArray, setPixelArray ] = useState<Array<Array<RgbColor | undefined>>>(
-        Array(DEFAULT_PIXELS_PER_SIDE).fill(Array(DEFAULT_PIXELS_PER_SIDE).fill(undefined)),
-    );
+    const [ pixelArray, setPixelArray ] = useState<Array<Array<RgbColor | undefined>>>(Array(DEFAULT_PIXELS_PER_SIDE).fill(Array(DEFAULT_PIXELS_PER_SIDE).fill(undefined)));
     const [ history, setHistory ] = useState<Array<Array<Array<RgbColor | undefined>>>>([
         Array(DEFAULT_PIXELS_PER_SIDE).fill(Array(DEFAULT_PIXELS_PER_SIDE).fill(undefined)),
     ]);
@@ -43,9 +41,7 @@ const PixelSvgMaker: React.FC = () => {
     const handleDrawEnd = () => {
         const newHistory = [
             pixelArray.map((row) => row.map((pixel) => pixel === undefined ? undefined : { ...pixel })),
-            ...history.map(
-                (state) => state.map((row) => row.map((pixel) => pixel === undefined ? undefined : { ...pixel })),
-            ),
+            ...history.map((state) => state.map((row) => row.map((pixel) => pixel === undefined ? undefined : { ...pixel }))),
         ];
         setHistory(newHistory);
     };

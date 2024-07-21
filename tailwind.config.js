@@ -1,6 +1,5 @@
 import plugin from 'tailwindcss/plugin';
 
-
 const VARIANT_TO_COLORS_MAP = {
     'dark': {
         'background': '#000',
@@ -66,18 +65,14 @@ const autoAddSelectorVariantPlugin = plugin.withOptions((options = {}) => {
                 [],
             );
 
-        addComponents(
-            Object.fromEntries(
-                selectorObjects.map((selectorObject) => {
-                    const variantSelector = selectorObject.variant.split(' ')
-                        .map((variantSelector) => `.${variantSelector}`)
-                        .join('');
-                    const componentSelector = `${variantSelector} .${selectorObject.utility}-${selectorObject.color}`;
-                    const componentValue = { [COLOR_UTILITIES_TO_PROPERTY[selectorObject.utility]]: options[selectorObject.variant][selectorObject.color] };
-                    return [ componentSelector, componentValue ];
-                }),
-            ),
-        );
+        addComponents(Object.fromEntries(selectorObjects.map((selectorObject) => {
+            const variantSelector = selectorObject.variant.split(' ')
+                .map((variantSelector) => `.${variantSelector}`)
+                .join('');
+            const componentSelector = `${variantSelector} .${selectorObject.utility}-${selectorObject.color}`;
+            const componentValue = { [COLOR_UTILITIES_TO_PROPERTY[selectorObject.utility]]: options[selectorObject.variant][selectorObject.color] };
+            return [ componentSelector, componentValue ];
+        })));
     };
 });
 
@@ -126,9 +121,31 @@ export default {
     plugins: [
         // background clip to image
         plugin(({ matchUtilities }) => {
-            matchUtilities(
-                {
-                    'bg-clip': (value) => ({
+            matchUtilities({
+                'bg-clip': (value) => ({
+                    'mask-image': value,
+                    'mask-repeat': 'no-repeat',
+                    'mask-size': 'contain',
+                    'mask-position': 'center',
+                    '-webkit-mask-image': value,
+                    '-webkit-mask-repeat': 'no-repeat',
+                    '-webkit-mask-size': 'contain',
+                    '-webkit-mask-position-y': 'center',
+                    '-webkit-mask-position-x': 'center',
+                }),
+            }, {
+                type: [ 'url', 'image' ],
+            });
+        }),
+        // auto add selector based variants
+        autoAddSelectorVariantPlugin(VARIANT_TO_COLORS_MAP),
+        // add functionality for custom background clip based list images
+        plugin(({ matchUtilities, addUtilities, theme }) => {
+            matchUtilities({
+                'list-image-clip': (value) => ({
+                    'list-style': 'none',
+                    '&:before': {
+                        'content': '""',
                         'mask-image': value,
                         'mask-repeat': 'no-repeat',
                         'mask-size': 'contain',
@@ -138,58 +155,28 @@ export default {
                         '-webkit-mask-size': 'contain',
                         '-webkit-mask-position-y': 'center',
                         '-webkit-mask-position-x': 'center',
-                    }),
-                }, {
-                    type: [ 'url', 'image' ],
-                },
-            );
-        }),
-        // auto add selector based variants
-        autoAddSelectorVariantPlugin(VARIANT_TO_COLORS_MAP),
-        // add functionality for custom background clip based list images
-        plugin(({ matchUtilities, addUtilities, theme }) => {
-            matchUtilities(
-                {
-                    'list-image-clip': (value) => ({
-                        'list-style': 'none',
-                        '&:before': {
-                            'content': '""',
-                            'mask-image': value,
-                            'mask-repeat': 'no-repeat',
-                            'mask-size': 'contain',
-                            'mask-position': 'center',
-                            '-webkit-mask-image': value,
-                            '-webkit-mask-repeat': 'no-repeat',
-                            '-webkit-mask-size': 'contain',
-                            '-webkit-mask-position-y': 'center',
-                            '-webkit-mask-position-x': 'center',
-                            'vertical-align': 'middle',
-                            'display': 'inline-block',
-                            'margin-right': '12px',
-                        },
-                    }),
-                }, {
-                    type: [ 'url', 'image' ],
-                },
-            );
-            matchUtilities(
-                {
-                    'list-image-clip-size': (value) => ({
-                        '&:before': {
-                            'height': value,
-                            'width': value,
-                        },
-                    }),
-                }, { values: theme('size') },
-            );
-            addUtilities(Object.fromEntries(
-                Object.entries(VARIANT_TO_COLORS_MAP).flatMap(([ variant, colorsObject ]) => (
-                    Object.entries(colorsObject).map(([ className, hexString ]) => ([
-                        `${variant.split(' ').map(v => `.${v}`).join('')} .list-image-clip-color-${className}`,
-                        { '&:before': { 'background-color': hexString } },
-                    ]))
-                )),
-            ));
+                        'vertical-align': 'middle',
+                        'display': 'inline-block',
+                        'margin-right': '12px',
+                    },
+                }),
+            }, {
+                type: [ 'url', 'image' ],
+            });
+            matchUtilities({
+                'list-image-clip-size': (value) => ({
+                    '&:before': {
+                        'height': value,
+                        'width': value,
+                    },
+                }),
+            }, { values: theme('size') });
+            addUtilities(Object.fromEntries(Object.entries(VARIANT_TO_COLORS_MAP).flatMap(([ variant, colorsObject ]) => (
+                Object.entries(colorsObject).map(([ className, hexString ]) => ([
+                    `${variant.split(' ').map(v => `.${v}`).join('')} .list-image-clip-color-${className}`,
+                    { '&:before': { 'background-color': hexString } },
+                ]))
+            ))));
         }),
     ],
 };

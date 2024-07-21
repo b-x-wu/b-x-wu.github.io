@@ -67,6 +67,11 @@ export default {
                     'postcss-loader',
                 ],
             },
+            {
+                test: /\.glsl$/,
+                include: resolve(__dirname, 'src'),
+                type: 'asset/source',
+            },
         ],
     },
 };
