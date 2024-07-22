@@ -6,7 +6,7 @@ import {
     setAttributeToArrayBuffer,
     clearFrame,
 } from '../../common/webglUtils';
-import { DATA_READY_EVENT_TYPE, createVideo, deleteGlResources, initializeShader } from './utils';
+import { DATA_READY_EVENT_TYPE, createVideo, initializeShader } from './utils';
 
     
 const ShaderToy: React.FC = () => {
@@ -18,6 +18,7 @@ const ShaderToy: React.FC = () => {
     const [ glTexCoordBuffer, setGlTexCoordBuffer ] = useState<WebGLBuffer | undefined>(undefined);
     const [ glTexture, setGlTexture ] = useState<WebGLTexture | undefined>(undefined);
     const [ animationFrameHandle, setAnimationFrameHandle ] = useState<number | undefined>(undefined);
+    const [ errorMessage, setErrorMessage ] = useState<string | undefined>(undefined);
 
     const drawFrame = (
         gl: WebGL2RenderingContext, 
@@ -47,15 +48,13 @@ const ShaderToy: React.FC = () => {
             return;
         }
 
-        deleteGlResources(gl, glProgram, glPositionBuffer, glTexCoordBuffer, glTexture);
-
         const glResources = initializeShader(
             vertexShaderSourceText,
             fragmentShaderSource,
             video,
             gl,
             canvas,
-            console.error,
+            setErrorMessage,
         );
 
         if (glResources === undefined) {
@@ -63,6 +62,7 @@ const ShaderToy: React.FC = () => {
         }
         const [ program, positionBuffer, texCoordBuffer, texture ] = glResources;
 
+        setErrorMessage(undefined);
         setGlProgram(program);
         setGlPositionBuffer(positionBuffer);
         setGlTexCoordBuffer(texCoordBuffer);
@@ -91,9 +91,13 @@ const ShaderToy: React.FC = () => {
         }
 
         const render = () => {
-            setTexture(gl, glTexture, video);
-            drawFrame(gl, glProgram, glPositionBuffer, glTexCoordBuffer);
-            requestAnimationFrame(render);
+            try {
+                setTexture(gl, glTexture, video);
+                drawFrame(gl, glProgram, glPositionBuffer, glTexCoordBuffer);
+                requestAnimationFrame(render);
+            } catch (e: unknown) {
+                setErrorMessage(e instanceof Error ? e.message : String(e));
+            }
         };
 
         const currentAnimationFrameHandle = requestAnimationFrame(render);
@@ -122,13 +126,24 @@ const ShaderToy: React.FC = () => {
                 video.srcObject = stream;
                 video.play();
             })
-            // TODO: Visible error logging
-            .catch(console.error);
+            .catch(setErrorMessage);
     }, []);
 
     return (
         <div>
-            <canvas className="w-full" ref={ canvasRef } />
+            <div className = 'relative size-fit min-w-full'>
+                <canvas className="w-full" ref={ canvasRef } />
+                { errorMessage !== undefined && (
+                    <div className='bg-background absolute left-0 top-0 z-10 flex size-full opacity-85'>
+                        <div className='m-auto'>{ errorMessage }</div>
+                    </div>
+                ) }
+            </div>
+            <textarea
+                className='bg-background min-h-96 w-full border-2 p-2'
+                value={ fragmentShaderSource }
+                onChange={ (event) => setFragmentShaderSource(event.target.value) }
+            />
         </div>
     );
 };

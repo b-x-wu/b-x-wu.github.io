@@ -75,7 +75,7 @@ export const initializeShader = (
     const program = initProgram(gl, vertexShaderSource, fragmentShaderSource);
 
     if (program === undefined) {
-        onError?.('Could not initialize WebGL Program');
+        onError?.('Could not initialize WebGL Program.');
         return;
     }
 
@@ -111,14 +111,14 @@ export const initializeShader = (
     );
 
     if (positionBuffer === undefined || texCoordBuffer === undefined) {
-        onError?.('Could not initialize buffers');
+        onError?.('Could not initialize buffers.');
         return;
     }
         
     const texture = initTexture(gl);
 
     if (texture === undefined) {
-        onError?.('Could not initialize texture');
+        onError?.('Could not initialize texture.');
         return;
     }
 
