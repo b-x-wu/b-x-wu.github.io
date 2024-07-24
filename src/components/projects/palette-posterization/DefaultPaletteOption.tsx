@@ -100,6 +100,7 @@ export const DEFAULT_PALETTE_OPTIONS: Omit<DefaultPaletteOptionProps, 'onClick'>
         BLACK,
         { red: 255, green: 104, blue: 31 }, // orange
         { red: 131, green: 89, blue: 163 }, // purple
+        { red: 252, green: 232, blue: 131 }, // yellow
     ] },
     { name: 'Animal Crossing Designs', palette: [
         { red: 255, green: 255, blue: 255 },
