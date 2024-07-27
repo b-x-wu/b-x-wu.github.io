@@ -172,3 +172,77 @@ export interface ColorPaletteChangeResponseData {
     adjustedColors: RgbColor[];
 }
 
+export const VERTEX_SHADER = `
+attribute vec2 a_position;
+attribute vec2 a_texCoord;
+
+uniform vec2 u_resolution;
+
+varying vec2 v_texCoord;
+
+void main() {
+    // remap positions to be in the [-1, 1] range
+    vec2 clipSpace = ((a_position / u_resolution) * 2.0) - 1.0;
+    
+    gl_Position = vec4(clipSpace * vec2(1, -1), 0, 1);
+    
+    v_texCoord = a_texCoord;
+}
+`
+
+export const getFragmentShader = (colorMetric: ColorMetricType, colorReducer: RenderedColorReducerType) => {
+    const colorMetricSourceString = `
+float metric(in vec4 color1, in vec4 color2)
+{
+    vec4 diff = color1 - color2;
+    return diff.r * diff.r + diff.g * diff.g + diff.b * diff.b;
+}
+`
+    const colorReducerSourceString = `
+vec4 reducer(in vec4 textureColor, in vec4 paletteColor)
+{
+    return vec4(paletteColor);
+}
+`
+    return `
+precision mediump float;
+
+uniform int u_paletteSize;
+uniform vec4 u_palette[64];
+uniform sampler2D u_image;
+varying vec2 v_texCoord;
+
+${colorMetricSourceString}
+
+${colorReducerSourceString}
+
+void main() {
+    if (u_paletteSize == 0)
+    {
+        gl_FragColor = texture2D(u_image, v_texCoord);
+        return;
+    }
+    
+    vec4 currentColor = texture2D(u_image, v_texCoord);
+    float minDistance = 1.0 / 0.0; // inf
+    float currentDistance = 0.0;
+    vec4 paletteColor = vec4(currentColor);
+
+    for(int i = 0; i < 64; i++)
+    {
+        if (i >= u_paletteSize)
+            break;
+
+        currentDistance = metric(currentColor, u_palette[i]);
+        
+        if (currentDistance < minDistance)
+        {
+            minDistance = currentDistance;
+            paletteColor = vec4(u_palette[i]);
+        }
+    }
+
+    gl_FragColor = reducer(currentColor, paletteColor);
+}
+`
+}

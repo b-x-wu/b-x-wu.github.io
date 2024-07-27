@@ -4,6 +4,7 @@ import { RgbColor } from '../../common/colorUtils';
 import { ColorMetricType, ColorPaletteChangeRequestData, ColorPaletteChangeResponseData, RenderedColorReducerType, getRenderedColors } from './utils';
 import ImageUploader from '../../common/ImageUploader';
 import PalettePosterizationOptions from './PalettePosterizationOptions';
+import WebGlCanvas from './WebGlCanvas';
 
 const PaletePosterization: React.FC = () => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -12,6 +13,7 @@ const PaletePosterization: React.FC = () => {
     const [ isImageChangeLoading, setIsImageChangeLoading ] = useState<boolean>(false);
     const [ colorMetric, setColorMetric ] = useState<ColorMetricType>(ColorMetricType.EUCLIDEAN_RGB);
     const [ renderedColorReducer, setRenderedColorReducer ] = useState<RenderedColorReducerType>(RenderedColorReducerType.PALETTE);
+    const [ image, setImage ] = useState<undefined | HTMLImageElement>(undefined);
 
     const putImageData = useCallback((colors: RgbColor[], canvas: HTMLCanvasElement, context: CanvasRenderingContext2D) => {
         const newRawImageData = new Uint8ClampedArray(canvas.width * canvas.height * 4);
@@ -21,6 +23,7 @@ const PaletePosterization: React.FC = () => {
     }, []);
 
     const handleImageLoad = (image: HTMLImageElement) => {
+        setImage(image);
         const canvas = canvasRef.current ?? undefined;
         const context = canvas?.getContext('2d') ?? undefined;
 
@@ -96,6 +99,7 @@ const PaletePosterization: React.FC = () => {
 
     return (
         <div className='flex flex-col space-y-2'>
+            <WebGlCanvas image={image} palette={palette} colorMetric={colorMetric} colorReducer={renderedColorReducer} />
             { imageColors.length > 0 && (
                 <PalettePosterizationOptions 
                     onColorMetricSelect={ setColorMetric }
