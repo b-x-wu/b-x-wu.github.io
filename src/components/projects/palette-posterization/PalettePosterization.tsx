@@ -24,36 +24,37 @@ const PaletePosterization: React.FC = () => {
 
     const handleImageLoad = (image: HTMLImageElement) => {
         setImage(image);
-        const canvas = canvasRef.current ?? undefined;
-        const context = canvas?.getContext('2d') ?? undefined;
+        setImageColors([{ red: 0, green: 0, blue: 0 }])
+        // const canvas = canvasRef.current ?? undefined;
+        // const context = canvas?.getContext('2d') ?? undefined;
 
-        if (canvas === undefined || context === undefined) {
-            return;
-        }
+        // if (canvas === undefined || context === undefined) {
+        //     return;
+        // }
 
-        const devicePixelRatio = window.devicePixelRatio;
+        // const devicePixelRatio = window.devicePixelRatio;
 
-        canvas.width = image.width * devicePixelRatio;
-        canvas.height = image.height * devicePixelRatio;
-        context.drawImage(image, 0, 0, canvas.width, canvas.height);
+        // canvas.width = image.width * devicePixelRatio;
+        // canvas.height = image.height * devicePixelRatio;
+        // context.drawImage(image, 0, 0, canvas.width, canvas.height);
 
-        const imageData = context.getImageData(0, 0, canvas.width, canvas.height, { colorSpace: 'srgb' });
-        const colors = imageData.data.reduce<RgbColor[]>((accumulator, _, index, array) => {
-            if (index % 4 === 0) {
-                const red = array.at(index);
-                const green = array.at(index + 1);
-                const blue = array.at(index + 2);
-                // skip alpha
+        // const imageData = context.getImageData(0, 0, canvas.width, canvas.height, { colorSpace: 'srgb' });
+        // const colors = imageData.data.reduce<RgbColor[]>((accumulator, _, index, array) => {
+        //     if (index % 4 === 0) {
+        //         const red = array.at(index);
+        //         const green = array.at(index + 1);
+        //         const blue = array.at(index + 2);
+        //         // skip alpha
 
-                if (red === undefined || green === undefined || blue === undefined) {
-                    throw new Error('Unable to parse image data.');
-                }
-                accumulator.push({ red, green, blue });
-            }
-            return accumulator;
-        }, []);
+        //         if (red === undefined || green === undefined || blue === undefined) {
+        //             throw new Error('Unable to parse image data.');
+        //         }
+        //         accumulator.push({ red, green, blue });
+        //     }
+        //     return accumulator;
+        // }, []);
 
-        setImageColors(colors);
+        // setImageColors(colors);
     };
 
     useEffect(() => {
