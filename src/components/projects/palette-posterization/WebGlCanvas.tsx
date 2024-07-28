@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { RgbColor } from '../../common/colorUtils';
 import { initArrayBuffer, initProgram, initTexture, setAttributeToArrayBuffer, setTexture } from '../../common/webglUtils';
-import { ColorMetricType, RenderedColorReducerType } from './utils';
+import { ColorMetricType, getFragmentShader, RenderedColorReducerType } from './utils';
 
 const VERTEX_SHADER = `
 attribute vec2 a_position;
@@ -81,10 +81,13 @@ interface WebGlCanvasProps {
 const WebGlCanvas: React.FC<WebGlCanvasProps> = ({
     image,
     palette,
+    colorMetric,
+    colorReducer,
 }) => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
 
     useEffect(() => {
+        console.log('woah')
         const canvas = canvasRef.current;
         const gl = canvas?.getContext('webgl2') ?? undefined;
 
@@ -92,7 +95,7 @@ const WebGlCanvas: React.FC<WebGlCanvasProps> = ({
             return;
         }
 
-        const program = initProgram(gl, VERTEX_SHADER, FRAGMENT_SHADER);
+        const program = initProgram(gl, VERTEX_SHADER, getFragmentShader(colorMetric, colorReducer));
         if (program === undefined) {
             console.error('Program could not be initialized.');
             return;
@@ -162,7 +165,7 @@ const WebGlCanvas: React.FC<WebGlCanvasProps> = ({
         setAttributeToArrayBuffer(gl, texCoordBuffer, texCoordLocation);
 
         gl.drawArrays(gl.TRIANGLES, 0, 6);
-    }, [ image, palette ])
+    }, [ image, palette, colorMetric, colorReducer ])
 
     if (image === undefined) {
         return (
