@@ -2,25 +2,8 @@ import React, { useEffect, useRef } from 'react';
 import { RgbColor } from '../../common/colorUtils';
 import { initArrayBuffer, initProgram, initTexture, setAttributeToArrayBuffer, setTexture } from '../../common/webglUtils';
 import { ColorMetricType, getFragmentShader, RenderedColorReducerType } from './utils';
+import vertexShaderSource from './shaders/vertex-shader.glsl';
 import mixbox from 'mixbox';
-
-const VERTEX_SHADER = `
-attribute vec2 a_position;
-attribute vec2 a_texCoord;
-
-uniform vec2 u_resolution;
-
-varying vec2 v_texCoord;
-
-void main() {
-    // remap positions to be in the [-1, 1] range
-    vec2 clipSpace = ((a_position / u_resolution) * 2.0) - 1.0;
-    
-    gl_Position = vec4(clipSpace * vec2(1, -1), 0, 1);
-    
-    v_texCoord = a_texCoord;
-}
-`
 
 interface WebGlCanvasProps {
     image: HTMLImageElement | undefined;
@@ -45,7 +28,7 @@ const WebGlCanvas: React.FC<WebGlCanvasProps> = ({
             return;
         }
 
-        const program = initProgram(gl, VERTEX_SHADER, getFragmentShader(colorMetric, colorReducer));
+        const program = initProgram(gl, vertexShaderSource, getFragmentShader(colorMetric, colorReducer));
         if (program === undefined) {
             console.error('Program could not be initialized.');
             return;
@@ -86,11 +69,11 @@ const WebGlCanvas: React.FC<WebGlCanvasProps> = ({
 
         const texture = initTexture(gl);
         if (texture === undefined) {
-            console.error('Texture could not be initialized.')
+            console.error('Texture could not be initialized.');
             return;
         }
 
-        setTexture(gl, texture, image)
+        setTexture(gl, texture, image);
         
         gl.viewport(0, 0, canvas.width, canvas.height);
         gl.useProgram(program);
@@ -99,14 +82,14 @@ const WebGlCanvas: React.FC<WebGlCanvasProps> = ({
         gl.uniform2f(resolutionLocation, gl.canvas.width, gl.canvas.height);
 
         const paletteBufferData = palette.flatMap(
-            (color) => [ color.red / 255, color.green / 255, color.blue / 255, 1 ]
+            (color) => [ color.red / 255, color.green / 255, color.blue / 255, 1 ],
         );
-        paletteBufferData.push(...((new Array((64 - palette.length) * 4)).fill(0))) // pad with 0s
+        paletteBufferData.push(...((new Array((64 - palette.length) * 4)).fill(0))); // pad with 0s
         const paletteLocation = gl.getUniformLocation(program, 'u_palette');
         gl.uniform4fv(paletteLocation, paletteBufferData);
 
         const paletteSizeLocation = gl.getUniformLocation(program, 'u_paletteSize');
-        gl.uniform1i(paletteSizeLocation, palette.length)
+        gl.uniform1i(paletteSizeLocation, palette.length);
 
         const positionLocation = gl.getAttribLocation(program, 'a_position');
         setAttributeToArrayBuffer(gl, positionBuffer, positionLocation);
@@ -121,17 +104,17 @@ const WebGlCanvas: React.FC<WebGlCanvasProps> = ({
         }
 
         gl.drawArrays(gl.TRIANGLES, 0, 6);
-    }, [ image, palette, colorMetric, colorReducer ])
+    }, [ image, palette, colorMetric, colorReducer ]);
 
     if (image === undefined) {
         return (
             <></>
-        )
+        );
     }
 
     return (
         <canvas ref={ canvasRef } />
-    )
-}
+    );
+};
 
 export default WebGlCanvas;
