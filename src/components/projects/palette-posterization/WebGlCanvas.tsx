@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { RgbColor } from '../../common/colorUtils';
 import { initArrayBuffer, initProgram, initTexture, setAttributeToArrayBuffer, setTexture } from '../../common/webglUtils';
 import { ColorMetricType, getFragmentShader, RenderedColorReducerType } from './utils';
+import mixbox from 'mixbox';
 
 const VERTEX_SHADER = `
 attribute vec2 a_position;
@@ -21,56 +22,6 @@ void main() {
 }
 `
 
-const FRAGMENT_SHADER = `
-precision mediump float;
-
-uniform int u_paletteSize;
-uniform vec4 u_palette[64];
-uniform sampler2D u_image;
-varying vec2 v_texCoord;
-
-float metric(in vec4 color1, in vec4 color2)
-{
-    vec4 diff = color1 - color2;
-    return diff.r * diff.r + diff.g * diff.g + diff.b * diff.b;
-}
-
-vec4 reducer(in vec4 textureColor, in vec4 paletteColor)
-{
-    // palette color reducer
-    return vec4(paletteColor);
-}
-
-void main() {
-    if (u_paletteSize == 0)
-    {
-        gl_FragColor = texture2D(u_image, v_texCoord);
-        return;
-    }
-    
-    vec4 currentColor = texture2D(u_image, v_texCoord);
-    float minDistance = 1.0 / 0.0; // inf
-    float currentDistance = 0.0;
-    vec4 paletteColor = vec4(currentColor);
-
-    for(int i = 0; i < 64; i++)
-    {
-        if (i >= u_paletteSize)
-            break;
-
-        currentDistance = metric(currentColor, u_palette[i]);
-        
-        if (currentDistance < minDistance)
-        {
-            minDistance = currentDistance;
-            paletteColor = vec4(u_palette[i]);
-        }
-    }
-
-    gl_FragColor = reducer(currentColor, paletteColor);
-}
-`
-
 interface WebGlCanvasProps {
     image: HTMLImageElement | undefined;
     palette: RgbColor[];
@@ -87,7 +38,6 @@ const WebGlCanvas: React.FC<WebGlCanvasProps> = ({
     const canvasRef = useRef<HTMLCanvasElement>(null);
 
     useEffect(() => {
-        console.log('woah')
         const canvas = canvasRef.current;
         const gl = canvas?.getContext('webgl2') ?? undefined;
 
@@ -164,12 +114,18 @@ const WebGlCanvas: React.FC<WebGlCanvasProps> = ({
         const texCoordLocation = gl.getAttribLocation(program, 'a_texCoord');
         setAttributeToArrayBuffer(gl, texCoordBuffer, texCoordLocation);
 
+        if (colorReducer === RenderedColorReducerType.MIXBOX) {
+            gl.activeTexture(gl.TEXTURE1);
+            gl.bindTexture(gl.TEXTURE_2D, mixbox.lutTexture(gl));
+            gl.uniform1i(gl.getUniformLocation(program, 'mixbox_lut'), 0);
+        }
+
         gl.drawArrays(gl.TRIANGLES, 0, 6);
     }, [ image, palette, colorMetric, colorReducer ])
 
     if (image === undefined) {
         return (
-            <div className='w-full h-96 bg-enabled' />
+            <></>
         )
     }
 
