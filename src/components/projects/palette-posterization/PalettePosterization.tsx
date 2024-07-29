@@ -24,7 +24,7 @@ const PaletePosterization: React.FC = () => {
 
     const handleImageLoad = (image: HTMLImageElement) => {
         setImage(image);
-        setImageColors([{ red: 0, green: 0, blue: 0 }])
+        setImageColors([{ red: 0, green: 0, blue: 0 }]);
         // const canvas = canvasRef.current ?? undefined;
         // const context = canvas?.getContext('2d') ?? undefined;
 
@@ -100,7 +100,7 @@ const PaletePosterization: React.FC = () => {
 
     return (
         <div className='flex flex-col space-y-2'>
-            <WebGlCanvas image={image} palette={palette} colorMetric={colorMetric} colorReducer={renderedColorReducer} />
+            <WebGlCanvas image={ image } palette={ palette } colorMetric={ colorMetric } colorReducer={ renderedColorReducer } />
             { imageColors.length > 0 && (
                 <PalettePosterizationOptions 
                     onColorMetricSelect={ setColorMetric }
