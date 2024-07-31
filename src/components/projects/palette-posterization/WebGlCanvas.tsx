@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { RgbColor } from '../../common/colorUtils';
 import { initArrayBuffer, initProgram, initTexture, setAttributeToArrayBuffer, setTexture } from '../../common/webglUtils';
-import { ColorMetricType, getFragmentShader, RenderedColorReducerType } from './utils';
+import { ColorMetricType, getFragmentShader, ColorReducerType } from './utils';
 import vertexShaderSource from './shaders/vertex-shader.glsl';
 import mixbox from 'mixbox';
 
@@ -9,7 +9,7 @@ interface WebGlCanvasProps {
     image: HTMLImageElement | undefined;
     palette: RgbColor[];
     colorMetric: ColorMetricType;
-    colorReducer: RenderedColorReducerType;
+    colorReducer: ColorReducerType;
 }
 
 const WebGlCanvas: React.FC<WebGlCanvasProps> = ({
@@ -97,7 +97,7 @@ const WebGlCanvas: React.FC<WebGlCanvasProps> = ({
         const texCoordLocation = gl.getAttribLocation(program, 'a_texCoord');
         setAttributeToArrayBuffer(gl, texCoordBuffer, texCoordLocation);
 
-        if (colorReducer === RenderedColorReducerType.MIXBOX) {
+        if (colorReducer === ColorReducerType.MIXBOX) {
             gl.activeTexture(gl.TEXTURE1);
             gl.bindTexture(gl.TEXTURE_2D, mixbox.lutTexture(gl));
             gl.uniform1i(gl.getUniformLocation(program, 'mixbox_lut'), 0);
