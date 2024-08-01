@@ -1,13 +1,13 @@
-import React from 'react';
-import { COLOR_METRIC_MAP, RENDERED_COLOR_REDUCER_MAP, ColorMetricType, RenderedColorReducerType } from './utils';
+import React, { useCallback } from 'react';
+import { COLOR_METRIC_TO_SOURCE, COLOR_REDUCER_TO_SOURCE, ColorMetricType, ColorReducerType } from './utils';
 import Dropdown from '../../common/Dropdown';
 import { Stringable } from '../../common/types';
 
 interface PalettePosterizationOptionsProps {
     currentColorMetric: ColorMetricType;
     onColorMetricSelect: (colorMetricType: ColorMetricType) => void;
-    currentRenderedColorReducer: RenderedColorReducerType;
-    onRenderedColorReducerSelect: (renderedColorReducerType: RenderedColorReducerType) => void;
+    currentRenderedColorReducer: ColorReducerType;
+    onRenderedColorReducerSelect: (renderedColorReducerType: ColorReducerType) => void;
 }
 
 const PalettePosterizationOptions: React.FC<PalettePosterizationOptionsProps> = ({
@@ -17,7 +17,7 @@ const PalettePosterizationOptions: React.FC<PalettePosterizationOptionsProps> = 
     onRenderedColorReducerSelect,
 }) => {
 
-    const createOptionElements = <T extends Stringable>(
+    const createOptionElements = useCallback(<T extends Stringable>(
         options: T[], currentOption: T, onOptionSelect: (t: T) => void,
     ) => (
         options.map(option => (
@@ -34,9 +34,9 @@ const PalettePosterizationOptions: React.FC<PalettePosterizationOptionsProps> = 
                 />
             </div>
         ))
-    );
+    ), []);
 
-    const createToggleElement = (renderedTitle: string, htmlTitle: string, isMenuOpen: boolean) => (
+    const createToggleElement = useCallback((renderedTitle: string, htmlTitle: string, isMenuOpen: boolean) => (
         <div
             className='flex h-6 max-w-min flex-row gap-x-3 hover:cursor-pointer hover:underline hover:underline-offset-2'
             title={ htmlTitle }
@@ -51,20 +51,20 @@ const PalettePosterizationOptions: React.FC<PalettePosterizationOptionsProps> = 
                 }
             />
         </div>
-    );
+    ), []);
 
     const colorMetricToggleElement = createToggleElement(currentColorMetric, 'Select a color metric', false);
     const menuOpenColorMetricToggleElement = createToggleElement(currentColorMetric, 'Close color metric options', true);
     const colorMetricOptionElements = createOptionElements<ColorMetricType>(
-        Array.from(COLOR_METRIC_MAP.keys()),
+        Object.getOwnPropertyNames(COLOR_METRIC_TO_SOURCE) as ColorMetricType[],
         currentColorMetric,
         onColorMetricSelect,
     );
 
     const renderedColorReducerToggleElement = createToggleElement(currentRenderedColorReducer, 'Select a color metric', false);
     const menuOpenRenderedColorReducerToggleElement = createToggleElement(currentRenderedColorReducer, 'Close color metric options', true);
-    const renderedColorReducerOptionElements = createOptionElements<RenderedColorReducerType>(
-        Array.from(RENDERED_COLOR_REDUCER_MAP.keys()),
+    const renderedColorReducerOptionElements = createOptionElements<ColorReducerType>(
+        Object.getOwnPropertyNames(COLOR_REDUCER_TO_SOURCE) as ColorReducerType[],
         currentRenderedColorReducer,
         onRenderedColorReducerSelect,
     );
