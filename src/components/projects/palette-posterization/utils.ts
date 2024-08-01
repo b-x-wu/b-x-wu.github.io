@@ -1,5 +1,16 @@
-import { BLACK, RgbColor, toHslColor, toLabColor, toRgbColor } from '../../common/colorUtils';
-import mixbox, { RgbArray } from 'mixbox';
+import fragmentShaderSourceTemplate from './shaders/fragment-shader.glsl.template';
+import paletteColorReducerSource from './shaders/color-reducers/palette.glsl';
+import averageColorReducerSource from './shaders/color-reducers/average.glsl';
+import preserveHueColorReducerSource from './shaders/color-reducers/preserve-hue.glsl';
+import preserveSlColorReducerSource from './shaders/color-reducers/preserve-sl.glsl';
+import mixboxColorReducerSource from './shaders/color-reducers/mixbox.glsl';
+import euclideanRgbColorMetricSource from './shaders/color-metrics/euclidean-rgb.glsl';
+import weightedEuclideanRgbColorMetricSource from './shaders/color-metrics/weighted-euclidean-rgb.glsl';
+import deltaEColorMetricSource from './shaders/color-metrics/delta-e.glsl';
+import hueColorMetricSource from './shaders/color-metrics/hue.glsl';
+import lightnessColorMetricSource from './shaders/color-metrics/lightness.glsl';
+import saturationColorMetricSource from './shaders/color-metrics/saturation.glsl';
+import { interpolateStringTemplate } from '../../common/utils';
 
 export enum ColorMetricType {
     EUCLIDEAN_RGB = 'Euclidean RGB',
@@ -10,57 +21,7 @@ export enum ColorMetricType {
     LIGHTNESS = 'Lightness Difference',
 }
 
-export type ColorMetric = (color1: RgbColor, color2: RgbColor) => number;
-
-export const hueColorMetric: ColorMetric = (color1, color2) => {
-    const hue1 = toHslColor(color1).hue;
-    const hue2 = toHslColor(color2).hue;
-
-    return Math.abs(hue1 - hue2);
-};
-
-export const saturationColorMetric: ColorMetric = (color1, color2) => {
-    const saturation1 = toHslColor(color1).saturation;
-    const saturation2 = toHslColor(color2).saturation;
-
-    return Math.abs(saturation1 - saturation2);
-};
-
-export const lightnessColorMetric: ColorMetric = (color1, color2) => {
-    const lightness1 = toHslColor(color1).lightness;
-    const lightness2 = toHslColor(color2).lightness;
-
-    return Math.abs(lightness1 - lightness2);
-};
-
-export const euclideanRgbColorMetric: ColorMetric = (color1, color2) => {
-    return (color1.red - color2.red) ** 2 + (color1.green - color2.green) ** 2 + (color1.blue - color2.blue) ** 2;
-};
-
-export const weightedEuclideanRgbColorMetric: ColorMetric = (color1, color2) => {
-    const redMean = (color1.red + color2.red) / 2;
-    return (2 + redMean / 256) * (color1.red - color2.red) ** 2
-        + 4 * (color1.green - color2.green) ** 2
-        + (2 + (255 - redMean) / 256) * (color1.blue - color2.blue) ** 2;
-};
-
-export const deltaEColorMetric: ColorMetric = (color1, color2) => {
-    const labColor1 = toLabColor(color1);
-    const labColor2 = toLabColor(color2);
-
-    return (labColor1.l - labColor2.l) ** 2 + (labColor1.a - labColor2.a) ** 2 + (labColor1.b - labColor2.b) ** 2;
-};
-
-export const COLOR_METRIC_MAP: Map<ColorMetricType, ColorMetric> = new Map<ColorMetricType, ColorMetric>([
-    [ ColorMetricType.EUCLIDEAN_RGB, euclideanRgbColorMetric ],
-    [ ColorMetricType.WEIGHTED_EUCLIDEAN_RGB, weightedEuclideanRgbColorMetric ],
-    [ ColorMetricType.DELTA_E, deltaEColorMetric ],
-    [ ColorMetricType.HUE, hueColorMetric ],
-    [ ColorMetricType.SATURATION, saturationColorMetric ],
-    [ ColorMetricType.LIGHTNESS, lightnessColorMetric ],
-]);
-
-export enum RenderedColorReducerType {
+export enum ColorReducerType {
     PALETTE = 'Render palette color',
     PRESERVE_SL = 'Preserve saturation and lightness',
     PRESERVE_HUE = 'Preserve hue',
@@ -68,107 +29,28 @@ export enum RenderedColorReducerType {
     MIXBOX = 'Mixbox average',
 }
 
-export type ColorReducer = (color1: RgbColor, color2: RgbColor) => RgbColor;
-
-export const identityColorReducer: ColorReducer = (_, color2) => color2; // identity on the second argument
-
-export const slPreservingColorReducer: ColorReducer = (color1, color2) => {
-    const hslColor1 = toHslColor(color1);
-    const hslColor2 = toHslColor(color2);
-
-    return toRgbColor({ ...hslColor1, hue: hslColor2.hue });
+export const COLOR_METRIC_TO_SOURCE: Record<ColorMetricType, string> = {
+    [ColorMetricType.EUCLIDEAN_RGB]: euclideanRgbColorMetricSource,
+    [ColorMetricType.WEIGHTED_EUCLIDEAN_RGB]: weightedEuclideanRgbColorMetricSource,
+    [ColorMetricType.DELTA_E]: deltaEColorMetricSource,
+    [ColorMetricType.HUE]: hueColorMetricSource,
+    [ColorMetricType.SATURATION]: saturationColorMetricSource,
+    [ColorMetricType.LIGHTNESS]: lightnessColorMetricSource,
 };
 
-export const huePreservingColorReducer: ColorReducer = (color1, color2) => {
-    const hslColor1 = toHslColor(color1);
-    const hslColor2 = toHslColor(color2);
-
-    return toRgbColor({ ...hslColor2, hue: hslColor1.hue });
+export const COLOR_REDUCER_TO_SOURCE: Record<ColorReducerType, string> = {
+    [ColorReducerType.PALETTE]: paletteColorReducerSource,
+    [ColorReducerType.AVERAGE]: averageColorReducerSource,
+    [ColorReducerType.PRESERVE_HUE]: preserveHueColorReducerSource,
+    [ColorReducerType.PRESERVE_SL]: preserveSlColorReducerSource,
+    [ColorReducerType.MIXBOX]: mixboxColorReducerSource,
 };
 
-export const averageColorReducer: ColorReducer = (color1, color2) => {
-    return {
-        red: (color1.red + color2.red) / 2,
-        green: (color1.green + color2.green) / 2,
-        blue: (color1.blue + color2.blue) / 2,
-    };
-};
-
-export const mixboxAverageColorReducer: ColorReducer = (color1, color2) => {
-    const mixboxColor1: RgbArray = [ color1.red, color1.green, color1.blue ];
-    const mixboxColor2: RgbArray = [ color2.red, color2.green, color2.blue ];
-
-    const mixboxLerpResult = mixbox.lerp(mixboxColor1, mixboxColor2, 0.5);
-    if (mixboxLerpResult === undefined) {
-        // this shouldn't happen
-        return BLACK;
-    }
-
-    return { red: mixboxLerpResult[0], green: mixboxLerpResult[1], blue: mixboxLerpResult[2] };
-};
-
-export const RENDERED_COLOR_REDUCER_MAP: Map<RenderedColorReducerType, ColorReducer> = new Map<RenderedColorReducerType, ColorReducer>([
-    [ RenderedColorReducerType.PALETTE, identityColorReducer ],
-    [ RenderedColorReducerType.PRESERVE_SL, slPreservingColorReducer ],
-    [ RenderedColorReducerType.PRESERVE_HUE, huePreservingColorReducer ],
-    [ RenderedColorReducerType.AVERAGE, averageColorReducer ],
-    [ RenderedColorReducerType.MIXBOX, mixboxAverageColorReducer ],
-]);
-
-/**
- * Get the colors to render on the canvas based on the colors of the image and the colors in the palette
- * @param colors the colors of the iamge
- * @param palette the colors in the palette
- * @param colorMetricType type defining which color metric used to calculate distance between colors
- * @param renderedColorReducerType type defining how the current image color and the palette color should combine to create the rendered color
- * @returns the colors to render on the canvas
- */
-export const getRenderedColors = (
-    colors: RgbColor[],
-    palette: RgbColor[],
-    colorMetricType: ColorMetricType,
-    renderedColorReducerType: RenderedColorReducerType,
-) => {
-    const colorMetric = COLOR_METRIC_MAP.get(colorMetricType);
-    const colorReducer = RENDERED_COLOR_REDUCER_MAP.get(renderedColorReducerType);
-
-    if (colorMetric === undefined || colorReducer === undefined) {
-        throw new Error('Unexpected color metric and color reducers');
-    }
-
-    return colors.map((color) => {
-        // get closest color present in the palette to the color of this pixel
-        const closestPaletteColor = palette.reduce<{ color: RgbColor | undefined; distance: number }>((previousClosest, paletteColor) => {
-            const distance = colorMetric(color, paletteColor);
-            if (previousClosest.color === undefined) {
-                return { color: paletteColor, distance };
-            }
-
-            if (distance < previousClosest.distance) {
-                return { color: paletteColor, distance };
-            }
-
-            return previousClosest;
-        }, { color: undefined, distance: Infinity }).color!;
-
-        // given the color of the pixel and the closest color palette, generate the rendered color of the pixel
-        return colorReducer(color, closestPaletteColor);
+export const getFragmentShader = (colorMetric: ColorMetricType, colorReducer: ColorReducerType) => {
+    const colorMetricSourceString = COLOR_METRIC_TO_SOURCE[colorMetric];
+    const colorReducerSourceString = COLOR_REDUCER_TO_SOURCE[colorReducer];
+    return interpolateStringTemplate(fragmentShaderSourceTemplate, {
+        COLOR_METRIC_SOURCE_STRING: colorMetricSourceString,
+        COLOR_REDUCER_SOURCE_STRING: colorReducerSourceString,
     });
 };
-
-export interface ColorPaletteChangeRequestData {
-    /** the original colors in the image */
-    colors: RgbColor[];
-    /** the colors present in the palette */
-    palette: RgbColor[];
-    /** the type of color metric used to define color distance */
-    colorMetric: ColorMetricType;
-    /** the type of color reducer used to combine image and palette colors */
-    renderedColorReducer: RenderedColorReducerType;
-}
-
-export interface ColorPaletteChangeResponseData {
-    /** the colors the image should be set to */
-    adjustedColors: RgbColor[];
-}
-
