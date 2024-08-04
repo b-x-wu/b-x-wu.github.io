@@ -124,6 +124,64 @@ export const DEFAULT_PALETTE_OPTIONS: Omit<DefaultPaletteOptionProps, 'onClick'>
         { red: 245, green: 169, blue: 184 }, // pink
         WHITE,
     ] },
+    { name: 'Virtual Boy', palette: [
+        BLACK,
+        { red: 85, green: 0, blue: 0 },
+        { red: 164, green: 0, blue: 0 },
+        { red: 239, green: 0, blue: 0 },
+    ] },
+    // per https://www.r-bloggers.com/2020/05/say-it-aint-so-using-weezer-album-cover-colours-in-r/
+    { name: 'Weezer', palette: [
+        { red: 24, green: 155, blue: 204 }, // blue
+        { red: 190, green: 204, blue: 65 }, // green
+        { red: 234, green: 33, blue: 58 }, // red
+        { red: 243, green: 243, blue: 243 }, // white
+        { red: 13, green: 13, blue: 13 }, // black
+    ] },
+    { name: 'Mii Favorite Colors', palette: [
+        { red: 212, green: 29, blue: 15 }, // red
+        { red: 254, green: 112, blue: 23 }, // orange
+        { red: 255, green: 222, blue: 32 }, // yellow
+        { red: 121, green: 211, blue: 31 }, // lime green
+        { red: 0, green: 122, blue: 49 }, // green
+        { red: 7, green: 73, blue: 179 }, // blue
+        { red: 56, green: 169, blue: 222 }, // light blue
+        { red: 247, green: 89, blue: 123 }, // pink
+        { red: 113, green: 41, blue: 172 }, // purple
+        { red: 73, green: 57, blue: 23 }, // brown
+        { red: 230, green: 228, blue: 231 }, // white
+        { red: 23, green: 24, blue: 16 }, // black
+    ] },
+    { name: 'MS Paint', palette: [
+        { red: 0, green: 0, blue: 0 },
+        { red: 128, green: 128, blue: 128 },
+        { red: 128, green: 0, blue: 0 },
+        { red: 128, green: 128, blue: 0 },
+        { red: 0, green: 128, blue: 0 },
+        { red: 0, green: 128, blue: 128 },
+        { red: 0, green: 0, blue: 128 },
+        { red: 128, green: 0, blue: 128 },
+        { red: 128, green: 128, blue: 64 }, 
+        { red: 0, green: 64, blue: 64 },
+        { red: 0, green: 128, blue: 255 },
+        { red: 0, green: 64, blue: 128 },
+        { red: 128, green: 0, blue: 255 },
+        { red: 128, green: 64, blue: 0 },
+        { red: 255, green: 255, blue: 255 },
+        { red: 192, green: 192, blue: 192 },
+        { red: 255, green: 0, blue: 0 },
+        { red: 255, green: 255, blue: 0 },
+        { red: 0, green: 255, blue: 0 },
+        { red: 0, green: 255, blue: 255 },
+        { red: 0, green: 0, blue: 255 },
+        { red: 255, green: 0, blue: 255 },
+        { red: 255, green: 255, blue: 128 },
+        { red: 0, green: 255, blue: 128 },
+        { red: 128, green: 255, blue: 255 },
+        { red: 128, green: 128, blue: 255 },
+        { red: 255, green: 0, blue: 128 },
+        { red: 255, green: 128, blue: 64 },
+    ] },
 ];
 
 export default DefaultPaletteOption;
