@@ -6,7 +6,7 @@ import ImageUploader from '../../common/ImageUploader';
 import PalettePosterizationOptions from './PalettePosterizationOptions';
 import WebGlCanvas from './WebGlCanvas';
 
-const PaletePosterization: React.FC = () => {
+const PalettePosterization: React.FC = () => {
     const [ palette, setPalette ] = useState<RgbColor[]>([]);
     const [ colorMetric, setColorMetric ] = useState<ColorMetricType>(ColorMetricType.EUCLIDEAN_RGB);
     const [ renderedColorReducer, setRenderedColorReducer ] = useState<ColorReducerType>(ColorReducerType.PALETTE);
@@ -38,5 +38,5 @@ const PaletePosterization: React.FC = () => {
     );
 };
 
-export default PaletePosterization;
+export default PalettePosterization;
 
