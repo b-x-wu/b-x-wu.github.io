@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { useTitle } from '../../hooks';
 
 const PalettePosterizationPage: React.FC = () => {
-    useTitle('b-x-wu | Palette Posterization [WIP]');
+    useTitle('b-x-wu | Palette Posterization');
 
     return (
         <div className='flex w-full flex-col gap-y-8'>
