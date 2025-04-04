@@ -47,7 +47,7 @@ const Footer: React.FC = () => {
                     aria-description='Link to my Twitter page'
                 />
                 <Link
-                    to='https://www.linkedin.com/in/bruce-x-wu/'
+                    to='https://www.linkedin.com/in/b-x-wu/'
                     target='_blank'
                     rel="noopener noreferrer"
                     className='bg-disabled size-5 bg-clip-[url("/static/icons/linkedin.svg")] hover:bg-text'
