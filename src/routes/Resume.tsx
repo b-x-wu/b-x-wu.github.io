@@ -21,8 +21,17 @@ const Resume: React.FC = () => {
                     header='Amazon'
                     experiences={ [
                         {
+                            title: 'Software Development Engineer II',
+                            dates: 'March 2025 - Today',
+                            subtitle: <div className='text-primary'>@ Amazon Private Brands</div>,
+                            bulletPoints: [
+                                'Coordinated system design proposals across three teams of engineers to build AI solutions for processing hundreds of pages of legal documentation',
+                                'Developed automated product financial evaluation systems that drove supplier negotiations for hundreds of in-development products',
+                            ],
+                        },
+                        {
                             title: 'Software Development Engineer',
-                            dates: 'October 2023 - Today',
+                            dates: 'October 2023 - March 2025',
                             subtitle: <div className='text-primary'>@ Amazon Private Brands</div>,
                             bulletPoints: [
                                 'Designed and implemented a ticket routing system using React Router that collectively saved two hundred days a year of ticket dwell time',
