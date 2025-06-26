@@ -1,7 +1,4 @@
-name: "Deploy b-x-wu.github.io"
-
-# Based off the Jekyll deployment action for GitHub Pages
-# https://github.com/actions/starter-workflows/blob/main/pages/jekyll-gh-pages.yml
+name: "Deploy website"
 
 on:
   push:
@@ -48,7 +45,7 @@ jobs:
         with:
           path: "dist/"
 
-  deploy:
+  deploy-github:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
@@ -58,4 +55,24 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+
+  deploy-container:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Download build artifact
+        uses: actions/download-artifact@v4
+
+      - name: Initialize ssh
+        run: |
+          install -m 600 -D /dev/null ~/.ssh/id_rsa
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          ssh-keyscan -H ${{ secrets.HOST_NAME }} > ~/.ssh/known_hosts
+
+      - name: Sync server executable
+        run: rsync -av --delete -p github-pages/artifact.tar b-x-wu@${{ secrets.HOST_NAME }}:~
+
+      - name: Restart server
+        run: |
+          ssh b-x-wu@${{ secrets.HOST_NAME }} "./entrypoint.sh"
 
