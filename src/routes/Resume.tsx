@@ -11,8 +11,8 @@ const Resume: React.FC = () => {
         <div className='flex flex-col gap-y-6'>
             { /*Basic Info*/ }
             <div className='flex flex-col gap-y-2'>
-                <div className='text-4xl font-bold'>B Wu</div>
-                <div className='text-disabled'>they/them</div>
+                <div className='text-4xl font-bold'>Bridgette Wu</div>
+                <div className='text-disabled'>she/her</div>
             </div>
             { /*Work Experience*/ }
             <div className='flex flex-col gap-y-6'>
