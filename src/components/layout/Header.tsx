@@ -174,7 +174,7 @@ const Header: React.FC<HeaderProps> = ({
                     : 'hidden' }
             >
                 <Link onClick={ handleNavbarLinkClick } to='/' className='border-text border-b-2 border-dotted p-2'>$HOME</Link>
-                <Link onClick={ handleNavbarLinkClick } to='/projects' className='border-text border border-b-2 border-dotted p-2'>/projects</Link>
+                <Link onClick={ handleNavbarLinkClick } to='/projects' className='border-text border-b-2 border-dotted p-2'>/projects</Link>
                 <Link onClick={ handleNavbarLinkClick } to='/resume' className='p-2'>/resume</Link>
             </div>
             <div
