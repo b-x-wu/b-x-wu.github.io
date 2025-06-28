@@ -70,9 +70,9 @@ jobs:
           ssh-keyscan -H ${{ secrets.HOST_NAME }} > ~/.ssh/known_hosts
 
       - name: Sync server executable
-        run: rsync -av --delete -p github-pages/artifact.tar b-x-wu@${{ secrets.HOST_NAME }}:~
+        run: rsync -av --delete -p github-pages/artifact.tar b-x-wu@${{ secrets.HOST_NAME }}:~/b-x-wu
 
       - name: Restart server
         run: |
-          ssh b-x-wu@${{ secrets.HOST_NAME }} "./entrypoint.sh"
+          ssh b-x-wu@${{ secrets.HOST_NAME }} "./b-x-wu/entrypoint.sh"
 
