@@ -108,7 +108,7 @@ const Resume: React.FC = () => {
                     title={ (
                         <ExperienceTitleLink
                             linkTo='/'
-                            title='b-x-wu.github.io'
+                            title='b-x-wu.{github.io,online}'
                         />
                     ) }
                     subtitle='This website!'
