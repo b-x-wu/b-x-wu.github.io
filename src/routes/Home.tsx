@@ -16,7 +16,7 @@ const Home: React.FC = () => {
                 <div className='text-disabled'>{ dateString }</div>
             </div>
             <Chatbox content={ <span className='text-secondary'>joined the room</span> } />
-            <Chatbox content={ 'hi i\'m b :]' } />
+            <Chatbox content={ 'hi i\'m bridgette :]' } />
             <Chatbox content={ 'i\'m a software developer at amazon' } />
             <Chatbox content='and sometimes i work on small stuff outside of that. like this website!' />
             <Chatbox content='if you want, feel free to say hi!' />
