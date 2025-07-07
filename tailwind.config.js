@@ -1,5 +1,13 @@
 import plugin from 'tailwindcss/plugin';
 
+const DEFAULT_COLORS = {
+    'background': '#FFF',
+    'text': '#000',
+    'primary': '#FF8DB0',
+    'secondary': '#AF4D07',
+    'enabled': '#50C4D9',
+    'disabled': '#aaa',
+};
 
 const VARIANT_TO_COLORS_MAP = {
     'dark': {
@@ -90,14 +98,7 @@ export default {
                 '160': '40rem',
                 '192': '48rem',
             },
-            colors: {
-                'background': '#FFF',
-                'text': '#000',
-                'primary': '#FF8DB0',
-                'secondary': '#AF4D07',
-                'enabled': '#50C4D9',
-                'disabled': '#aaa',
-            },
+            colors: DEFAULT_COLORS,
             minWidth: {
                 '1/5': '20%',
                 '2/5': '40%',
@@ -182,14 +183,18 @@ export default {
                     }),
                 }, { values: theme('size') },
             );
-            addUtilities(Object.fromEntries(
-                Object.entries(VARIANT_TO_COLORS_MAP).flatMap(([ variant, colorsObject ]) => (
+            addUtilities(Object.fromEntries([
+                ...Object.entries(VARIANT_TO_COLORS_MAP).flatMap(([ variant, colorsObject ]) => (
                     Object.entries(colorsObject).map(([ className, hexString ]) => ([
                         `${variant.split(' ').map(v => `.${v}`).join('')} .list-image-clip-color-${className}`,
                         { '&:before': { 'background-color': hexString } },
                     ]))
                 )),
-            ));
+                ...Object.entries(DEFAULT_COLORS).map(([ className, hexString ]) => ([
+                    `.list-image-clip-color-${className}`,
+                    { '&:before': { 'background-color': hexString } },
+                ])),
+            ]));
         }),
     ],
 };
