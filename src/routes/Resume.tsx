@@ -9,20 +9,45 @@ const Resume: React.FC = () => {
 
     return (
         <div className='flex flex-col gap-y-6'>
-            { /*Basic Info*/ }
-            <div className='flex flex-col gap-y-2'>
-                <div className='text-4xl font-bold'>Bridgette Wu</div>
-                <div className='text-disabled'>she/her</div>
+            <div className='flex flex-row justify-between'>
+                <div className='flex flex-col gap-y-2'>
+                    <div className='text-4xl font-bold'>Bridgette Wu</div>
+                    <div className='text-disabled'>(she/her)</div>
+                </div>
+                <a
+                    href='https://raw.githubusercontent.com/b-x-wu/resume/refs/heads/main/resume.pdf'
+                    target='_blank'
+                    rel="noopener noreferrer"
+                    className='border-enabled hidden size-10 max-w-1/2 items-center justify-center border-2 p-1 sm:flex'
+                >
+                    <div
+                        aria-description='Download resume'
+                        title='Download resume'
+                        className='bg-text m-auto size-5 bg-clip-[url(/static/icons/download.svg)]'
+                    />
+                </a>
             </div>
             { /*Work Experience*/ }
             <div className='flex flex-col gap-y-6'>
                 <div className='text-3xl font-bold'>Work Experience</div>
                 <ExperienceSection
+                    header='Patreon'
+                    experiences={ [
+                        {
+                            title: 'Software Engineer',
+                            dates: 'September 2025 - Today',
+                            bulletPoints: [
+                                'We\'ll see how it goes :)!',
+                            ],
+                        },
+                    ] }
+                />
+                <ExperienceSection
                     header='Amazon'
                     experiences={ [
                         {
                             title: 'Software Development Engineer II',
-                            dates: 'March 2025 - Today',
+                            dates: 'March 2025 - June 2025',
                             subtitle: <div className='text-primary'>@ Amazon Private Brands</div>,
                             bulletPoints: [
                                 'Coordinated system design proposals across three teams of engineers to build AI solutions for processing hundreds of pages of legal documentation',
@@ -34,7 +59,7 @@ const Resume: React.FC = () => {
                             dates: 'October 2023 - March 2025',
                             subtitle: <div className='text-primary'>@ Amazon Private Brands</div>,
                             bulletPoints: [
-                                'Designed and implemented a ticket routing system using React Router that collectively saved two hundred days a year of ticket dwell time',
+                                'Designed and implemented a ticket routing system using React Router that collectively saved 200 days a year of ticket dwell time',
                                 'Gathered stakeholder feedback to develop requirements and enhacements that eliminated user pain points responsible for 20 hours a week of churn',
                             ],
                         },
@@ -76,7 +101,6 @@ const Resume: React.FC = () => {
                             ],
                         },
                         {
-
                             title: 'Grader',
                             subtitle: <div className='text-primary'>@ Courant Institute of Mathematical Sciences</div>,
                             dates: 'August 2021 - December 2022',
