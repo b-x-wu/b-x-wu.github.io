@@ -17,7 +17,7 @@ const Home: React.FC = () => {
             </div>
             <Chatbox content={ <span className='text-secondary'>joined the room</span> } />
             <Chatbox content={ 'hi i\'m bridgette :]' } />
-            <Chatbox content={ 'i\'m a software developer at amazon' } />
+            <Chatbox content={ 'i\'m a software developer at patreon' } />
             <Chatbox content='and sometimes i work on small stuff outside of that. like this website!' />
             <Chatbox content='if you want, feel free to say hi!' />
             <Chatbox content='but otherwise...' />
