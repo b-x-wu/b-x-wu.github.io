@@ -79,7 +79,7 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({
                             className='text-enabled hover:cursor-pointer hover:underline hover:underline-offset-2'
                             onClick={ () => imageFileInputRef.current?.click() }
                         >
-                                Browse files
+                            Browse files
                         </button>
                         <input
                             type='file'
