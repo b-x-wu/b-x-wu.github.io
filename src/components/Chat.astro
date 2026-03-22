@@ -1,0 +1,41 @@
+---
+import Chatbox from "./Chatbox.astro";
+
+const dateString = (new Date()).toUTCString();
+---
+
+<div class="container">
+    <div class="dateContainer">
+        <div class="date">{ dateString }</div>
+    </div>
+    <Chatbox>
+        <span class="joinChatbox">joined the room</span>
+    </Chatbox>
+    <slot />
+</div>
+
+<style>
+    .container {
+        display: flex;
+        flex-direction: column;
+        row-gap: 24px;
+    }
+
+    .dateContainer {
+        display: flex;
+        flex-direction: row;
+        height: 8px;
+        width: 100%;
+        place-items: center;
+        justify-content: center;
+        text-align: center;
+    }
+
+    .date {
+        color: var(--color-disabled);
+    }
+
+    .joinChatbox {
+        color: var(--color-secondary);
+    }
+</style>
