@@ -1,6 +1,10 @@
 ---
 import Chatbox from "./Chatbox.astro";
 
+interface Props {
+    children: any;
+}
+
 const dateString = (new Date()).toUTCString();
 ---
 
@@ -24,7 +28,6 @@ const dateString = (new Date()).toUTCString();
     .dateContainer {
         display: flex;
         flex-direction: row;
-        height: 8px;
         width: 100%;
         place-items: center;
         justify-content: center;
