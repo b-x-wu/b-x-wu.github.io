@@ -1,7 +1,67 @@
-<header>TODO</header>
+---
+type Props = Record<string, never>
+---
+
+<header>
+    <nav>
+        <a class="homeLink" href="/" aria-label="Home">b-x-wu!</a>
+        <a href="/" aria-label="Resumé">/resume</a>
+        <a href="/" aria-label="Projects">/projects</a>
+    </nav>
+    <div class="toolbar">
+        <button class:list={["bg-clip", "lightModeIcon"]} aria-label="Disable dark mode" />
+        <button class:list={["bg-clip", "lowContrastIcon"]} aria-label="Enable low contrast mode" />
+        <button class:list={["bg-clip", "reducedMotionIcon"]} aria-label="Enabled reduced motion mode" />
+    </div>
+</header>
 
 <style>
     header {
+        flex: none;
+        padding: 36px 0;
         flex-shrink: 1;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    nav {
+        display: flex;
+        flex-direction: row;
+        column-gap: 48px;
+    }
+
+    a {
+        height: fit-content;
+        text-decoration: none;
+        color: var(--color-text);
+    }
+
+    a:hover {
+        text-decoration: underline;
+        text-underline-offset: 2px;
+    }
+
+    a.homeLink {
+        color: var(--color-primary);
+        font-weight: bold;
+    }
+
+    .lightModeIcon {
+        --bg-image: url(../assets/light-mode.svg)
+    }
+
+    .lowContrastIcon {
+        --bg-image: url(../assets/low-contrast.svg)
+    }
+
+    .reducedMotionIcon {
+        --bg-image: url(../assets/reduced-motion.svg)
+    }
+
+    .toolbar > button {
+        background-color: var(--color-text);
+        height: 100%;
+        width: 18px;
     }
 </style>

@@ -1,0 +1,41 @@
+---
+type Props = Record<string, never>
+---
+
+<style is:global>
+	html {
+		--color-bg: #FFF;
+		--color-text: #000;
+		--color-primary: #FF8DB0;
+		--color-secondary: #AF4D07;
+		--color-enabled: #50C4D9;
+		--color-disabled: #AAA;
+	}
+
+	html.dark {
+		--color-bg: #000;
+		--color-text: #FFF;
+		--color-primary: #A40029;
+		--color-secondary: #CC5500;
+		--color-enabled: #0A65A8;
+		--color-disabled: #FFFFFF55;
+	}
+
+	html.contrast {
+		--color-bg: #FFF;
+        --color-text: #000;
+        --color-primary: #E02076;
+    	--color-secondary: #7F1D07;
+        --color-enabled: #007ACB;
+        --color-disabled: #767676;
+	}
+
+	html.dark.contrast {
+		--color-bg: #000;
+		--color-text: #FFF;
+		--color-primary: #DF3568;
+		--color-secondary: #F8954F;
+		--color-enabled: #279BB0;
+		--color-disabled: #FFF7;
+	}
+</style>
