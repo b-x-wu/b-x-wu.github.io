@@ -1,23 +1,95 @@
+---
+import Footer from "../components/Footer.astro";
+import Header from "../components/Header.astro";
+
+const { title } = Astro.props;
+---
+
 <!doctype html>
-<html lang="en">
+<html lang="en" class="dark">
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<link rel="icon" href="/favicon.ico" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro Basics</title>
+		<title>{title}</title>
 	</head>
 	<body>
-		<slot />
+		<div class="wrapper">
+			<Header />
+			<div class="content">
+				<slot />
+			</div>
+			<Footer />
+		</div>
 	</body>
 </html>
 
-<style>
-	html,
-	body {
-		margin: 0;
-		width: 100%;
+<style is:global>
+	@import url('https://fonts.googleapis.com/css2?family=Ubuntu+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+
+	html {
+		--color-bg: #FFF;
+		--color-text: #000;
+		--color-primary: #FF8DB0;
+		--color-secondary: #AF4D07;
+		--color-enabled: #50C4D9;
+		--color-disabled: #AAA;
+
+		font-family: "Ubuntu Mono", system-ui, sans-serif;
+		line-height: 1.5;
 		height: 100%;
+	}
+
+	body {
+		background-color: var(--color-bg);
+		color: var(--color-text);
+		height: 100%;
+		display: flex;
+		flex-direction: column;
+		place-items: center;
+		justify-content: center;
+		height: 100%;
+		margin: 0;
+	}
+
+	.wrapper {
+		position: relative;
+		display: flex;
+		flex-direction: column;
+		max-width: 80%;
+		width: 640px;
+		height: 100%;
+	}
+
+	.content {
+		flex-grow: 1;
+		overflow: scroll;
+	}
+
+	.dark {
+		--color-bg: #000;
+		--color-text: #FFF;
+		--color-primary: #A40029;
+		--color-secondary: #CC5500;
+		--color-enabled: #0A65A8;
+		--color-disabled: #FFFFFF55;
+	}
+
+	.contrast {
+		--color-bg: #FFF;
+        --color-text: #000;
+        --color-primary: #E02076;
+    	--color-secondary: #7F1D07;
+        --color-enabled: #007ACB;
+        --color-disabled: #767676;
+	}
+
+	.dark.contrast {
+		--color-bg: #000;
+		--color-text: #FFF;
+		--color-primary: #DF3568;
+		--color-secondary: #F8954F;
+		--color-enabled: #279BB0;
+		--color-disabled: #FFF7;
 	}
 </style>
