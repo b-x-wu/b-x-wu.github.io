@@ -1,0 +1,24 @@
+---
+type Props = { 'aria-label': string, src: string, 'data-tag'?: string }
+const { 'aria-label': ariaLabel, src, "data-tag": dataTag } = Astro.props;
+---
+<button is="icon-button" class="root" aria-label={ariaLabel} data-tag={dataTag} >
+    <div class:list={["bg-clip", "icon"]} style={{ '--bg-image': `url(${src})` }} />
+</button>
+
+<style>
+    .root {
+        background-color: transparent;
+        height: 24px;
+        width: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .icon {
+        background-color: var(--color-text);
+        height: 16px;
+        width: 16px;
+    }
+</style>
