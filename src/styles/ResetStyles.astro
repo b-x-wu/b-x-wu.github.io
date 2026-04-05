@@ -2,8 +2,8 @@
 type Props = Record<string, never>
 ---
 
-<!-- From https://www.joshwcomeau.com/css/custom-css-reset/ -->
 <style is:global>
+    /* From https://www.joshwcomeau.com/css/custom-css-reset/ */
     /* 1. Use a more-intuitive box-sizing model */
     *, *::before, *::after {
         box-sizing: border-box;
@@ -63,5 +63,7 @@ type Props = Record<string, never>
     button {
         border: none;
         cursor: pointer;
+        padding-block: 0;
+        padding-inline: 0;
     }
 </style>

@@ -1,4 +1,9 @@
 ---
+import lightModeIcon from '../assets/light-mode.svg'
+import lowContrastIcon from '../assets/low-contrast.svg'
+import reducedMotionIcon from '../assets/reduced-motion.svg'
+import IconButton from './IconButton.astro'
+
 type Props = Record<string, never>
 ---
 
@@ -9,9 +14,9 @@ type Props = Record<string, never>
         <a href="/" aria-label="Projects">/projects</a>
     </nav>
     <div class="toolbar">
-        <button class:list={["bg-clip", "lightModeIcon"]} aria-label="Disable dark mode" />
-        <button class:list={["bg-clip", "lowContrastIcon"]} aria-label="Enable low contrast mode" />
-        <button class:list={["bg-clip", "reducedMotionIcon"]} aria-label="Enabled reduced motion mode" />
+        <IconButton aria-label="Disable dark mode" src={lightModeIcon.src} data-tag='theme-button' />
+        <IconButton aria-label="Enable low contrast mode" src={lowContrastIcon.src} data-tag='contrast-button' />
+        <IconButton aria-label="Enable reduced motion mode" src={reducedMotionIcon.src} data-tag='motion-button' />
     </div>
 </header>
 
@@ -47,21 +52,9 @@ type Props = Record<string, never>
         font-weight: bold;
     }
 
-    .lightModeIcon {
-        --bg-image: url(../assets/light-mode.svg)
-    }
-
-    .lowContrastIcon {
-        --bg-image: url(../assets/low-contrast.svg)
-    }
-
-    .reducedMotionIcon {
-        --bg-image: url(../assets/reduced-motion.svg)
-    }
-
-    .toolbar > button {
-        background-color: var(--color-text);
-        height: 100%;
-        width: 18px;
+    .toolbar {
+        display: flex;
+        flex-direction: row;
+        column-gap: 4px;
     }
 </style>
