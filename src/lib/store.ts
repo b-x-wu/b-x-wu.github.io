@@ -4,13 +4,13 @@ export const themeStore = persistentAtom<"light" | "dark" | "system">(
   "theme",
   "system",
 );
-export const contrastStore = persistentAtom<"default" | "high">(
+export const contrastStore = persistentAtom<"default" | "high" | "system">(
   "contrast",
-  "default",
+  "system",
 );
-export const motionStore = persistentAtom<"default" | "reduced">(
+export const motionStore = persistentAtom<"default" | "reduced" | "system">(
   "motion",
-  "default",
+  "system",
 );
 
 export const initializeStores = () => {
@@ -61,4 +61,42 @@ export const getNormalizedTheme = (value?: "light" | "dark" | "system") => {
   }
 
   return themeStoreValue;
+};
+
+export const getNormalizedContrastMode = (
+  value?: "default" | "high" | "system",
+) => {
+  const contrastStoreValue = value ?? contrastStore.get();
+  const isSystemHighContrast =
+    contrastStoreValue === "system" &&
+    window.matchMedia("(prefers-contrast: more)").matches;
+
+  if (isSystemHighContrast) {
+    return "high";
+  }
+
+  if (contrastStoreValue === "system") {
+    return "default";
+  }
+
+  return contrastStoreValue;
+};
+
+export const getNormalizedMotionMode = (
+  value?: "default" | "reduced" | "system",
+) => {
+  const motionStoreValue = value ?? motionStore.get();
+  const isSystemReducedMotion =
+    motionStoreValue === "system" &&
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  if (isSystemReducedMotion) {
+    return "reduced";
+  }
+
+  if (motionStoreValue === "system") {
+    return "default";
+  }
+
+  return motionStoreValue;
 };

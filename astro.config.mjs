@@ -2,6 +2,7 @@
 import { defineConfig, fontProviders } from "astro/config";
 
 export default defineConfig({
+  // TODO: we should just download these font files
   fonts: [
     {
       provider: fontProviders.fontsource(),
