@@ -1,142 +1,165 @@
 ---
-import lightModeIcon from '~/assets/light-mode.svg'
-import darkModeIcon from '~/assets/dark-mode.svg'
-import lowContrastIcon from '~/assets/low-contrast.svg'
-import reducedMotionIcon from '~/assets/reduced-motion.svg'
-import IconButton from '~/components/IconButton.astro'
+import darkModeIcon from "~/assets/dark-mode.svg";
+import lightModeIcon from "~/assets/light-mode.svg";
+import lowContrastIcon from "~/assets/low-contrast.svg";
+import reducedMotionIcon from "~/assets/reduced-motion.svg";
+import IconButton from "~/components/IconButton.astro";
 
-type Props = Record<string, never>
+type Props = Record<string, never>;
 ---
 
 <header>
-    <nav>
-        <a class="homeLink" href="/" aria-label="Home">b-x-wu!</a>
-        <a href="/" aria-label="Resumé">/resume</a>
-        <a href="/" aria-label="Projects">/projects</a>
-    </nav>
-    <div class="toolbar">
-        <IconButton aria-label="Enable light mode" src={lightModeIcon.src} data-tag='theme-button' />
-        <IconButton aria-label="Enable low contrast mode" src={lowContrastIcon.src} data-tag='contrast-button' />
-        <IconButton aria-label="Enable reduced motion mode" src={reducedMotionIcon.src} data-tag='motion-button' />
-    </div>
+  <nav>
+    <a class="homeLink" href="/" aria-label="Home">b-x-wu!</a>
+    <a href="/" aria-label="Resumé">/resume</a>
+    <a href="/" aria-label="Projects">/projects</a>
+  </nav>
+  <div class="toolbar">
+    <IconButton
+      aria-label="Enable light mode"
+      src={lightModeIcon.src}
+      data-tag="theme-button"
+    />
+    <IconButton
+      aria-label="Enable low contrast mode"
+      src={lowContrastIcon.src}
+      data-tag="contrast-button"
+    />
+    <IconButton
+      aria-label="Enable reduced motion mode"
+      src={reducedMotionIcon.src}
+      data-tag="motion-button"
+    />
+  </div>
 </header>
 
 <style>
-    header {
-        flex: none;
-        padding: 36px 0;
-        flex-shrink: 1;
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-    }
+  header {
+    flex: none;
+    padding: 36px 0;
+    flex-shrink: 1;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
 
-    nav {
-        display: flex;
-        flex-direction: row;
-        column-gap: 48px;
-    }
+  nav {
+    display: flex;
+    flex-direction: row;
+    column-gap: 48px;
+  }
 
-    a {
-        height: fit-content;
-        text-decoration: none;
-        color: var(--color-text);
-    }
+  a {
+    height: fit-content;
+    text-decoration: none;
+    color: var(--color-text);
+  }
 
-    a:hover {
-        text-decoration: underline;
-        text-underline-offset: 2px;
-    }
+  a:hover {
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
 
-    a.homeLink {
-        color: var(--color-primary);
-        font-weight: bold;
-    }
+  a.homeLink {
+    color: var(--color-primary);
+    font-weight: bold;
+  }
 
-    .toolbar {
-        display: flex;
-        flex-direction: row;
-        column-gap: 4px;
-    }
+  .toolbar {
+    display: flex;
+    flex-direction: row;
+    column-gap: 4px;
+  }
 </style>
 
 <script>
-    import { themeStore, contrastStore, motionStore, getNormalizedTheme } from "~/lib/store";
-    import { updateIconButton, getByDataTag } from "~/lib/utils";
-    import lightModeIcon from '~/assets/light-mode.svg'
-    import darkModeIcon from '~/assets/dark-mode.svg'
-    import highContrastIcon from '~/assets/high-contrast.svg';
-    import lowContrastIcon from '~/assets/low-contrast.svg';
-    import noReducedMotionIcon from '~/assets/no-reduced-motion.svg';
-    import reducedMotionIcon from '~/assets/reduced-motion.svg';
+  import darkModeIcon from "~/assets/dark-mode.svg";
+  import highContrastIcon from "~/assets/high-contrast.svg";
+  import lightModeIcon from "~/assets/light-mode.svg";
+  import lowContrastIcon from "~/assets/low-contrast.svg";
+  import noReducedMotionIcon from "~/assets/no-reduced-motion.svg";
+  import reducedMotionIcon from "~/assets/reduced-motion.svg";
+  import {
+    contrastStore,
+    getNormalizedTheme,
+    motionStore,
+    themeStore,
+  } from "~/lib/store";
+  import { getByDataTag, updateIconButton } from "~/lib/utils";
 
-    themeStore.subscribe((value) => {
-        const theme = getNormalizedTheme(value);
-        if (theme === 'dark') {
-            updateIconButton("theme-button", {
-                "aria-label": "Enable light mode",
-                src: lightModeIcon.src,
-            })
-        } else { // light mode
-            updateIconButton("theme-button", {
-                "aria-label": "Enable dark mode",
-                src: darkModeIcon.src,
-            })
-        }
-    })
+  themeStore.subscribe((value) => {
+    const theme = getNormalizedTheme(value);
+    if (theme === "dark") {
+      updateIconButton("theme-button", {
+        "aria-label": "Enable light mode",
+        src: lightModeIcon.src,
+      });
+    } else {
+      // light mode
+      updateIconButton("theme-button", {
+        "aria-label": "Enable dark mode",
+        src: darkModeIcon.src,
+      });
+    }
+  });
 
-    getByDataTag("theme-button").addEventListener('click', () => {
-        const theme = getNormalizedTheme();
-        if (theme === 'dark') {
-            themeStore.set("light")
-        } else { // light mode
-            themeStore.set("dark")
-        }
-    });
+  getByDataTag("theme-button").addEventListener("click", () => {
+    const theme = getNormalizedTheme();
+    if (theme === "dark") {
+      themeStore.set("light");
+    } else {
+      // light mode
+      themeStore.set("dark");
+    }
+  });
 
-    contrastStore.subscribe((value) => {
-        if (value === 'default') {
-            updateIconButton("contrast-button", {
-                "aria-label": "Enable high contrast mode",
-                src: highContrastIcon.src,
-            })
-        } else { // high contrast mode
-            updateIconButton("contrast-button", {
-                "aria-label": "Disable high contrast mode",
-                src: lowContrastIcon.src,
-            })
-        }
-    })
+  contrastStore.subscribe((value) => {
+    if (value === "default") {
+      updateIconButton("contrast-button", {
+        "aria-label": "Enable high contrast mode",
+        src: highContrastIcon.src,
+      });
+    } else {
+      // high contrast mode
+      updateIconButton("contrast-button", {
+        "aria-label": "Disable high contrast mode",
+        src: lowContrastIcon.src,
+      });
+    }
+  });
 
-    getByDataTag("contrast-button").addEventListener('click', () => {
-        const value = contrastStore.get();
-        if (value === 'default') {
-            contrastStore.set("high");
-        } else { // high contrast
-            contrastStore.set('default')
-        }
-    })
+  getByDataTag("contrast-button").addEventListener("click", () => {
+    const value = contrastStore.get();
+    if (value === "default") {
+      contrastStore.set("high");
+    } else {
+      // high contrast
+      contrastStore.set("default");
+    }
+  });
 
-    motionStore.subscribe((value) => {
-        if (value === 'default') {
-            updateIconButton("motion-button", {
-                "aria-label": "Enable reduced motion mode",
-                src: reducedMotionIcon.src,
-            })
-        } else { // reduced motion mode
-            updateIconButton("motion-button", {
-                "aria-label": "Disable reduced motion mode",
-                src: noReducedMotionIcon.src,
-            })
-        }
-    })
+  motionStore.subscribe((value) => {
+    if (value === "default") {
+      updateIconButton("motion-button", {
+        "aria-label": "Enable reduced motion mode",
+        src: reducedMotionIcon.src,
+      });
+    } else {
+      // reduced motion mode
+      updateIconButton("motion-button", {
+        "aria-label": "Disable reduced motion mode",
+        src: noReducedMotionIcon.src,
+      });
+    }
+  });
 
-    getByDataTag("motion-button").addEventListener('click', () => {
-        const value = motionStore.get();
-        if (value === 'default') {
-            motionStore.set("reduced");
-        } else { // reduced motion
-            motionStore.set('default')
-        }
-    })
+  getByDataTag("motion-button").addEventListener("click", () => {
+    const value = motionStore.get();
+    if (value === "default") {
+      motionStore.set("reduced");
+    } else {
+      // reduced motion
+      motionStore.set("default");
+    }
+  });
 </script>
