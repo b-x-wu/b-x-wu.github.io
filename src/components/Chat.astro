@@ -4,13 +4,11 @@ import Chatbox from "./Chatbox.astro";
 interface Props {
     children: any;
 }
-
-const dateString = (new Date()).toUTCString();
 ---
 
 <div class="container">
     <div class="dateContainer">
-        <div class="date">{ dateString }</div>
+        <div class="date" data-tag="date" />
     </div>
     <Chatbox>
         <span class="joinChatbox">joined the room</span>
@@ -42,3 +40,12 @@ const dateString = (new Date()).toUTCString();
         color: var(--color-secondary);
     }
 </style>
+
+<script>
+    const dateEle = document.querySelector('[data-tag="date"]');
+    if (dateEle == null) {
+        throw new Error();
+    }
+
+    dateEle.textContent = (new Date()).toUTCString();
+</script>

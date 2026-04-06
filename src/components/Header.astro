@@ -1,8 +1,9 @@
 ---
-import lightModeIcon from '../assets/light-mode.svg'
-import lowContrastIcon from '../assets/low-contrast.svg'
-import reducedMotionIcon from '../assets/reduced-motion.svg'
-import IconButton from './IconButton.astro'
+import lightModeIcon from '~/assets/light-mode.svg'
+import darkModeIcon from '~/assets/dark-mode.svg'
+import lowContrastIcon from '~/assets/low-contrast.svg'
+import reducedMotionIcon from '~/assets/reduced-motion.svg'
+import IconButton from '~/components/IconButton.astro'
 
 type Props = Record<string, never>
 ---
@@ -14,7 +15,7 @@ type Props = Record<string, never>
         <a href="/" aria-label="Projects">/projects</a>
     </nav>
     <div class="toolbar">
-        <IconButton aria-label="Disable dark mode" src={lightModeIcon.src} data-tag='theme-button' />
+        <IconButton aria-label="Enable light mode" src={lightModeIcon.src} data-tag='theme-button' />
         <IconButton aria-label="Enable low contrast mode" src={lowContrastIcon.src} data-tag='contrast-button' />
         <IconButton aria-label="Enable reduced motion mode" src={reducedMotionIcon.src} data-tag='motion-button' />
     </div>
@@ -58,3 +59,84 @@ type Props = Record<string, never>
         column-gap: 4px;
     }
 </style>
+
+<script>
+    import { themeStore, contrastStore, motionStore, getNormalizedTheme } from "~/lib/store";
+    import { updateIconButton, getByDataTag } from "~/lib/utils";
+    import lightModeIcon from '~/assets/light-mode.svg'
+    import darkModeIcon from '~/assets/dark-mode.svg'
+    import highContrastIcon from '~/assets/high-contrast.svg';
+    import lowContrastIcon from '~/assets/low-contrast.svg';
+    import noReducedMotionIcon from '~/assets/no-reduced-motion.svg';
+    import reducedMotionIcon from '~/assets/reduced-motion.svg';
+
+    themeStore.subscribe((value) => {
+        const theme = getNormalizedTheme(value);
+        if (theme === 'dark') {
+            updateIconButton("theme-button", {
+                "aria-label": "Enable light mode",
+                src: lightModeIcon.src,
+            })
+        } else { // light mode
+            updateIconButton("theme-button", {
+                "aria-label": "Enable dark mode",
+                src: darkModeIcon.src,
+            })
+        }
+    })
+
+    getByDataTag("theme-button").addEventListener('click', () => {
+        const theme = getNormalizedTheme();
+        if (theme === 'dark') {
+            themeStore.set("light")
+        } else { // light mode
+            themeStore.set("dark")
+        }
+    });
+
+    contrastStore.subscribe((value) => {
+        if (value === 'default') {
+            updateIconButton("contrast-button", {
+                "aria-label": "Enable high contrast mode",
+                src: highContrastIcon.src,
+            })
+        } else { // high contrast mode
+            updateIconButton("contrast-button", {
+                "aria-label": "Disable high contrast mode",
+                src: lowContrastIcon.src,
+            })
+        }
+    })
+
+    getByDataTag("contrast-button").addEventListener('click', () => {
+        const value = contrastStore.get();
+        if (value === 'default') {
+            contrastStore.set("high");
+        } else { // high contrast
+            contrastStore.set('default')
+        }
+    })
+
+    motionStore.subscribe((value) => {
+        if (value === 'default') {
+            updateIconButton("motion-button", {
+                "aria-label": "Enable reduced motion mode",
+                src: reducedMotionIcon.src,
+            })
+        } else { // reduced motion mode
+            updateIconButton("motion-button", {
+                "aria-label": "Disable reduced motion mode",
+                src: noReducedMotionIcon.src,
+            })
+        }
+    })
+
+    getByDataTag("motion-button").addEventListener('click', () => {
+        const value = motionStore.get();
+        if (value === 'default') {
+            motionStore.set("reduced");
+        } else { // reduced motion
+            motionStore.set('default')
+        }
+    })
+</script>
