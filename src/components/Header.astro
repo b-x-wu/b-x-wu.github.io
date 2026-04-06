@@ -81,6 +81,8 @@ type Props = Record<string, never>;
   import reducedMotionIcon from "~/assets/reduced-motion.svg";
   import {
     contrastStore,
+    getNormalizedContrastMode,
+    getNormalizedMotionMode,
     getNormalizedTheme,
     motionStore,
     themeStore,
@@ -114,7 +116,8 @@ type Props = Record<string, never>;
   });
 
   contrastStore.subscribe((value) => {
-    if (value === "default") {
+    const contrastMode = getNormalizedContrastMode(value);
+    if (contrastMode === "default") {
       updateIconButton("contrast-button", {
         "aria-label": "Enable high contrast mode",
         src: highContrastIcon.src,
@@ -129,8 +132,8 @@ type Props = Record<string, never>;
   });
 
   getByDataTag("contrast-button").addEventListener("click", () => {
-    const value = contrastStore.get();
-    if (value === "default") {
+    const contrastMode = getNormalizedContrastMode();
+    if (contrastMode === "default") {
       contrastStore.set("high");
     } else {
       // high contrast
@@ -139,7 +142,8 @@ type Props = Record<string, never>;
   });
 
   motionStore.subscribe((value) => {
-    if (value === "default") {
+    const motionMode = getNormalizedMotionMode(value);
+    if (motionMode === "default") {
       updateIconButton("motion-button", {
         "aria-label": "Enable reduced motion mode",
         src: reducedMotionIcon.src,
@@ -154,8 +158,8 @@ type Props = Record<string, never>;
   });
 
   getByDataTag("motion-button").addEventListener("click", () => {
-    const value = motionStore.get();
-    if (value === "default") {
+    const motionMode = getNormalizedMotionMode();
+    if (motionMode === "default") {
       motionStore.set("reduced");
     } else {
       // reduced motion
