@@ -2,50 +2,48 @@
 import Chatbox from "./Chatbox.astro";
 
 interface Props {
-    children: any;
+  children: astroHTML.JSX.Element;
 }
 ---
 
 <div class="container">
-    <div class="dateContainer">
-        <div class="date" data-tag="date" />
-    </div>
-    <Chatbox>
-        <span class="joinChatbox">joined the room</span>
-    </Chatbox>
-    <slot />
+  <div class="dateContainer">
+    <div class="date" data-tag="date" />
+  </div>
+  <Chatbox> <span class="joinChatbox">joined the room</span> </Chatbox>
+  <slot />
 </div>
 
 <style>
-    .container {
-        display: flex;
-        flex-direction: column;
-        row-gap: 24px;
-    }
+  .container {
+    display: flex;
+    flex-direction: column;
+    row-gap: 24px;
+  }
 
-    .dateContainer {
-        display: flex;
-        flex-direction: row;
-        width: 100%;
-        place-items: center;
-        justify-content: center;
-        text-align: center;
-    }
+  .dateContainer {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    place-items: center;
+    justify-content: center;
+    text-align: center;
+  }
 
-    .date {
-        color: var(--color-disabled);
-    }
+  .date {
+    color: var(--color-disabled);
+  }
 
-    .joinChatbox {
-        color: var(--color-secondary);
-    }
+  .joinChatbox {
+    color: var(--color-secondary);
+  }
 </style>
 
 <script>
-    const dateEle = document.querySelector('[data-tag="date"]');
-    if (dateEle == null) {
-        throw new Error();
-    }
+  const dateEle = document.querySelector('[data-tag="date"]');
+  if (dateEle == null) {
+    throw new Error();
+  }
 
-    dateEle.textContent = (new Date()).toUTCString();
+  dateEle.textContent = new Date().toUTCString();
 </script>
