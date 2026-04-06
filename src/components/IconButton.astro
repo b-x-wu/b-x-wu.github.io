@@ -1,8 +1,10 @@
 ---
-type Props = { 'aria-label': string, src: string, 'data-tag'?: string }
+import type { IconButtonProps } from '~/lib/utils';
+
+type Props = IconButtonProps;
 const { 'aria-label': ariaLabel, src, "data-tag": dataTag } = Astro.props;
 ---
-<button is="icon-button" class="root" aria-label={ariaLabel} data-tag={dataTag} >
+<button class="root" aria-label={ariaLabel} data-tag={dataTag}>
     <div class:list={["bg-clip", "icon"]} style={{ '--bg-image': `url(${src})` }} />
 </button>
 
