@@ -11,12 +11,12 @@ export default defineConfig({
       options: {
         variants: [
           {
-            src: ['./src/assets/fonts/UbuntuMono-Regular.ttf'],
-            weight: 'normal',
-            style: 'normal',
-          }
-        ]
-      }
+            src: ["./src/assets/fonts/UbuntuMono-Regular.ttf"],
+            weight: "normal",
+            style: "normal",
+          },
+        ],
+      },
     },
   ],
 });
