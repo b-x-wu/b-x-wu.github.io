@@ -5,9 +5,18 @@ export default defineConfig({
   // TODO: we should just download these font files
   fonts: [
     {
-      provider: fontProviders.fontsource(),
+      provider: fontProviders.local(),
       name: "Ubuntu Mono",
       cssVariable: "--font-ubuntu-mono",
+      options: {
+        variants: [
+          {
+            src: ['./src/assets/fonts/UbuntuMono-Regular.ttf'],
+            weight: 'normal',
+            style: 'normal',
+          }
+        ]
+      }
     },
   ],
 });
