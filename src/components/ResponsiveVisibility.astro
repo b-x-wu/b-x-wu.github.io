@@ -1,0 +1,58 @@
+---
+const hasXs = Astro.slots.has('xs');
+const hasSm = Astro.slots.has('sm');
+const hasMd = Astro.slots.has('md');
+const hasLg = Astro.slots.has('lg');
+---
+
+<span class:list={["default", { hasXs, hasSm, hasMd, hasLg }]}><slot /></span>
+<span class="xs"><slot name="xs" /></span>
+<span class="sm"><slot name="sm" /></span>
+<span class="md"><slot name="md" /></span>
+<span class="lg"><slot name="lg" /></span>
+
+<style>
+  .xs, .sm, .md, .lg {
+    display: none;
+  }
+
+  @media (width <= 640px) {
+    .xs {
+      display: block;
+    }
+
+    .default.hasXs {
+      display: none;
+    }
+  }
+
+  @media (width > 640px) and (width <= 768) {
+    .sm {
+      display: block;
+    }
+
+    .default.hasSm {
+      display: none;
+    }
+  }
+
+  @media (width > 768px) and (width <= 1024) {
+    .md {
+      display: block;
+    }
+
+    .default.hasMd {
+      display: none;
+    }
+  }
+
+  @media (width > 1024px) {
+    .lg {
+      display: block;
+    }
+
+    .default.hasLg {
+      display: none;
+    }
+  }
+</style>

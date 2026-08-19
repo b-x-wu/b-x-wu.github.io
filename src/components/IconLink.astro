@@ -1,16 +1,21 @@
 ---
-import type { IconButtonProps } from "~/lib/utils";
-
-type Props = IconButtonProps;
-const { "aria-label": ariaLabel, src, "data-tag": dataTag } = Astro.props;
+type Props = {
+  "aria-label": string, 
+  "data-tag": string, 
+  src: string, 
+  href: string, 
+  rel?: string,
+  target?: astroHTML.JSX.HTMLAttributeAnchorTarget
+};
+const { "aria-label": ariaLabel, src, "data-tag": dataTag, href, rel, target } = Astro.props;
 ---
 
-<button class="root" aria-label={ariaLabel} data-tag={dataTag} type="button">
+<a class="root" aria-label={ariaLabel} data-tag={dataTag} href={href} rel={rel} target={target}>
   <span
     class:list={["bg-clip", "icon"]}
     style={{ '--bg-image': `url(${src})` }}
   />
-</button>
+</a>
 
 <style>
   .root {
@@ -23,7 +28,6 @@ const { "aria-label": ariaLabel, src, "data-tag": dataTag } = Astro.props;
   }
 
   .icon {
-    display: block;
     background-color: var(--color-text);
     height: 16px;
     width: 16px;

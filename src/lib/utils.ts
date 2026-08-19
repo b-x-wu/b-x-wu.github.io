@@ -22,16 +22,15 @@ export const updateIconButton = (
   dataTag: string,
   { "aria-label": ariaLabel, src }: Partial<IconButtonProps>,
 ): void => {
-  console.log({ ariaLabel, src });
   const button = getByDataTag(dataTag);
-  const div = button.querySelector("div");
+  const span = button.querySelector("span");
 
-  if (div === null) {
+  if (span === null) {
     throw new Error();
   }
 
   if (src !== undefined) {
-    div.style.setProperty("--bg-image", `url(${src})`);
+    span.style.setProperty("--bg-image", `url(${src})`);
   }
 
   if (ariaLabel !== undefined) {

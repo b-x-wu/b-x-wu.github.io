@@ -1,11 +1,92 @@
 ---
+import IconLink from "~/components/IconLink.astro"
+import heartIcon from "~/assets/icons/heart.svg"
+import githubIcon from "~/assets/icons/github.svg"
+import twitterIcon from "~/assets/icons/twitter.svg"
+import linkedinIcon from "~/assets/icons/linkedin.svg"
+import emailIcon from "~/assets/icons/mail.svg"
+import { Image } from "astro:assets";
+import ResponsiveVisibility from "~/components/ResponsiveVisibility.astro"
 type Props = Record<string, never>;
 ---
 
-<footer>TODO</footer>
+<footer>
+  <div class="divider" aria-hidden=true>---</div>
+  <div class="tagLine">
+    <span>made with</span>
+    <Image class="heartIcon" src={heartIcon} alt='Love' width={24} height={24} />
+    <ResponsiveVisibility>
+      <span slot="xs">and a coffee</span>
+      <span>and an oat milk cappuccino</span>
+    </ResponsiveVisibility>
+  </div>
+  <div class='links'>
+    <IconLink
+      href='https://github.com/b-x-wu'
+      target='_blank'
+      rel="noopener noreferrer"
+      src={githubIcon.src}
+      aria-label='Link to my GitHub profile'
+      data-tag="github-link"
+    />
+    <IconLink
+      href='https://twitter.com/b_x_wu'
+      target='_blank'
+      rel="noopener noreferrer"
+      src={twitterIcon.src}
+      aria-label='Link to my Twitter page'
+      data-tag="twitter-link"
+    />
+    <IconLink
+      href='https://www.linkedin.com/in/b-x-wu/'
+      target='_blank'
+      rel="noopener noreferrer"
+      src={linkedinIcon.src}
+      aria-label='Link to my LinkedIn page'
+      data-tag="linkedin-link"
+    />
+    <IconLink
+      href='mailto:bridgette.x.wu@gmail.com'
+      target='_blank'
+      rel="noopener noreferrer"
+      src={emailIcon.src}
+      aria-label='Link to email me'
+      data-tag="email-link"
+    />
+  </div>
+</footer>
 
 <style>
   footer {
     flex-shrink: 1;
+    color: var(--color-disabled);
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 16px;
+  }
+
+  .divider {
+    margin: 0 auto;
+  }
+
+  .tagLine {
+    margin: 0 auto;
+    display: flex;
+    width: fit-content;
+    flex-direction: row;
+    text-align: center;
+  }
+
+  .heartIcon {
+    margin: 0 8px;
+  }
+
+  .links {
+    margin: 0 auto;
+    display: flex;
+    width: fit-content;
+    flex-direction: row;
+    gap: 8px;
+    align-items: center;
   }
 </style>
