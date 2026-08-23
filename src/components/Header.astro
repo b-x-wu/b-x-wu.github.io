@@ -1,9 +1,8 @@
 ---
-import darkModeIcon from "~/assets/icons/dark-mode.svg";
 import lightModeIcon from "~/assets/icons/light-mode.svg";
 import lowContrastIcon from "~/assets/icons/low-contrast.svg";
 import reducedMotionIcon from "~/assets/icons/reduced-motion.svg";
-import IconButton from "~/components/IconButton.astro";
+import IconButton from "~/components/core/IconButton/IconButton.astro";
 
 type Props = Record<string, never>;
 ---
@@ -79,6 +78,7 @@ type Props = Record<string, never>;
   import lowContrastIcon from "~/assets/icons/low-contrast.svg";
   import noReducedMotionIcon from "~/assets/icons/no-reduced-motion.svg";
   import reducedMotionIcon from "~/assets/icons/reduced-motion.svg";
+  import { updateIconButton } from "~/components/core/IconButton/utils";
   import {
     contrastStore,
     getNormalizedContrastMode,
@@ -87,7 +87,7 @@ type Props = Record<string, never>;
     motionStore,
     themeStore,
   } from "~/lib/store";
-  import { getByDataTag, updateIconButton } from "~/lib/utils";
+  import { getByDataTag } from "~/lib/utils";
 
   themeStore.subscribe((value) => {
     const theme = getNormalizedTheme(value);

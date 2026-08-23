@@ -1,0 +1,49 @@
+---
+type Props = {
+  "aria-label": string;
+  "data-tag": string;
+  src: string;
+  href: string;
+  rel?: string;
+  target?: astroHTML.JSX.HTMLAttributeAnchorTarget;
+};
+const {
+  "aria-label": ariaLabel,
+  src,
+  "data-tag": dataTag,
+  href,
+  rel,
+  target,
+} = Astro.props;
+---
+
+<a
+  class="root"
+  aria-label={ariaLabel}
+  data-tag={dataTag}
+  href={href}
+  rel={rel}
+  target={target}
+>
+  <span
+    class:list={["bg-clip", "icon"]}
+    style={{ '--bg-image': `url(${src})` }}
+  />
+</a>
+
+<style>
+  .root {
+    background-color: transparent;
+    height: 24px;
+    width: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .icon {
+    background-color: var(--color-text);
+    height: 16px;
+    width: 16px;
+  }
+</style>
