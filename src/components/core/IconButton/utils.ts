@@ -1,14 +1,16 @@
 import { getById } from "~/lib/utils";
+import type { ColorToken } from "~/styles/tokens";
 
 export type IconButtonProps = {
   "aria-label": string;
   src: string;
   id?: string;
+  color?: ColorToken;
 };
 
 export const updateIconButton = (
   id: string,
-  { "aria-label": ariaLabel, src }: Partial<IconButtonProps>,
+  { "aria-label": ariaLabel, src, color }: Partial<IconButtonProps>,
 ): void => {
   const button = getById(id);
   const span = button.querySelector("span");
@@ -19,6 +21,10 @@ export const updateIconButton = (
 
   if (src !== undefined) {
     span.style.setProperty("--bg-image", `url(${src})`);
+  }
+
+  if (color !== undefined) {
+    span.style.setProperty("--icon-color", `var(--color-${color})`);
   }
 
   if (ariaLabel !== undefined) {

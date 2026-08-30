@@ -35,6 +35,7 @@ type Props = Record<string, never>;
       src={githubIcon.src}
       aria-label="Link to my GitHub profile"
       id="github-link"
+      color="muted"
     />
     <IconLink
       href="https://twitter.com/b_x_wu"
@@ -43,6 +44,7 @@ type Props = Record<string, never>;
       src={twitterIcon.src}
       aria-label="Link to my Twitter page"
       id="twitter-link"
+      color="muted"
     />
     <IconLink
       href="https://www.linkedin.com/in/b-x-wu/"
@@ -51,6 +53,7 @@ type Props = Record<string, never>;
       src={linkedinIcon.src}
       aria-label="Link to my LinkedIn page"
       id="linkedin-link"
+      color="muted"
     />
     <IconLink
       href="mailto:bridgette.x.wu@gmail.com"
@@ -59,6 +62,7 @@ type Props = Record<string, never>;
       src={emailIcon.src}
       aria-label="Link to email me"
       id="email-link"
+      color="muted"
     />
   </div>
 </footer>
@@ -66,7 +70,7 @@ type Props = Record<string, never>;
 <style>
   footer {
     flex-shrink: 1;
-    color: var(--color-disabled);
+    color: var(--color-muted);
     display: flex;
     flex-direction: column;
     margin-bottom: 16px;
