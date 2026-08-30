@@ -1,13 +1,13 @@
-export const getByDataTag = (dataTag: string): HTMLElement => {
-  const eles = document.querySelectorAll(`[data-tag="${dataTag}"]`);
-  if (eles.length > 1) {
-    throw new Error(`Found ${eles.length} elements with data-tag: ${dataTag}`);
+export const getById = (id: string): HTMLElement => {
+  const ele = document.getElementById(id);
+  if (ele === null) {
+    throw new Error(`Found no element with id: ${id}`);
   }
 
-  const ele = eles.values().next().value;
-  if (ele === undefined) {
-    throw new Error(`Found no elements with data-tag: ${dataTag}`);
-  }
+  return ele;
+};
 
-  return ele as HTMLElement;
+export const killEvent = (e: Event) => {
+  e.stopPropagation();
+  e.preventDefault();
 };

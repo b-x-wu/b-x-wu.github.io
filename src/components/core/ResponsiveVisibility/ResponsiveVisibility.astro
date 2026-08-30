@@ -6,10 +6,10 @@ const hasLg = Astro.slots.has("lg");
 ---
 
 <span class:list={["default", { hasXs, hasSm, hasMd, hasLg }]}><slot /></span>
-<span class="xs"><slot name="xs" /></span>
-<span class="sm"><slot name="sm" /></span>
-<span class="md"><slot name="md" /></span>
-<span class="lg"><slot name="lg" /></span>
+{hasXs && <span class="xs"><slot name="xs" /></span>}
+{hasSm && <span class="sm"><slot name="sm" /></span>}
+{hasMd && <span class="md"><slot name="md" /></span>}
+{hasLg && <span class="lg"><slot name="lg" /></span>}
 
 <style>
   .xs,
@@ -29,7 +29,7 @@ const hasLg = Astro.slots.has("lg");
     }
   }
 
-  @media (width > 640px) and (width <= 768) {
+  @media (width > 640px) and (width <= 768px) {
     .sm {
       display: block;
     }
