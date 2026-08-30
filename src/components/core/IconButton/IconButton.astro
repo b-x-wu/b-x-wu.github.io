@@ -2,13 +2,16 @@
 import type { IconButtonProps } from "./utils";
 
 type Props = IconButtonProps;
-const { "aria-label": ariaLabel, src, id } = Astro.props;
+const { "aria-label": ariaLabel, src, id, color = "text" } = Astro.props;
 ---
 
 <button class="root" aria-label={ariaLabel} id={id} type="button">
   <span
     class:list={["bg-clip", "icon"]}
-    style={{ '--bg-image': `url(${src})` }}
+    style={{
+      "--bg-image": `url(${src})`,
+      "--icon-color": `var(--color-${color})`,
+    }}
   />
 </button>
 
@@ -21,10 +24,9 @@ const { "aria-label": ariaLabel, src, id } = Astro.props;
     align-items: center;
     justify-content: center;
   }
-
   .icon {
     display: block;
-    background-color: var(--color-text);
+    background-color: var(--icon-color);
     height: 20px;
     width: 20px;
   }
