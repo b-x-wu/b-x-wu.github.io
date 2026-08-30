@@ -44,11 +44,10 @@ const { title } = Astro.props;
   body {
     background-color: var(--color-bg);
     color: var(--color-text);
-    height: 100dvh;
+    min-height: 100dvh;
     display: flex;
     flex-direction: column;
     place-items: center;
-    justify-content: center;
   }
 
   .wrapper {
@@ -57,12 +56,11 @@ const { title } = Astro.props;
     flex-direction: column;
     max-width: 80%;
     width: 640px;
-    height: 100%;
+    min-height: 100dvh;
   }
 
   main {
     flex-grow: 1;
-    overflow: scroll;
   }
 </style>
 
