@@ -8,7 +8,7 @@ interface Props {
 
 <div class="container">
   <div class="dateContainer">
-    <div class="date" data-tag="date" />
+    <div class="date" id="date" />
   </div>
   <Chatbox> <span class="joinChatbox">joined the room</span> </Chatbox>
   <slot />
@@ -40,7 +40,7 @@ interface Props {
 </style>
 
 <script>
-  const dateEle = document.querySelector('[data-tag="date"]');
+  const dateEle = document.getElementById("date");
   if (dateEle == null) {
     throw new Error();
   }

@@ -1,0 +1,37 @@
+---
+interface Props {
+  id: string;
+  placement?: "left" | "right";
+}
+
+const { id, placement = "left" } = Astro.props;
+---
+
+<ul
+  role="menu"
+  id={id}
+  class:list={[{ placementLeft: placement === 'left', placementRight: placement === "right" }]}
+>
+  <slot />
+</ul>
+
+<style>
+  [role="menu"] {
+    z-index: 10;
+    background-color: var(--color-bg);
+    border: 2px dotted var(--color-text);
+    position: absolute;
+    margin-block: 8px;
+    display: flex;
+    flex-direction: column;
+    padding-inline-start: 0;
+  }
+
+  .placementRight {
+    right: 0;
+  }
+
+  .placementLeft {
+    left: 0;
+  }
+</style>

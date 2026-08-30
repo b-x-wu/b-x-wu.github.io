@@ -1,16 +1,16 @@
-import { getByDataTag } from "~/lib/utils";
+import { getById } from "~/lib/utils";
 
 export type IconButtonProps = {
   "aria-label": string;
   src: string;
-  "data-tag"?: string;
+  id?: string;
 };
 
 export const updateIconButton = (
-  dataTag: string,
+  id: string,
   { "aria-label": ariaLabel, src }: Partial<IconButtonProps>,
 ): void => {
-  const button = getByDataTag(dataTag);
+  const button = getById(id);
   const span = button.querySelector("span");
 
   if (span === null) {

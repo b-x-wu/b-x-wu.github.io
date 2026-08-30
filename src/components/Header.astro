@@ -1,8 +1,12 @@
 ---
+import configMenuClosedIcon from "~/assets/icons/config-menu-closed.svg";
 import lightModeIcon from "~/assets/icons/light-mode.svg";
 import lowContrastIcon from "~/assets/icons/low-contrast.svg";
 import reducedMotionIcon from "~/assets/icons/reduced-motion.svg";
 import IconButton from "~/components/core/IconButton/IconButton.astro";
+import Menu from "~/components/core/Menu/Menu.astro";
+import MenuItem from "~/components/core/Menu/MenuItem.astro";
+import ResponsiveVisibility from "~/components/core/ResponsiveVisibility/ResponsiveVisibility.astro";
 
 type Props = Record<string, never>;
 ---
@@ -13,23 +17,49 @@ type Props = Record<string, never>;
     <a href="/" aria-label="Resumé">/resume</a>
     <a href="/" aria-label="Projects">/projects</a>
   </nav>
-  <div class="toolbar">
-    <IconButton
-      aria-label="Enable light mode"
-      src={lightModeIcon.src}
-      data-tag="theme-button"
-    />
-    <IconButton
-      aria-label="Enable low contrast mode"
-      src={lowContrastIcon.src}
-      data-tag="contrast-button"
-    />
-    <IconButton
-      aria-label="Enable reduced motion mode"
-      src={reducedMotionIcon.src}
-      data-tag="motion-button"
-    />
-  </div>
+  <ResponsiveVisibility>
+    <div class="toolbar">
+      <IconButton
+        aria-label="Enable light mode"
+        src={lightModeIcon.src}
+        id="theme-button"
+      />
+      <IconButton
+        aria-label="Enable low contrast mode"
+        src={lowContrastIcon.src}
+        id="contrast-button"
+      />
+      <IconButton
+        aria-label="Enable reduced motion mode"
+        src={reducedMotionIcon.src}
+        id="motion-button"
+      />
+    </div>
+    <span slot="xs">
+      <IconButton
+        id="config-menu-trigger"
+        src={configMenuClosedIcon.src}
+        aria-label="Open config menu"
+      />
+      <Menu id="config-menu" placement="right">
+        <MenuItem
+          id="theme-menuitem"
+          iconSrc={lightModeIcon.src}
+          label="Enable light mode"
+        />
+        <MenuItem
+          id="contrast-menuitem"
+          iconSrc={lowContrastIcon.src}
+          label="Enable low contrast mode"
+        />
+        <MenuItem
+          id="motion-menuitem"
+          iconSrc={reducedMotionIcon.src}
+          label="Enable reduced motion mode"
+        />
+      </Menu>
+    </span>
+  </ResponsiveVisibility>
 </header>
 
 <style>
@@ -72,6 +102,8 @@ type Props = Record<string, never>;
 </style>
 
 <script>
+  import configMenuClosedIcon from "~/assets/icons/config-menu-closed.svg";
+  import configMenuOpenIcon from "~/assets/icons/config-menu-open.svg";
   import darkModeIcon from "~/assets/icons/dark-mode.svg";
   import highContrastIcon from "~/assets/icons/high-contrast.svg";
   import lightModeIcon from "~/assets/icons/light-mode.svg";
@@ -79,6 +111,7 @@ type Props = Record<string, never>;
   import noReducedMotionIcon from "~/assets/icons/no-reduced-motion.svg";
   import reducedMotionIcon from "~/assets/icons/reduced-motion.svg";
   import { updateIconButton } from "~/components/core/IconButton/utils";
+  import { createMenu, updateMenuItem } from "~/components/core/Menu/utils";
   import {
     contrastStore,
     getNormalizedContrastMode,
@@ -87,7 +120,7 @@ type Props = Record<string, never>;
     motionStore,
     themeStore,
   } from "~/lib/store";
-  import { getByDataTag } from "~/lib/utils";
+  import { getById } from "~/lib/utils";
 
   themeStore.subscribe((value) => {
     const theme = getNormalizedTheme(value);
@@ -96,16 +129,24 @@ type Props = Record<string, never>;
         "aria-label": "Enable light mode",
         src: lightModeIcon.src,
       });
+      updateMenuItem("theme-menuitem", {
+        label: "Enable light mode",
+        iconSrc: lightModeIcon.src,
+      });
     } else {
       // light mode
       updateIconButton("theme-button", {
         "aria-label": "Enable dark mode",
         src: darkModeIcon.src,
       });
+      updateMenuItem("theme-menuitem", {
+        label: "Enable dark mode",
+        iconSrc: darkModeIcon.src,
+      });
     }
   });
 
-  getByDataTag("theme-button").addEventListener("click", () => {
+  const toggleTheme = () => {
     const theme = getNormalizedTheme();
     if (theme === "dark") {
       themeStore.set("light");
@@ -113,7 +154,10 @@ type Props = Record<string, never>;
       // light mode
       themeStore.set("dark");
     }
-  });
+  };
+
+  getById("theme-button").addEventListener("click", toggleTheme);
+  getById("theme-menuitem").addEventListener("click", toggleTheme);
 
   contrastStore.subscribe((value) => {
     const contrastMode = getNormalizedContrastMode(value);
@@ -122,16 +166,24 @@ type Props = Record<string, never>;
         "aria-label": "Enable high contrast mode",
         src: highContrastIcon.src,
       });
+      updateMenuItem("contrast-menuitem", {
+        label: "Enable high contrast mode",
+        iconSrc: highContrastIcon.src,
+      });
     } else {
       // high contrast mode
       updateIconButton("contrast-button", {
         "aria-label": "Disable high contrast mode",
         src: lowContrastIcon.src,
       });
+      updateMenuItem("contrast-menuitem", {
+        label: "Disable high contrast mode",
+        iconSrc: lowContrastIcon.src,
+      });
     }
   });
 
-  getByDataTag("contrast-button").addEventListener("click", () => {
+  const toggleContrastMode = () => {
     const contrastMode = getNormalizedContrastMode();
     if (contrastMode === "default") {
       contrastStore.set("high");
@@ -139,7 +191,10 @@ type Props = Record<string, never>;
       // high contrast
       contrastStore.set("default");
     }
-  });
+  };
+
+  getById("contrast-button").addEventListener("click", toggleContrastMode);
+  getById("contrast-menuitem").addEventListener("click", toggleContrastMode);
 
   motionStore.subscribe((value) => {
     const motionMode = getNormalizedMotionMode(value);
@@ -148,16 +203,24 @@ type Props = Record<string, never>;
         "aria-label": "Enable reduced motion mode",
         src: reducedMotionIcon.src,
       });
+      updateMenuItem("motion-menuitem", {
+        label: "Enabled reduced motion mode",
+        iconSrc: reducedMotionIcon.src,
+      });
     } else {
       // reduced motion mode
       updateIconButton("motion-button", {
         "aria-label": "Disable reduced motion mode",
         src: noReducedMotionIcon.src,
       });
+      updateMenuItem("motion-menuitem", {
+        label: "Disable reduced motion mode",
+        iconSrc: noReducedMotionIcon.src,
+      });
     }
   });
 
-  getByDataTag("motion-button").addEventListener("click", () => {
+  const toggleMotionMode = () => {
     const motionMode = getNormalizedMotionMode();
     if (motionMode === "default") {
       motionStore.set("reduced");
@@ -165,5 +228,27 @@ type Props = Record<string, never>;
       // reduced motion
       motionStore.set("default");
     }
+  };
+
+  getById("motion-button").addEventListener("click", toggleMotionMode);
+  getById("motion-menuitem").addEventListener("click", toggleMotionMode);
+
+  // wire up config menu
+  createMenu({
+    triggerId: "config-menu-trigger",
+    menuId: "config-menu",
+    onOpenChange: (state) => {
+      if (state === "open") {
+        updateIconButton("config-menu-trigger", {
+          src: configMenuOpenIcon.src,
+          "aria-label": "Close config menu",
+        });
+      } else {
+        updateIconButton("config-menu-trigger", {
+          src: configMenuClosedIcon.src,
+          "aria-label": "Open config menu",
+        });
+      }
+    },
   });
 </script>

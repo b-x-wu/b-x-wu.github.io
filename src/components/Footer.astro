@@ -34,7 +34,7 @@ type Props = Record<string, never>;
       rel="noopener noreferrer"
       src={githubIcon.src}
       aria-label="Link to my GitHub profile"
-      data-tag="github-link"
+      id="github-link"
     />
     <IconLink
       href="https://twitter.com/b_x_wu"
@@ -42,7 +42,7 @@ type Props = Record<string, never>;
       rel="noopener noreferrer"
       src={twitterIcon.src}
       aria-label="Link to my Twitter page"
-      data-tag="twitter-link"
+      id="twitter-link"
     />
     <IconLink
       href="https://www.linkedin.com/in/b-x-wu/"
@@ -50,7 +50,7 @@ type Props = Record<string, never>;
       rel="noopener noreferrer"
       src={linkedinIcon.src}
       aria-label="Link to my LinkedIn page"
-      data-tag="linkedin-link"
+      id="linkedin-link"
     />
     <IconLink
       href="mailto:bridgette.x.wu@gmail.com"
@@ -58,7 +58,7 @@ type Props = Record<string, never>;
       rel="noopener noreferrer"
       src={emailIcon.src}
       aria-label="Link to email me"
-      data-tag="email-link"
+      id="email-link"
     />
   </div>
 </footer>
@@ -70,6 +70,7 @@ type Props = Record<string, never>;
     display: flex;
     flex-direction: column;
     margin-bottom: 16px;
+    gap: 8px;
   }
 
   .divider {
