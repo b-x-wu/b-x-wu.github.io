@@ -1,0 +1,33 @@
+---
+interface Props {
+  header?: string;
+}
+
+const { header } = Astro.props;
+---
+
+<div class="root">
+  {header && <h3 class="header">{header}</h3>}
+  <div class="experiences"><slot /></div>
+</div>
+
+<style>
+  .root {
+    display: flex;
+    flex-direction: column;
+    row-gap: 16px;
+  }
+
+  .header {
+    color: var(--color-secondary);
+    font-size: 24px;
+    font-weight: bold;
+    line-height: 2rem;
+  }
+
+  .experiences {
+    display: flex;
+    flex-direction: column;
+    row-gap: 32px;
+  }
+</style>

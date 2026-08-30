@@ -1,0 +1,43 @@
+---
+import linkIcon from "~/assets/icons/link.svg";
+
+interface Props {
+  title: string;
+  href: string;
+}
+
+const { title, href } = Astro.props;
+---
+
+<a class="root" href={href}>
+  <span class="title">{title}</span>
+  <span class="bg-clip icon" style={{ "--bg-image": `url(${linkIcon.src})` }} />
+</a>
+
+<style>
+  .root {
+    color: var(--color-enabled);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    column-gap: 8px;
+    text-underline-offset: 2px;
+  }
+
+  .root:hover {
+    text-decoration: underline;
+  }
+
+  .title {
+    font-size: var(--font-md);
+    font-weight: bold;
+    line-height: 1.75rem;
+    flex-shrink: 0;
+  }
+
+  .icon {
+    background-color: var(--color-enabled);
+    height: 16px;
+    width: 16px;
+  }
+</style>

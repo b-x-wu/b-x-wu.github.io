@@ -1,0 +1,99 @@
+---
+import bulletIcon from "~/assets/icons/bullet.svg";
+
+interface Props {
+  title?: string;
+  dates?: string;
+  organization?: string;
+  subtitle?: string;
+  bulletPoints?: string[];
+}
+
+const { title, dates, organization, subtitle, bulletPoints = [] } = Astro.props;
+const hasTitleSlot = Astro.slots.has("title");
+---
+
+<div class="root">
+  <div class="header">
+    {hasTitleSlot ? <slot name="title" /> : <div class="title">{title}</div>}
+    {dates && <div class="dates">{dates}</div>}
+  </div>
+  {organization && <div class="organization">@ {organization}</div>}
+  {subtitle && <div class="subtitle">{subtitle}</div>}
+  {bulletPoints.length > 0 && (
+      <ul class="bullets" style={{ "--bullet-image": `url(${bulletIcon.src})` }}>
+        {bulletPoints.map((bulletPoint) => (
+          <li>{bulletPoint}</li>
+        ))}
+      </ul>
+    )}
+</div>
+
+<style>
+  .root {
+    display: flex;
+    flex-direction: column;
+    row-gap: 8px;
+  }
+
+  .header {
+    display: flex;
+    flex-direction: column;
+  }
+
+  @media (--sm) {
+    .header {
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: baseline;
+    }
+  }
+
+  .title {
+    font-size: var(--font-sm);
+    font-weight: bold;
+    line-height: 1.75rem;
+  }
+
+  .dates {
+    font-size: var(--font-xs);
+    line-height: 1.25rem;
+  }
+
+  @media (--md) {
+    .dates {
+      font-size: var(--font-sm);
+      line-height: 1.75rem;
+    }
+  }
+
+  .organization {
+    color: var(--color-primary);
+  }
+
+  .bullets {
+    color: var(--color-muted);
+    display: flex;
+    flex-direction: column;
+    row-gap: 8px;
+    padding: 0;
+  }
+
+  .bullets li {
+    list-style: none;
+  }
+
+  .bullets li::before {
+    content: "";
+    display: inline-block;
+    background-color: var(--color-muted);
+    mask-image: var(--bullet-image);
+    mask-repeat: no-repeat;
+    mask-size: contain;
+    mask-position: center;
+    width: 10px;
+    height: 10px;
+    margin-right: 12px;
+    vertical-align: middle;
+  }
+</style>
