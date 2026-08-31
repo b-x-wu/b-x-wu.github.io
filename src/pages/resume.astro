@@ -12,32 +12,39 @@ import Layout from "~/layouts/Layout.astro";
     <div class="header">
       <div class="nameBlock">
         <h1 class="name">Bridgette Wu</h1>
-        <div class="pronouns">(she/her)</div>
+        <IconLink
+          id=""
+          src={downloadIcon.src}
+          href="https://raw.githubusercontent.com/b-x-wu/resume/refs/heads/main/resume.pdf"
+          aria-label="Download resume"
+          rel="noopener noreferrer"
+          target="_blank"
+          color="enabled"
+        />
       </div>
-      <IconLink
-        id=""
-        src={downloadIcon.src}
-        href="https://raw.githubusercontent.com/b-x-wu/resume/refs/heads/main/resume.pdf"
-        aria-label="Download resume"
-        rel="noopener noreferrer"
-        target="_blank"
-        color="enabled"
-      />
+      <div class="pronouns">(she/her)</div>
     </div>
 
     <section class="section">
       <h2 class="sectionTitle">Work Experience</h2>
       <ExperienceSection header="Patreon">
         <Experience
-          title="Software Engineer"
-          dates="September 2025 - Today"
+          title="Senior Software Engineer"
+          organization="Frontend Platform Team"
+          dates="July 2026 - Today"
           bulletPoints={["We'll see how it goes :)!"]}
+        />
+        <Experience
+          title="Software Engineer"
+          organization="Frontend Platform Team"
+          dates="September 2025 - July 2026"
+          bulletPoints={["Lol i need to write this"]}
         />
       </ExperienceSection>
       <ExperienceSection header="Amazon">
         <Experience
           title="Software Development Engineer II"
-          dates="March 2025 - June 2025"
+          dates="March 2025 - August 2025"
           organization="Amazon Private Brands"
           bulletPoints={[
             "Coordinated system design proposals across three teams of engineers to build AI solutions for processing hundreds of pages of legal documentation",
@@ -111,14 +118,11 @@ import Layout from "~/layouts/Layout.astro";
       <Experience
         subtitle="This website!"
         bulletPoints={[
-          "Technologies used: Node.js, Webpack, React, Typescript, Tailwind CSS",
+          "Technologies used: Astro, GitHub Actions, PostCSS, WebGL",
+          "Be sure to check out the other projects on this website too!",
         ]}
       >
-        <ExperienceTitleLink
-          slot="title"
-          href="/"
-          title="b-x-wu.{github.io,online}"
-        />
+        <ExperienceTitleLink slot="title" href="/" title="b-x-wu.github.io" />
       </Experience>
       <Experience
         subtitle="A command-line tool to create lightweight React environments"
@@ -134,7 +138,7 @@ import Layout from "~/layouts/Layout.astro";
       </Experience>
       <Experience
         subtitle="A customizable visual novel reskin for the terminal"
-        bulletPoints={["Technologies used: C#, Unity, .NET"]}
+        bulletPoints={["Technologies used: C#, Unity, .NET, PowerShell"]}
       >
         <ExperienceTitleLink
           slot="title"
@@ -155,30 +159,24 @@ import Layout from "~/layouts/Layout.astro";
 
   .header {
     display: flex;
-    flex-direction: row;
-    justify-content: space-between;
+    flex-direction: column;
+    row-gap: 8px;
   }
 
   .nameBlock {
     display: flex;
-    flex-direction: column;
-    row-gap: 8px;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
   }
 
   .name {
     font-size: var(--font-xl);
     font-weight: bold;
-    line-height: 2.5rem;
   }
 
   .pronouns {
     color: var(--color-muted);
-  }
-
-  .downloadIcon {
-    background-color: var(--color-text);
-    height: 20px;
-    width: 20px;
   }
 
   .section {
@@ -190,6 +188,5 @@ import Layout from "~/layouts/Layout.astro";
   .sectionTitle {
     font-size: var(--font-lg);
     font-weight: bold;
-    line-height: 2.25rem;
   }
 </style>
