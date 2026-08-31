@@ -15,7 +15,7 @@ const hasTitleSlot = Astro.slots.has("title");
 
 <div class="root">
   <div class="header">
-    {hasTitleSlot ? <slot name="title" /> : <div class="title">{title}</div>}
+    {hasTitleSlot ? <slot name="title" /> : <h3 class="title">{title}</h3>}
     {dates && <div class="dates">{dates}</div>}
   </div>
   {organization && <div class="organization">@ {organization}</div>}
@@ -52,18 +52,16 @@ const hasTitleSlot = Astro.slots.has("title");
   .title {
     font-size: var(--font-sm);
     font-weight: bold;
-    line-height: 1.75rem;
   }
 
   .dates {
-    font-size: var(--font-xs);
-    line-height: 1.25rem;
+    display: none;
   }
 
   @media (--md) {
     .dates {
+      display: block;
       font-size: var(--font-sm);
-      line-height: 1.75rem;
     }
   }
 

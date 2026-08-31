@@ -10,8 +10,12 @@ const { title, href } = Astro.props;
 ---
 
 <a class="root" href={href}>
-  <span class="title">{title}</span>
-  <span class="bg-clip icon" style={{ "--bg-image": `url(${linkIcon.src})` }} />
+  <h3 class="title">{title}</h3>
+  <span
+    aria-hidden
+    class="bg-clip icon"
+    style={{ "--bg-image": `url(${linkIcon.src})` }}
+  />
 </a>
 
 <style>
@@ -29,9 +33,8 @@ const { title, href } = Astro.props;
   }
 
   .title {
-    font-size: var(--font-md);
+    font-size: var(--font-sm);
     font-weight: bold;
-    line-height: 1.75rem;
     flex-shrink: 0;
   }
 
