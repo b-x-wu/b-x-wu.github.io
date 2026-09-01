@@ -33,6 +33,37 @@ const ProjectComponent = astroInstance.default;
 ---
 
 <Layout title={`b-x-wu | ${title}`}>
-  <ProjectComponent />
-  <slot />
+    <ProjectComponent />
+    <div role="separator" class="divider">~~~</div>
+    <section class="description">
+      <slot />
+    </section>
 </Layout>
+
+<style>
+  .divider {
+    width: 100%;
+    text-align: center;
+    margin: 32px 0;
+  }
+
+  .description {
+    display: flex;
+    flex-direction: column;
+    row-gap: 32px;
+  }
+
+  .description :global(astro-slot) {
+    display: contents;
+  }
+
+  .description :global(a) {
+    color: var(--color-enabled);
+    text-decoration: none;
+  }
+
+  .description :global(a:hover) {
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+</style>
