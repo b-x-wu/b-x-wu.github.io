@@ -1,4 +1,4 @@
-import { getById, killEvent } from "~/lib/utils";
+import { getById, killEvent } from "~/lib/dom";
 
 export interface MenuItemProps {
   label: string;

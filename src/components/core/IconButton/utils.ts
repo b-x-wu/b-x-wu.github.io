@@ -1,4 +1,4 @@
-import { getById } from "~/lib/utils";
+import { getById } from "~/lib/dom";
 import type { ColorToken } from "~/styles/tokens";
 
 export type IconButtonProps = {
