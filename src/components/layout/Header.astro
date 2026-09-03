@@ -119,7 +119,7 @@ type Props = Record<string, never>;
     getNormalizedTheme,
     motionStore,
     themeStore,
-  } from "~/lib/store";
+  } from "~/lib/globalStore";
   import { getById } from "~/lib/utils";
 
   themeStore.subscribe((value) => {
