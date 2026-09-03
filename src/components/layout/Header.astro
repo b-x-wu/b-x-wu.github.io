@@ -120,7 +120,7 @@ type Props = Record<string, never>;
     motionStore,
     themeStore,
   } from "~/lib/globalStore";
-  import { getById } from "~/lib/utils";
+  import { getById } from "~/lib/dom";
 
   themeStore.subscribe((value) => {
     const theme = getNormalizedTheme(value);
