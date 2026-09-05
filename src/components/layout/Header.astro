@@ -112,6 +112,7 @@ type Props = Record<string, never>;
   import reducedMotionIcon from "~/assets/icons/reduced-motion.svg";
   import { updateIconButton } from "~/components/core/IconButton/utils";
   import { createMenu, updateMenuItem } from "~/components/core/Menu/utils";
+  import { getById } from "~/lib/dom";
   import {
     contrastStore,
     getNormalizedContrastMode,
@@ -120,7 +121,6 @@ type Props = Record<string, never>;
     motionStore,
     themeStore,
   } from "~/lib/globalStore";
-  import { getById } from "~/lib/dom";
 
   themeStore.subscribe((value) => {
     const theme = getNormalizedTheme(value);
