@@ -3,7 +3,7 @@ import type { Optional } from "type-fest";
 import { Color } from "~/lib/color";
 
 enum Mode {
-  PENCIL,
+  DRAW,
   ERASER,
 }
 
@@ -14,8 +14,8 @@ export interface State {
 }
 
 export const stateStore = map<State>({
-  mode: Mode.PENCIL,
-  pixels: Array(16).fill(Array(16).fill(undefined)),
+  mode: Mode.DRAW,
+  pixels: Array.from({ length: 16 }, () => new Array(16).fill(undefined)),
   color: Color.fromRgb({ red: 0, green: 0, blue: 0 }),
 });
 
@@ -50,4 +50,17 @@ export const renderCanvas = (canvas: HTMLCanvasElement, state: State) => {
       );
     }
   }
+};
+
+export const modifyAt = (x: number, y: number) => {
+  if (x < 0 || x >= 16 || y < 0 || y >= 16) {
+    return;
+  }
+
+  const { pixels, mode, color } = stateStore.get();
+
+  const modifiedPixels = pixels.map((row) => [...row]);
+  modifiedPixels[y][x] = mode === Mode.ERASER ? undefined : color;
+
+  stateStore.setKey("pixels", modifiedPixels);
 };
