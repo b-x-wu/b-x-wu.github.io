@@ -1,5 +1,66 @@
 ---
+import eraserIcon from "~/assets/icons/eraser.svg";
+import pencilIcon from "~/assets/icons/pencil.svg";
+import IconButton from "~/components/core/IconButton/IconButton.astro";
 import Canvas from "./Canvas.astro";
 ---
 
+<div class="tools">
+  <div class="controls">
+    <IconButton
+      aria-label="Enable draw mode"
+      src={pencilIcon.src}
+      color="text"
+      id="draw-mode-button"
+    />
+    <IconButton
+      aria-label="Enable eraser mode"
+      src={eraserIcon.src}
+      color="muted"
+      id="erase-mode-button"
+    />
+  </div>
+</div>
 <Canvas />
+
+<style>
+  .tools {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin: 16px 0;
+  }
+
+  .controls {
+    display: flex;
+    flex-direction: row;
+    gap: 16px;
+  }
+</style>
+
+<script>
+  import { listenKeys } from "nanostores";
+  import { updateIconButton } from "~/components/core/IconButton/utils";
+  import { getById } from "~/lib/dom";
+  import { Mode, stateStore } from ".";
+
+  const drawModeButton = getById("draw-mode-button");
+  drawModeButton.addEventListener("click", () => {
+    stateStore.setKey("mode", Mode.DRAW);
+  });
+
+  const eraseModeButton = getById("erase-mode-button");
+  eraseModeButton.addEventListener("click", () => {
+    stateStore.setKey("mode", Mode.ERASE);
+  });
+
+  listenKeys(stateStore, ["mode"], (state) => {
+    updateIconButton("draw-mode-button", {
+      color: state.mode === Mode.DRAW ? "text" : "muted",
+    });
+
+    updateIconButton("erase-mode-button", {
+      color: state.mode === Mode.ERASE ? "text" : "muted",
+    });
+  });
+</script>
