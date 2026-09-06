@@ -14,12 +14,16 @@ type Props = Record<string, never>;
     justify-items: center;
     align-items: center;
   }
+
+  canvas {
+    touch-action: none;
+  }
 </style>
 
 <script>
   import { listenKeys } from "nanostores";
   import { getById } from "~/lib/dom";
-  import { renderCanvas, stateStore } from ".";
+  import { modifyAt, renderCanvas, stateStore } from ".";
 
   const canvas = getById<HTMLCanvasElement>("pixel-svg-maker-canvas");
   const container = getById("pixel-svg-maker-canvas-container");
@@ -35,5 +39,39 @@ type Props = Record<string, never>;
   resizeObserver.observe(container);
   listenKeys(stateStore, ["pixels"], (state) => {
     renderCanvas(canvas, state);
+  });
+
+  const modifyAtCanvasPosition = (canvasX: number, canvasY: number) => {
+    const rect = canvas.getBoundingClientRect();
+    const clickX = canvasX - rect.left;
+    const clickY = canvasY - rect.top;
+
+    const pixelSideLength = canvas.width / 16;
+    const pixelX = Math.floor(clickX / pixelSideLength);
+    const pixelY = Math.floor(clickY / pixelSideLength);
+
+    modifyAt(pixelX, pixelY);
+  };
+
+  const touches = new Set<number>();
+  canvas.addEventListener("pointerdown", (e) => {
+    const { pageX, pageY, pointerId } = e;
+    touches.add(pointerId);
+    modifyAtCanvasPosition(pageX, pageY);
+  });
+
+  canvas.addEventListener("pointercancel", (e) => {
+    const { pointerId } = e;
+    touches.has(pointerId) && touches.delete(pointerId);
+  });
+
+  canvas.addEventListener("pointermove", (e) => {
+    const { pageX, pageY, pointerId } = e;
+    touches.has(pointerId) && modifyAtCanvasPosition(pageX, pageY);
+  });
+
+  canvas.addEventListener("pointerup", (e) => {
+    const { pointerId } = e;
+    touches.has(pointerId) && touches.delete(pointerId);
   });
 </script>
