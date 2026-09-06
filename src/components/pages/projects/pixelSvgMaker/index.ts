@@ -2,9 +2,9 @@ import { map } from "nanostores";
 import type { Optional } from "type-fest";
 import { Color } from "~/lib/color";
 
-enum Mode {
+export enum Mode {
   DRAW,
-  ERASER,
+  ERASE,
 }
 
 export interface State {
@@ -34,6 +34,7 @@ export const renderCanvas = (canvas: HTMLCanvasElement, state: State) => {
           return color.asRgbString();
         }
 
+        // TODO: do we wanna tokenize these raw colors?
         if ((x + y) % 2 === 0) {
           return "#eaeaea";
         }
@@ -60,7 +61,7 @@ export const modifyAt = (x: number, y: number) => {
   const { pixels, mode, color } = stateStore.get();
 
   const modifiedPixels = pixels.map((row) => [...row]);
-  modifiedPixels[y][x] = mode === Mode.ERASER ? undefined : color;
+  modifiedPixels[y][x] = mode === Mode.ERASE ? undefined : color;
 
   stateStore.setKey("pixels", modifiedPixels);
 };
