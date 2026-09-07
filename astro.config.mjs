@@ -19,4 +19,18 @@ export default defineConfig({
       },
     },
   ],
+  vite: {
+    resolve: {
+      extensions: [
+        ".astro",
+        ".mjs",
+        ".js",
+        ".mts",
+        ".ts",
+        ".jsx",
+        ".tsx",
+        ".json",
+      ],
+    },
+  },
 });
