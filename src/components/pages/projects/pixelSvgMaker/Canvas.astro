@@ -23,10 +23,43 @@ type Props = Record<string, never>;
 <script>
   import { listenKeys } from "nanostores";
   import { getById } from "~/lib/dom";
-  import { modifyAt, renderCanvas, stateStore } from ".";
+  import { pixelsForEach } from "./pixels";
+  import type { State } from "./state";
+  import { modifyAt, stateStore } from "./state";
 
   const canvas = getById<HTMLCanvasElement>("pixel-svg-maker-canvas");
   const container = getById("pixel-svg-maker-canvas-container");
+
+  export const renderCanvas = (canvas: HTMLCanvasElement, state: State) => {
+    const context = canvas.getContext("2d");
+    if (context === null) {
+      return;
+    }
+
+    const pixelSideLength = context.canvas.width / 16;
+    pixelsForEach(state.pixels, (color, { x, y }) => {
+      const computeFillStyle = () => {
+        if (color !== undefined) {
+          return color.asRgbString();
+        }
+
+        // TODO: do we wanna tokenize these raw colors?
+        if ((x + y) % 2 === 0) {
+          return "#eaeaea";
+        }
+
+        return "#dadada";
+      };
+
+      context.fillStyle = computeFillStyle();
+      context.fillRect(
+        x * pixelSideLength,
+        y * pixelSideLength,
+        pixelSideLength,
+        pixelSideLength,
+      );
+    });
+  };
 
   const resizeObserver = new ResizeObserver((entries) => {
     const container = entries[0];

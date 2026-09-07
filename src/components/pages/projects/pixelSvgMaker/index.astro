@@ -65,7 +65,8 @@ import Canvas from "./Canvas.astro";
   import { updateIconButton } from "~/components/core/IconButton/utils";
   import { updateIconLink } from "~/components/core/IconLink/utils";
   import { getById } from "~/lib/dom";
-  import { Mode, stateStore, svgStringStore } from ".";
+  import { Mode, stateStore } from "./state";
+  import { svgStringStore } from "./svg";
 
   const drawModeButton = getById("draw-mode-button");
   drawModeButton.addEventListener("click", () => {
