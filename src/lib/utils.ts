@@ -5,3 +5,9 @@ export const pipe = <T>(...args: ((input: T) => T)[]): ((input: T) => T) => {
     return (input) => fn(acc(input));
   }, identity);
 };
+
+export const isNonNull = <T, NonNullableT extends NonNullable<T>>(
+  arg: T,
+): arg is NonNullableT => {
+  return arg !== undefined && arg !== null;
+};
