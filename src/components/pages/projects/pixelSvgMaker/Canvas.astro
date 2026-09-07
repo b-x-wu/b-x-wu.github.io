@@ -25,7 +25,7 @@ type Props = Record<string, never>;
   import { getById } from "~/lib/dom";
   import { pixelsForEach } from "./pixels";
   import type { State } from "./state";
-  import { modifyAt, stateStore } from "./state";
+  import { addToHistory, modifyAt, stateStore } from "./state";
 
   const canvas = getById<HTMLCanvasElement>("pixel-svg-maker-canvas");
   const container = getById("pixel-svg-maker-canvas-container");
@@ -95,7 +95,10 @@ type Props = Record<string, never>;
 
   canvas.addEventListener("pointercancel", (e) => {
     const { pointerId } = e;
-    touches.has(pointerId) && touches.delete(pointerId);
+    if (touches.has(pointerId)) {
+      touches.delete(pointerId);
+      addToHistory();
+    }
   });
 
   canvas.addEventListener("pointermove", (e) => {
@@ -105,6 +108,9 @@ type Props = Record<string, never>;
 
   canvas.addEventListener("pointerup", (e) => {
     const { pointerId } = e;
-    touches.has(pointerId) && touches.delete(pointerId);
+    if (touches.has(pointerId)) {
+      touches.delete(pointerId);
+      addToHistory();
+    }
   });
 </script>
