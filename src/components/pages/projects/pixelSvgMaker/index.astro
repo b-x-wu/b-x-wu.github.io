@@ -1,7 +1,10 @@
 ---
+import clipboardIcon from "~/assets/icons/clipboard.svg";
+import downloadIcon from "~/assets/icons/download.svg";
 import eraserIcon from "~/assets/icons/eraser.svg";
 import pencilIcon from "~/assets/icons/pencil.svg";
 import IconButton from "~/components/core/IconButton/IconButton.astro";
+import IconLink from "~/components/core/IconLink/IconLink.astro";
 import Canvas from "./Canvas.astro";
 ---
 
@@ -20,6 +23,19 @@ import Canvas from "./Canvas.astro";
       id="erase-mode-button"
     />
   </div>
+  <div class="downloads">
+    <IconLink
+      aria-label="Download pixel art as SVG"
+      src={downloadIcon.src}
+      id="download-svg-anchor"
+      href=""
+    />
+    <IconButton
+      aria-label="Copy pixel art to clipboard as SVG"
+      src={clipboardIcon.src}
+      id="copy-svg-button"
+    />
+  </div>
 </div>
 <Canvas />
 
@@ -36,13 +52,20 @@ import Canvas from "./Canvas.astro";
     flex-direction: row;
     gap: 16px;
   }
+
+  .downloads {
+    display: flex;
+    flex-direction: row;
+    gap: 16px;
+  }
 </style>
 
 <script>
   import { listenKeys } from "nanostores";
   import { updateIconButton } from "~/components/core/IconButton/utils";
+  import { updateIconLink } from "~/components/core/IconLink/utils";
   import { getById } from "~/lib/dom";
-  import { Mode, stateStore } from ".";
+  import { Mode, stateStore, svgStringStore } from ".";
 
   const drawModeButton = getById("draw-mode-button");
   drawModeButton.addEventListener("click", () => {
@@ -61,6 +84,18 @@ import Canvas from "./Canvas.astro";
 
     updateIconButton("erase-mode-button", {
       color: state.mode === Mode.ERASE ? "text" : "muted",
+    });
+  });
+
+  getById("copy-svg-button").addEventListener("click", () => {
+    navigator.clipboard.writeText(svgStringStore.get());
+  });
+
+  svgStringStore.listen((svgString) => {
+    updateIconLink("download-svg-anchor", {
+      href: URL.createObjectURL(
+        new Blob([svgString], { type: "image/svg+xml" }),
+      ),
     });
   });
 </script>
