@@ -29,6 +29,7 @@ import Canvas from "./Canvas.astro";
       color="text"
       id="undo-history-button"
     />
+    <input id="pixel-color-input" class="color-input" type="color">
   </div>
   <div class="downloads">
     <IconLink
@@ -60,6 +61,27 @@ import Canvas from "./Canvas.astro";
     gap: 16px;
   }
 
+  .color-input {
+    height: 24px;
+    width: 24px;
+    padding: 0;
+    border: 1px solid var(--color-text);
+    background-color: transparent;
+    cursor: pointer;
+  }
+
+  .color-input::-webkit-color-swatch-wrapper {
+    padding: 0;
+  }
+
+  .color-input::-webkit-color-swatch {
+    border: none;
+  }
+
+  .color-input::-moz-color-swatch {
+    border: none;
+  }
+
   .downloads {
     display: flex;
     flex-direction: row;
@@ -71,6 +93,7 @@ import Canvas from "./Canvas.astro";
   import { listenKeys } from "nanostores";
   import { updateIconButton } from "~/components/core/IconButton/utils";
   import { updateIconLink } from "~/components/core/IconLink/utils";
+  import { Color } from "~/lib/color";
   import { getById } from "~/lib/dom";
   import { Mode, stateStore, undoFromHistory } from "./state";
   import { svgStringStore } from "./svg";
@@ -108,4 +131,14 @@ import Canvas from "./Canvas.astro";
   });
 
   getById("undo-history-button").addEventListener("click", undoFromHistory);
+
+  const colorInput = getById<HTMLInputElement>("pixel-color-input");
+  colorInput.addEventListener("change", (e) => {
+    const value = (e.currentTarget as HTMLInputElement).value;
+    stateStore.setKey("color", Color.fromHexString(value));
+  });
+
+  listenKeys(stateStore, ["color"], (state) => {
+    colorInput.value = state.color.asHexString();
+  });
 </script>
