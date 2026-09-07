@@ -3,6 +3,7 @@ import clipboardIcon from "~/assets/icons/clipboard.svg";
 import downloadIcon from "~/assets/icons/download.svg";
 import eraserIcon from "~/assets/icons/eraser.svg";
 import pencilIcon from "~/assets/icons/pencil.svg";
+import undoIcon from "~/assets/icons/undo.svg";
 import IconButton from "~/components/core/IconButton/IconButton.astro";
 import IconLink from "~/components/core/IconLink/IconLink.astro";
 import Canvas from "./Canvas.astro";
@@ -21,6 +22,12 @@ import Canvas from "./Canvas.astro";
       src={eraserIcon.src}
       color="muted"
       id="erase-mode-button"
+    />
+    <IconButton
+      aria-label="Undo"
+      src={undoIcon.src}
+      color="text"
+      id="undo-history-button"
     />
   </div>
   <div class="downloads">
@@ -65,7 +72,7 @@ import Canvas from "./Canvas.astro";
   import { updateIconButton } from "~/components/core/IconButton/utils";
   import { updateIconLink } from "~/components/core/IconLink/utils";
   import { getById } from "~/lib/dom";
-  import { Mode, stateStore } from "./state";
+  import { Mode, stateStore, undoFromHistory } from "./state";
   import { svgStringStore } from "./svg";
 
   const drawModeButton = getById("draw-mode-button");
@@ -99,4 +106,6 @@ import Canvas from "./Canvas.astro";
       ),
     });
   });
+
+  getById("undo-history-button").addEventListener("click", undoFromHistory);
 </script>
