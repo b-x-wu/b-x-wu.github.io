@@ -1,0 +1,54 @@
+---
+import checkmarkIcon from "~/assets/icons/checkmark.svg";
+import type { OptionProps } from "./utils";
+
+type Props = OptionProps;
+
+const { label, value, id } = Astro.props;
+---
+
+<div
+  role="option"
+  id={id}
+  class="option"
+  data-label={label}
+  data-value={value}
+  aria-selected="false"
+>
+  <span class="label"> {label} </span>
+  <span
+    class:list={["bg-clip", "check"]}
+    style={{ "--bg-image": `url(${checkmarkIcon.src})` }}
+    aria-hidden="true"
+  />
+</div>
+
+<style>
+  .option {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    column-gap: 16px;
+    height: 24px;
+    min-width: max-content;
+    padding-inline: 8px;
+    cursor: pointer;
+  }
+
+  .check {
+    background-color: var(--color-text);
+    height: 100%;
+    width: 16px;
+    visibility: hidden;
+  }
+
+  .option[aria-selected="true"] .check {
+    visibility: visible;
+  }
+
+  .focus .label {
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+</style>
