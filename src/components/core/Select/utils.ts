@@ -274,7 +274,7 @@ class Select<T extends string = string> {
 
   private getActionFromKeyboardEvent(e: KeyboardEvent): SelectAction | null {
     const { key, altKey } = e;
-    if (!this.isOpen() && key === 'ArrowUp') {
+    if (!this.isOpen() && key === "ArrowUp") {
       return SelectAction.First;
     }
 

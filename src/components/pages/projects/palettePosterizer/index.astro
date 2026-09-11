@@ -1,0 +1,23 @@
+---
+import ImageUploader from "./ImageUploader.astro";
+---
+
+<div class="palette-posterizer"><ImageUploader /></div>
+
+<style>
+  .palette-posterizer {
+    display: flex;
+    flex-direction: column;
+    row-gap: 8px;
+  }
+</style>
+
+<script>
+  import { listenKeys } from "nanostores";
+  import { getById } from "~/lib/dom";
+  import { stateStore } from "./state";
+
+  listenKeys(stateStore, ["image"], ({ image }) => {
+    getById("palette-posterizer-image-uploader").hidden = image !== undefined;
+  });
+</script>
