@@ -2,15 +2,19 @@
 interface Props {
   id: string;
   placement?: "left" | "right";
+  maxHeight?: string;
 }
 
-const { id, placement = "left" } = Astro.props;
+const { id, placement = "left", maxHeight } = Astro.props;
 ---
 
 <ul
   role="menu"
   id={id}
-  class:list={[{ placementLeft: placement === 'left', placementRight: placement === "right" }]}
+  style={{ '--Menu-maxHeight': maxHeight }}
+  class:list={[
+    { placementLeft: placement === "left", placementRight: placement === "right" },
+  ]}
 >
   <slot />
 </ul>
@@ -25,6 +29,8 @@ const { id, placement = "left" } = Astro.props;
     display: flex;
     flex-direction: column;
     padding-inline-start: 0;
+    max-height: var(--Menu-maxHeight, 512px);
+    overflow-y: auto;
   }
 
   .placementRight {

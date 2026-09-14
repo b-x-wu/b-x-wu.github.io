@@ -16,6 +16,7 @@ const { label, iconSrc, id } = Astro.props;
     aria-hidden
   />
   <span class="label"> {label} </span>
+  <span class="trailing"><slot name="trailing" /></span>
 </li>
 
 <style>
@@ -39,8 +40,18 @@ const { label, iconSrc, id } = Astro.props;
     width: 20px;
   }
 
+  .label {
+    flex-shrink: 0;
+  }
+
   .focus .label {
     text-decoration: underline;
     text-underline-offset: 2px;
+  }
+
+  /* trailing content may shrink (and handle its own overflow) instead */
+  .trailing {
+    margin-inline-start: auto;
+    min-width: 0;
   }
 </style>

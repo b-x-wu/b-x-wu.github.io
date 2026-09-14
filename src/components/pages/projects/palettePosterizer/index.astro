@@ -1,9 +1,14 @@
 ---
 import ImageUploader from "./ImageUploader.astro";
+import PalettePicker from "./PalettePicker.astro";
 import WebGlCanvas from "./WebGlCanvas.astro";
 ---
 
-<div class="palette-posterizer"><ImageUploader /><WebGlCanvas /></div>
+<div class="palette-posterizer">
+  <ImageUploader />
+  <WebGlCanvas />
+  <PalettePicker />
+</div>
 
 <style>
   .palette-posterizer {
