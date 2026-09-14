@@ -16,7 +16,7 @@ type Props = Record<string, never>;
   import vertexShaderSource from "~/assets/shaders/palette-posterizer/vertex-shader.glsl?raw";
   import { getById } from "~/lib/dom";
   import { stateStore } from "./state";
-  import { ColorReducerType, getFragmentShader } from "./utils";
+  import { ColorReducer, getFragmentShader } from "./utils";
   import {
     initArrayBuffer,
     initProgram,
@@ -123,7 +123,7 @@ type Props = Record<string, never>;
     const texCoordLocation = gl.getAttribLocation(program, "a_texCoord");
     setAttributeToArrayBuffer(gl, texCoordBuffer, texCoordLocation);
 
-    if (colorReducer === ColorReducerType.MIXBOX) {
+    if (colorReducer === ColorReducer.MIXBOX) {
       gl.activeTexture(gl.TEXTURE1);
       gl.bindTexture(gl.TEXTURE_2D, mixbox.lutTexture(gl));
       gl.uniform1i(gl.getUniformLocation(program, "mixbox_lut"), 0);

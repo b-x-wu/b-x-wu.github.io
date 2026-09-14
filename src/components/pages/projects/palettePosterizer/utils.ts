@@ -11,7 +11,7 @@ import preserveHueColorReducerSource from "~/assets/shaders/palette-posterizer/c
 import preserveSlColorReducerSource from "~/assets/shaders/palette-posterizer/color-reducers/preserve-sl.glsl?raw";
 import fragmentShaderSourceTemplate from "~/assets/shaders/palette-posterizer/fragment-shader.glsl.template?raw";
 
-export enum ColorMetricType {
+export enum ColorMetric {
   EUCLIDEAN_RGB = "Euclidean RGB",
   WEIGHTED_EUCLIDEAN_RGB = "Weighted Euclidean RGB",
   DELTA_E = "Delta E",
@@ -20,7 +20,7 @@ export enum ColorMetricType {
   LIGHTNESS = "Lightness Difference",
 }
 
-export enum ColorReducerType {
+export enum ColorReducer {
   PALETTE = "Render palette color",
   PRESERVE_SL = "Preserve saturation and lightness",
   PRESERVE_HUE = "Preserve hue",
@@ -28,27 +28,26 @@ export enum ColorReducerType {
   MIXBOX = "Mixbox average",
 }
 
-export const COLOR_METRIC_TO_SOURCE: Record<ColorMetricType, string> = {
-  [ColorMetricType.EUCLIDEAN_RGB]: euclideanRgbColorMetricSource,
-  [ColorMetricType.WEIGHTED_EUCLIDEAN_RGB]:
-    weightedEuclideanRgbColorMetricSource,
-  [ColorMetricType.DELTA_E]: deltaEColorMetricSource,
-  [ColorMetricType.HUE]: hueColorMetricSource,
-  [ColorMetricType.SATURATION]: saturationColorMetricSource,
-  [ColorMetricType.LIGHTNESS]: lightnessColorMetricSource,
+export const COLOR_METRIC_TO_SOURCE: Record<ColorMetric, string> = {
+  [ColorMetric.EUCLIDEAN_RGB]: euclideanRgbColorMetricSource,
+  [ColorMetric.WEIGHTED_EUCLIDEAN_RGB]: weightedEuclideanRgbColorMetricSource,
+  [ColorMetric.DELTA_E]: deltaEColorMetricSource,
+  [ColorMetric.HUE]: hueColorMetricSource,
+  [ColorMetric.SATURATION]: saturationColorMetricSource,
+  [ColorMetric.LIGHTNESS]: lightnessColorMetricSource,
 };
 
-export const COLOR_REDUCER_TO_SOURCE: Record<ColorReducerType, string> = {
-  [ColorReducerType.PALETTE]: paletteColorReducerSource,
-  [ColorReducerType.AVERAGE]: averageColorReducerSource,
-  [ColorReducerType.PRESERVE_HUE]: preserveHueColorReducerSource,
-  [ColorReducerType.PRESERVE_SL]: preserveSlColorReducerSource,
-  [ColorReducerType.MIXBOX]: mixboxColorReducerSource,
+export const COLOR_REDUCER_TO_SOURCE: Record<ColorReducer, string> = {
+  [ColorReducer.PALETTE]: paletteColorReducerSource,
+  [ColorReducer.AVERAGE]: averageColorReducerSource,
+  [ColorReducer.PRESERVE_HUE]: preserveHueColorReducerSource,
+  [ColorReducer.PRESERVE_SL]: preserveSlColorReducerSource,
+  [ColorReducer.MIXBOX]: mixboxColorReducerSource,
 };
 
 export const getFragmentShader = (
-  colorMetric: ColorMetricType,
-  colorReducer: ColorReducerType,
+  colorMetric: ColorMetric,
+  colorReducer: ColorReducer,
 ) =>
   fragmentShaderSourceTemplate
     .replaceAll(
