@@ -61,20 +61,16 @@ const { labelId, comboboxId, listboxId, placeholderId } = getSelectIds(id);
     flex-direction: row;
     align-items: center;
     column-gap: 12px;
-    height: 24px;
+    height: 32px;
+    padding: 8px;
     width: max-content;
     cursor: pointer;
+    border: 1px dashed var(--color-text);
   }
 
-  .trigger:hover .placeholder,
-  .trigger:focus-visible .placeholder {
+  .trigger:hover .placeholder {
     text-decoration: underline;
     text-underline-offset: 2px;
-  }
-
-  .trigger:focus-visible {
-    outline: 2px dashed var(--color-primary);
-    outline-offset: 2px;
   }
 
   .arrow {
@@ -91,7 +87,7 @@ const { labelId, comboboxId, listboxId, placeholderId } = getSelectIds(id);
   .listbox {
     z-index: 10;
     background-color: var(--color-bg);
-    border: 2px dotted var(--color-text);
+    border: 1px dotted var(--color-text);
     position: absolute;
     margin-block: 8px;
     display: none;
