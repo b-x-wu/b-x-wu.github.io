@@ -179,6 +179,8 @@ export class Menu {
       menuItemNode.addEventListener("focusout", () =>
         menuItemNode.classList.remove("focus"),
       );
+
+      menuItemNode.addEventListener("click", () => this.close());
     }
 
     // window event handler, for outside click
@@ -236,6 +238,7 @@ export class Menu {
       focusedMenuItem?.id ?? "",
     );
     focusedMenuItem?.classList.add("focus");
+    focusedMenuItem?.scrollIntoView({ block: "nearest" });
   }
 
   private activeMenuItemNode() {

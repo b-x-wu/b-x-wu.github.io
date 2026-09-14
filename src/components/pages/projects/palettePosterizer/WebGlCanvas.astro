@@ -4,6 +4,13 @@ type Props = Record<string, never>;
 
 <canvas id="palette-posterizer-canvas" hidden></canvas>
 
+<style>
+  canvas[hidden] {
+    height: 0;
+    width: 0;
+  }
+</style>
+
 <script>
   import mixbox from "mixbox";
   import vertexShaderSource from "~/assets/shaders/palette-posterizer/vertex-shader.glsl?raw";
