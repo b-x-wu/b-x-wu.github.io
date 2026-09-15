@@ -22,7 +22,7 @@ export function getBySelector<T extends HTMLElement = HTMLElement>(
     const node = document.querySelector(parentOrSelector);
 
     if (node === null) {
-      throw new Error(`No element found: ${optionalSelector}`);
+      throw new Error(`No element found: ${parentOrSelector}`);
     }
 
     return node as T;
@@ -36,7 +36,7 @@ export function getBySelector<T extends HTMLElement = HTMLElement>(
   const node = parentOrSelector.querySelector(optionalSelector);
   if (node === null) {
     throw new Error(
-      `No element found with parent ${parentOrSelector.toString()}: ${optionalSelector}`,
+      `No element found with parent ${parentOrSelector.tagName}: ${optionalSelector}`,
     );
   }
 

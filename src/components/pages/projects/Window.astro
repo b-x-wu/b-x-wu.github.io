@@ -16,8 +16,7 @@ const { title, description, link, target, rel } = Astro.props;
 <article class="window">
   <header class="titleBar">
     <h2 class="title">{title}</h2>
-    {
-      link && (
+    {link && (
         <IconLink
           aria-label={`Open ${title}`}
           src={linkIcon.src}
@@ -25,8 +24,7 @@ const { title, description, link, target, rel } = Astro.props;
           target={target}
           rel={rel}
         />
-      )
-    }
+      )}
   </header>
   <p class="description">{description}</p>
   <slot />
