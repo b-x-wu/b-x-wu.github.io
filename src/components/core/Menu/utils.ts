@@ -1,4 +1,9 @@
-import { getById, killEvent, watchPopupPlacement } from "~/lib/dom";
+import {
+  getById,
+  getBySelector,
+  killEvent,
+  watchPopupPlacement,
+} from "~/lib/dom";
 
 export interface MenuItemProps {
   label: string;
@@ -278,12 +283,8 @@ export const updateMenuItem = (
   { iconSrc, label }: Partial<MenuItemProps>,
 ): void => {
   const menuItem = getById(id);
-  const labelNode = menuItem.querySelector<HTMLElement>(".label");
-  const iconNode = menuItem.querySelector<HTMLElement>(".icon");
-
-  if (labelNode === null || iconNode === null) {
-    throw new Error();
-  }
+  const labelNode = getBySelector(menuItem, ".label");
+  const iconNode = getBySelector(menuItem, ".icon");
 
   if (iconSrc !== undefined) {
     iconNode.style.setProperty("--bg-image", `url(${iconSrc})`);

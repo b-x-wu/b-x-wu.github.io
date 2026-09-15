@@ -40,10 +40,9 @@ interface Props {
 </style>
 
 <script>
-  const dateEle = document.getElementById("date");
-  if (dateEle == null) {
-    throw new Error();
-  }
+  import { getById } from "~/lib/dom";
+
+  const dateEle = getById("date");
 
   dateEle.textContent = new Date().toUTCString();
 </script>

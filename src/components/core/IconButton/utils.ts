@@ -1,4 +1,4 @@
-import { getById } from "~/lib/dom";
+import { getById, getBySelector } from "~/lib/dom";
 import type { ColorToken } from "~/styles/tokens";
 
 export type IconButtonSize = "sm" | "md" | "lg";
@@ -18,11 +18,7 @@ export const updateIconButton = (
   { "aria-label": ariaLabel, src, color }: Partial<IconButtonProps>,
 ): void => {
   const button = getById(id);
-  const span = button.querySelector("span");
-
-  if (span === null) {
-    throw new Error();
-  }
+  const span = getBySelector(button, "span");
 
   if (src !== undefined) {
     span.style.setProperty("--bg-image", `url(${src})`);
