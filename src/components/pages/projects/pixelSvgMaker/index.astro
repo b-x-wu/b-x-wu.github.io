@@ -16,18 +16,24 @@ import Canvas from "./Canvas.astro";
       src={pencilIcon.src}
       color="text"
       id="draw-mode-button"
+      appearance="bordered"
+      size="md"
     />
     <IconButton
       aria-label="Enable eraser mode"
       src={eraserIcon.src}
       color="muted"
       id="erase-mode-button"
+      appearance="bordered"
+      size="md"
     />
     <IconButton
       aria-label="Undo"
       src={undoIcon.src}
       color="text"
       id="undo-history-button"
+      appearance="bordered"
+      size="md"
     />
     <input id="pixel-color-input" class="color-input" type="color">
   </div>
@@ -37,11 +43,15 @@ import Canvas from "./Canvas.astro";
       src={downloadIcon.src}
       id="download-svg-anchor"
       href=""
+      appearance="bordered"
+      size="md"
     />
     <IconButton
       aria-label="Copy pixel art to clipboard as SVG"
       src={clipboardIcon.src}
       id="copy-svg-button"
+      appearance="bordered"
+      size="md"
     />
   </div>
 </div>
@@ -52,18 +62,18 @@ import Canvas from "./Canvas.astro";
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    margin: 16px 0;
+    margin: 8px 0;
   }
 
   .controls {
     display: flex;
     flex-direction: row;
-    gap: 16px;
+    gap: 8px;
   }
 
   .color-input {
-    height: 24px;
-    width: 24px;
+    height: 32px;
+    width: 32px;
     padding: 0;
     border: 1px solid var(--color-text);
     background-color: transparent;
@@ -85,7 +95,7 @@ import Canvas from "./Canvas.astro";
   .downloads {
     display: flex;
     flex-direction: row;
-    gap: 16px;
+    gap: 8px;
   }
 </style>
 

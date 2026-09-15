@@ -29,7 +29,7 @@ export const updateIconButton = (
   }
 
   if (color !== undefined) {
-    span.style.setProperty("--icon-color", `var(--color-${color})`);
+    button.style.setProperty("--icon-color", `var(--color-${color})`);
   }
 
   if (ariaLabel !== undefined) {

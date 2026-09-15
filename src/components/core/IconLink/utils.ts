@@ -1,5 +1,12 @@
+import type {
+  IconButtonAppearance,
+  IconButtonSize,
+} from "~/components/core/IconButton/utils";
 import { getById } from "~/lib/dom";
 import type { ColorToken } from "~/styles/tokens";
+
+export type IconLinkSize = IconButtonSize;
+export type IconLinkAppearance = IconButtonAppearance;
 
 export type IconLinkProps = {
   "aria-label": string;
@@ -9,6 +16,8 @@ export type IconLinkProps = {
   rel?: string;
   target?: astroHTML.JSX.HTMLAttributeAnchorTarget;
   color?: ColorToken;
+  size?: IconLinkSize;
+  appearance?: IconLinkAppearance;
 };
 
 export const updateIconLink = (
@@ -16,18 +25,13 @@ export const updateIconLink = (
   { "aria-label": ariaLabel, src, color, href }: Partial<IconLinkProps>,
 ): void => {
   const link = getById(id);
-  const span = link.querySelector("span");
-
-  if (span === null) {
-    throw new Error();
-  }
 
   if (src !== undefined) {
-    span.style.setProperty("--bg-image", `url(${src})`);
+    link.style.setProperty("--bg-image", `url(${src})`);
   }
 
   if (color !== undefined) {
-    span.style.setProperty("--icon-color", `var(--color-${color})`);
+    link.style.setProperty("--icon-color", `var(--color-${color})`);
   }
 
   if (ariaLabel !== undefined) {

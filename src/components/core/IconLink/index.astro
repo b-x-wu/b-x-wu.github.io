@@ -1,15 +1,7 @@
 ---
-import type { ColorToken } from "~/styles/tokens";
+import type { IconLinkProps } from "./utils";
 
-type Props = {
-  "aria-label": string;
-  id: string;
-  src: string;
-  href: string;
-  rel?: string;
-  target?: astroHTML.JSX.HTMLAttributeAnchorTarget;
-  color?: ColorToken;
-};
+type Props = IconLinkProps;
 const {
   "aria-label": ariaLabel,
   src,
@@ -18,39 +10,82 @@ const {
   rel,
   target,
   color = "text",
+  size = "sm",
+  appearance = "ghosted",
 } = Astro.props;
 ---
 
 <a
-  class="root"
+  class:list={["root", `size-${size}`, `appearance-${appearance}`]}
   aria-label={ariaLabel}
   id={id}
   href={href}
   rel={rel}
   target={target}
+  style={{
+    "--bg-image": `url(${src})`,
+    "--icon-color": `var(--color-${color})`,
+  }}
 >
-  <span
-    class:list={["bg-clip", "icon"]}
-    style={{
-      "--bg-image": `url(${src})`,
-      "--icon-color": `var(--color-${color})`,
-    }}
-  />
+  <span class:list={["bg-clip", "icon"]} />
 </a>
 
 <style>
   .root {
     background-color: transparent;
-    height: 24px;
-    width: 24px;
     display: flex;
     align-items: center;
     justify-content: center;
   }
 
   .icon {
+    display: block;
     background-color: var(--icon-color);
-    height: 20px;
-    width: 20px;
+    height: var(--icon-size);
+    width: var(--icon-size);
+  }
+
+  .size-sm {
+    height: 24px;
+    width: 24px;
+  }
+
+  .size-sm.appearance-ghosted {
+    --icon-size: 20px;
+  }
+
+  .size-md {
+    height: 32px;
+    width: 32px;
+  }
+
+  .size-md.appearance-ghosted {
+    --icon-size: 24px;
+  }
+
+  .size-lg {
+    height: 40px;
+    width: 40px;
+    --icon-size: 28px;
+  }
+
+  .size-lg.appearance-ghosted {
+    --icon-size: 28px;
+  }
+
+  .appearance-bordered {
+    border: 1px solid var(--icon-color);
+  }
+
+  .size-sm.appearance-bordered {
+    --icon-size: 12px;
+  }
+
+  .size-md.appearance-bordered {
+    --icon-size: 16px;
+  }
+
+  .size-lg.appearance-bordered {
+    --icon-size: 16px;
   }
 </style>
