@@ -1,0 +1,193 @@
+---
+import downloadIcon from "~/assets/icons/download.svg";
+import IconLink from "~/components/core/IconLink";
+import Experience from "~/components/pages/resume/Experience.astro";
+import ExperienceSection from "~/components/pages/resume/ExperienceSection.astro";
+import ExperienceTitleLink from "~/components/pages/resume/ExperienceTitleLink.astro";
+import Layout from "~/layouts/Layout.astro";
+---
+
+<Layout title="b-x-wu | Resume">
+  <div class="resume">
+    <div class="header">
+      <div class="nameBlock">
+        <h1 class="name">Bridgette Wu</h1>
+        <IconLink
+          id=""
+          src={downloadIcon.src}
+          href="https://raw.githubusercontent.com/b-x-wu/resume/refs/heads/main/resume.pdf"
+          aria-label="Download resume"
+          rel="noopener noreferrer"
+          target="_blank"
+          size="md"
+          appearance="bordered"
+        />
+      </div>
+      <div class="pronouns">(she/her)</div>
+    </div>
+
+    <section class="section">
+      <h2 class="sectionTitle">Work Experience</h2>
+      <ExperienceSection header="Patreon">
+        <Experience
+          title="Senior Software Engineer"
+          dates="July 2026 - Today"
+          bulletPoints={["We'll see how it goes :)!"]}
+        />
+        <Experience
+          title="Software Engineer"
+          dates="September 2025 - July 2026"
+          bulletPoints={[
+            "Designed a company-wide initiative to link backend API types with frontend code, eliminating a common class of recurring production bugs and incidents",
+            "Led the rollout of automated accessibility testing and authored organizational auditing procedures ahead of legal compliance requirements",
+          ]}
+        />
+      </ExperienceSection>
+      <ExperienceSection header="Amazon">
+        <Experience
+          title="Software Development Engineer II"
+          dates="March 2025 - August 2025"
+          organization="Amazon Private Brands"
+          bulletPoints={[
+            "Coordinated system design proposals across three teams of engineers to build AI solutions for processing hundreds of pages of legal documentation",
+            "Developed automated product financial evaluation systems that drove supplier negotiations for hundreds of in-development products",
+          ]}
+        />
+        <Experience
+          title="Software Development Engineer"
+          dates="October 2023 - March 2025"
+          organization="Amazon Private Brands"
+          bulletPoints={[
+            "Designed and implemented a ticket routing system using React Router that collectively saved 200 days a year of ticket dwell time",
+            "Gathered stakeholder feedback to develop requirements and enhancements that eliminated user pain points responsible for 20 hours a week of churn",
+          ]}
+        />
+        <Experience
+          title="Software Development Intern"
+          dates="June 2022 - August 2022"
+          organization="Amazon Distribution and Fulfillment Services"
+          bulletPoints={[
+            "Created a web app with a back end written in Java and a front-end written in React using Typescript all deployed with AWS Cloud Development Kit",
+            "Delivered a 30-minute demo presentation to 20 clients and composed a three-page wiki article detailing the service for future developers",
+          ]}
+        />
+      </ExperienceSection>
+      <ExperienceSection header="Bit Project">
+        <Experience
+          title="Program Director"
+          dates="February 2021 - July 2021"
+          bulletPoints={[
+            "Oversaw a 5-person team through the development of a 9 week-long undergraduate level data science curriculum about applying NumPy, Pandas, and Scikit-learn to digital humanities",
+            "Directed a 5 week-long, 6-person focus group on the curriculum and converted collected feedback into deliverables",
+          ]}
+        />
+      </ExperienceSection>
+      <ExperienceSection header="New York University">
+        <Experience
+          title="Learning Assistant"
+          dates="January 2021 - December 2022"
+          organization="NYU University Learning Center"
+          bulletPoints={[
+            "Instructed 260 students per semester in one-on-one and group sessions in algorithms, data structures, discrete mathematical logic, and linear algebra",
+            "Developed internal tooling with a team of 4 in an Agile workflow and composed 12 pages of documentation on API usage and further development steps",
+          ]}
+        />
+        <Experience
+          title="Grader"
+          dates="August 2021 - December 2022"
+          organization="Courant Institute of Mathematical Sciences"
+          bulletPoints={[
+            "Evaluated 110 assignments per week per semester with detailed feedback in calculus, mathematical logic, and statistical analysis",
+            "Compiled monthly reports on student performance based on aggregated grading data and presented trends in understanding to professors and peers",
+          ]}
+        />
+      </ExperienceSection>
+    </section>
+
+    <section class="section">
+      <h2 class="sectionTitle">Education</h2>
+      <ExperienceSection header="New York University">
+        <Experience
+          title="BA in Math and Computer Science"
+          dates="August 2019 - December 2022"
+        />
+      </ExperienceSection>
+    </section>
+
+    <section class="section">
+      <h2 class="sectionTitle">Projects</h2>
+      <Experience
+        subtitle="This website!"
+        bulletPoints={[
+          "Technologies used: Astro, GitHub Actions, PostCSS, WebGL",
+          "Be sure to check out the other projects on this website too!",
+        ]}
+      >
+        <ExperienceTitleLink slot="title" href="/" title="b-x-wu.github.io" />
+      </Experience>
+      <Experience
+        subtitle="A command-line tool to create lightweight React environments"
+        bulletPoints={[
+          "Technologies used: Node.js, Webpack, Babel, React, Typescript",
+        ]}
+      >
+        <ExperienceTitleLink
+          slot="title"
+          href="https://www.npmjs.com/package/create-react-sandbox"
+          title="Create React Sandbox"
+        />
+      </Experience>
+      <Experience
+        subtitle="A customizable visual novel reskin for the terminal"
+        bulletPoints={["Technologies used: C#, Unity, .NET, PowerShell"]}
+      >
+        <ExperienceTitleLink
+          slot="title"
+          href="https://b-x-wu.itch.io/visual-novel-terminal"
+          title="Visual Novel Terminal"
+        />
+      </Experience>
+    </section>
+  </div>
+</Layout>
+
+<style>
+  .resume {
+    display: flex;
+    flex-direction: column;
+    row-gap: 24px;
+  }
+
+  .header {
+    display: flex;
+    flex-direction: column;
+    row-gap: 8px;
+  }
+
+  .nameBlock {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .name {
+    font-size: var(--font-xl);
+    font-weight: bold;
+  }
+
+  .pronouns {
+    color: var(--color-muted);
+  }
+
+  .section {
+    display: flex;
+    flex-direction: column;
+    row-gap: 24px;
+  }
+
+  .sectionTitle {
+    font-size: var(--font-lg);
+    font-weight: bold;
+  }
+</style>

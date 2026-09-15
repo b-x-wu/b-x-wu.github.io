@@ -1,3 +1,5 @@
-node_modules/
 dist/
-.idea/
+.astro/
+node_modules/
+.DS_Store
+.vscode/
