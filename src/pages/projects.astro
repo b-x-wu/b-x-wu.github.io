@@ -1,0 +1,197 @@
+---
+import createReactSandboxPreview from "~/assets/images/project-previews/create-react-sandbox-preview.gif";
+import palettePosterizationPreviewDark from "~/assets/images/project-previews/palette-posterization-preview-dark.png";
+import pixelSvgMakerPreviewDark from "~/assets/images/project-previews/pixel-svg-maker-preview-dark.png";
+import visualNovelTerminalPreview from "~/assets/images/project-previews/visual-novel-terminal-preview.gif";
+import Image from "~/components/core/Image";
+import Chat from "~/components/layout/Chat.astro";
+import Chatbox from "~/components/layout/Chatbox.astro";
+import Window from "~/components/pages/projects/Window.astro";
+import Layout from "~/layouts/Layout.astro";
+
+const CREATE_REACT_SANDBOX_URL =
+  "https://www.npmjs.com/package/create-react-sandbox";
+const VISUAL_NOVEL_TERMINAL_URL =
+  "https://bruce-x-wu.itch.io/visual-novel-terminal";
+---
+<Layout title="b-x-wu | Projects">
+  <Chat>
+    <Chatbox>here’s some stuff i've worked on in my free time</Chatbox>
+    <Chatbox>check it out !!</Chatbox>
+    <div class="projects">
+      <Window
+        title="Pixel SVG Maker"
+        description="Exporting pixel art to SVG"
+        link="/projects/pixel-svg-maker"
+      >
+        <a class="previewLink" href="/projects/pixel-svg-maker">
+          <Image
+            id="pixel-svg-maker-preview"
+            src={pixelSvgMakerPreviewDark.src}
+            alt="Pixel SVG Maker preview"
+            fallback="Loading Pixel SVG Maker preview..."
+            objectFit="cover"
+            objectPosition="top"
+          />
+        </a>
+      </Window>
+      <Window
+        title="Create React Sandbox"
+        description="Lightweight React environments"
+        link={CREATE_REACT_SANDBOX_URL}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <a
+          class="previewLink"
+          href={CREATE_REACT_SANDBOX_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <img
+            id="create-react-sandbox-preview-background"
+            class="previewBackground"
+            src={createReactSandboxPreview.src}
+            alt=""
+            aria-hidden="true"
+          >
+          <div class="previewOverlay" />
+          <Image
+            id="create-react-sandbox-preview"
+            src={createReactSandboxPreview.src}
+            alt="Create React Sandbox preview"
+            fallback="Loading Create React Sandbox preview..."
+            objectFit="contain"
+          />
+        </a>
+      </Window>
+      <Window
+        title="Visual Novel Terminal"
+        description="A customizable terminal reskin"
+        link={VISUAL_NOVEL_TERMINAL_URL}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <a
+          class="previewLink"
+          href={VISUAL_NOVEL_TERMINAL_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <Image
+            id="visual-novel-terminal-preview"
+            src={visualNovelTerminalPreview.src}
+            alt="Visual Novel Terminal preview"
+            fallback="Loading Visual Novel Terminal preview..."
+            objectFit="cover"
+            objectPosition="bottom"
+          />
+        </a>
+      </Window>
+      <Window
+        title="Palette Posterizer"
+        description="Customizable image posterization"
+        link="/projects/palette-posterizer"
+      >
+        <a class="previewLink" href="/projects/palette-posterizer">
+          <Image
+            id="palette-posterizer-preview"
+            src={palettePosterizationPreviewDark.src}
+            alt="Palette Posterizer preview"
+            fallback="Loading Palette Posterizer preview..."
+            objectFit="cover"
+          />
+        </a>
+      </Window>
+    </div>
+  </Chat>
+</Layout>
+
+<style>
+  .projects {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  @media (--md) {
+    .projects {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  .previewLink {
+    position: relative;
+    display: block;
+    height: 256px;
+  }
+
+  .previewBackground {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: fill;
+  }
+
+  .previewOverlay {
+    position: absolute;
+    inset: 0;
+    backdrop-filter: blur(4px);
+  }
+</style>
+
+<script>
+  import createReactSandboxPreview from "~/assets/images/project-previews/create-react-sandbox-preview.gif";
+  import createReactSandboxPreviewReducedMotion from "~/assets/images/project-previews/create-react-sandbox-preview-reduced-motion.png";
+  import palettePosterizationPreview from "~/assets/images/project-previews/palette-posterization-preview.png";
+  import palettePosterizationPreviewDark from "~/assets/images/project-previews/palette-posterization-preview-dark.png";
+  import pixelSvgMakerPreview from "~/assets/images/project-previews/pixel-svg-maker-preview.png";
+  import pixelSvgMakerPreviewDark from "~/assets/images/project-previews/pixel-svg-maker-preview-dark.png";
+  import visualNovelTerminalPreview from "~/assets/images/project-previews/visual-novel-terminal-preview.gif";
+  import visualNovelTerminalPreviewReducedMotion from "~/assets/images/project-previews/visual-novel-terminal-preview-reduced-motion.png";
+  import { updateImage } from "~/components/core/Image/utils";
+  import { getById } from "~/lib/dom";
+  import {
+    getNormalizedMotionMode,
+    getNormalizedTheme,
+    motionStore,
+    themeStore,
+  } from "~/lib/globalStore";
+
+  themeStore.subscribe((value) => {
+    const theme = getNormalizedTheme(value);
+    updateImage("pixel-svg-maker-preview", {
+      src:
+        theme === "dark"
+          ? pixelSvgMakerPreviewDark.src
+          : pixelSvgMakerPreview.src,
+    });
+    updateImage("palette-posterizer-preview", {
+      src:
+        theme === "dark"
+          ? palettePosterizationPreviewDark.src
+          : palettePosterizationPreview.src,
+    });
+  });
+
+  motionStore.subscribe((value) => {
+    const motionMode = getNormalizedMotionMode(value);
+    const isReducedMotion = motionMode === "reduced";
+    getById<HTMLImageElement>("create-react-sandbox-preview-background").src =
+      isReducedMotion
+        ? createReactSandboxPreviewReducedMotion.src
+        : createReactSandboxPreview.src;
+    updateImage("create-react-sandbox-preview", {
+      src: isReducedMotion
+        ? createReactSandboxPreviewReducedMotion.src
+        : createReactSandboxPreview.src,
+    });
+    updateImage("visual-novel-terminal-preview", {
+      src: isReducedMotion
+        ? visualNovelTerminalPreviewReducedMotion.src
+        : visualNovelTerminalPreview.src,
+    });
+  });
+</script>
