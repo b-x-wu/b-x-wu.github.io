@@ -1,5 +1,6 @@
 ---
 import type { AstroInstance, MarkdownLayoutProps } from "astro";
+import Divider from "~/components/core/Divider";
 import Layout from "~/layouts/Layout.astro";
 
 interface Frontmatter {
@@ -34,23 +35,11 @@ const ProjectComponent = astroInstance.default;
 
 <Layout title={`b-x-wu | ${title}`}>
   <ProjectComponent />
-  <hr class="divider">
+  <Divider />
   <section class="description"><slot /></section>
 </Layout>
 
 <style>
-  hr {
-    border: none;
-    margin: 32px 0;
-  }
-
-  hr::before {
-    content: "~~~";
-    display: block;
-    text-align: center;
-    color: var(--color-text);
-  }
-
   .description {
     display: flex;
     flex-direction: column;

@@ -9,9 +9,10 @@ interface Props {
   label: string;
   placement?: "left" | "right";
   placeholder: string;
+  maxHeight?: string;
 }
 
-const { id, label, placement = "left", placeholder } = Astro.props;
+const { id, label, placement = "left", placeholder, maxHeight } = Astro.props;
 const { labelId, comboboxId, listboxId, placeholderId } = getSelectIds(id);
 ---
 
@@ -45,6 +46,7 @@ const { labelId, comboboxId, listboxId, placeholderId } = getSelectIds(id);
       "listbox",
       { placementLeft: placement === "left", placementRight: placement === "right" },
     ]}
+    style={{ '--Select-maxHeight': maxHeight }}
   >
     <slot />
   </div>
@@ -65,7 +67,7 @@ const { labelId, comboboxId, listboxId, placeholderId } = getSelectIds(id);
     padding: 8px;
     width: max-content;
     cursor: pointer;
-    border: 1px dashed var(--color-text);
+    border: 1px solid var(--color-text);
   }
 
   .trigger:hover .placeholder {
@@ -89,10 +91,10 @@ const { labelId, comboboxId, listboxId, placeholderId } = getSelectIds(id);
     background-color: var(--color-bg);
     border: 1px dotted var(--color-text);
     position: absolute;
-    margin-block: 8px;
     display: none;
     flex-direction: column;
     padding-inline-start: 0;
+    max-height: var(--Select-maxHeight, 512px);
   }
 
   .select.open .listbox {

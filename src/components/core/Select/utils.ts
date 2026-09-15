@@ -1,4 +1,4 @@
-import { getById, killEvent } from "~/lib/dom";
+import { getById, killEvent, watchPopupPlacement } from "~/lib/dom";
 
 export interface OptionProps {
   label: string;
@@ -46,6 +46,7 @@ class Select<T extends string = string> {
   /** -1 when no option is active: a placeholder select the user has not navigated */
   private activeIndex: number = -1;
   private selectedIndex: number | null = null;
+  private unwatchPlacement: (() => void) | undefined;
 
   constructor({
     id,
@@ -242,6 +243,10 @@ class Select<T extends string = string> {
     }
 
     this.rootNode.classList.toggle("open", true);
+    this.unwatchPlacement = watchPopupPlacement({
+      referenceNode: this.comboboxNode,
+      popupNode: this.listboxNode,
+    });
     this.comboboxNode.setAttribute("aria-expanded", "true");
 
     this.setActiveOption(this.activeIndex);
@@ -252,6 +257,8 @@ class Select<T extends string = string> {
     if (!this.isOpen()) {
       return;
     }
+
+    this.unwatchPlacement?.();
 
     this.rootNode.classList.toggle("open", false);
     this.comboboxNode.setAttribute("aria-expanded", "false");
