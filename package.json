@@ -25,5 +25,8 @@
     "@types/node": "^25.5.2",
     "type-fest": "^5.9.0",
     "typescript": "^7.0.2"
+  },
+  "allowScripts": {
+    "esbuild@0.28.2": true
   }
 }
