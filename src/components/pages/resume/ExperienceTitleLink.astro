@@ -9,33 +9,26 @@ interface Props {
 const { title, href } = Astro.props;
 ---
 
-<a class="root" href={href}>
-  <h3 class="title">{title}</h3>
-  <span
-    aria-hidden
-    class="bg-clip icon"
-    style={{ "--bg-image": `url(${linkIcon.src})` }}
-  />
+<a href={href}>
+  <h3 class="title">
+    {title}
+    <span
+      aria-hidden
+      class="bg-clip icon"
+      style={{ "--bg-image": `url(${linkIcon.src})` }}
+    />
+  </h3>
 </a>
 
 <style>
-  .root {
-    color: var(--color-enabled);
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    column-gap: 8px;
-    text-underline-offset: 2px;
-  }
-
-  .root:hover {
-    text-decoration: underline;
-  }
-
   .title {
     font-size: var(--font-sm);
     font-weight: bold;
     flex-shrink: 0;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    column-gap: 8px;
   }
 
   .icon {

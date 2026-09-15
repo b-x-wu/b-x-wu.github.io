@@ -62,6 +62,16 @@ const { title } = Astro.props;
   main {
     flex-grow: 1;
   }
+
+  a {
+    color: var(--color-enabled);
+    text-decoration: none;
+    text-underline-offset: 2px;
+  }
+
+  a:hover {
+    text-decoration: underline;
+  }
 </style>
 
 <script>

@@ -78,18 +78,12 @@ type Props = Record<string, never>;
     column-gap: 48px;
   }
 
-  a {
+  nav a {
     height: fit-content;
-    text-decoration: none;
     color: var(--color-text);
   }
 
-  a:hover {
-    text-decoration: underline;
-    text-underline-offset: 2px;
-  }
-
-  a.homeLink {
+  nav a.homeLink {
     color: var(--color-primary);
     font-weight: bold;
   }
