@@ -12,6 +12,81 @@ export const killEvent = (e: Event) => {
   e.preventDefault();
 };
 
+const placePopup = (
+  referenceNode: HTMLElement,
+  popupNode: HTMLElement,
+  gapPx: number,
+): void => {
+  const containingBlock = popupNode.offsetParent;
+
+  if (containingBlock === null) {
+    // the popup is not displayed, so there is nothing to position yet
+    return;
+  }
+
+  const referenceRect = referenceNode.getBoundingClientRect();
+  const popupHeight = popupNode.offsetHeight;
+  const spaceBelow = window.innerHeight - referenceRect.bottom;
+  const spaceAbove = referenceRect.top;
+  const side =
+    spaceBelow < popupHeight + gapPx && spaceAbove > spaceBelow
+      ? "above"
+      : "below";
+
+  // absolute `top` resolves against the offsetParent's padding box, so
+  // rebase the viewport-space target onto that box
+  const containingBlockTop =
+    containingBlock.getBoundingClientRect().top + containingBlock.clientTop;
+  const popupTop =
+    (side === "above"
+      ? referenceRect.top - gapPx - popupHeight
+      : referenceRect.bottom + gapPx) - containingBlockTop;
+
+  popupNode.style.top = `${Math.round(popupTop)}px`;
+  popupNode.dataset.popupSide = side;
+};
+
+/**
+ * Given a popup element and a reference element the popup is anchored to,
+ * register listeners that position the popup either above or below the trigger.
+ * Positioning respects screen real-estate and will flip above or below based on
+ * screen space.
+ * @returns the callback removing the attached event listeners
+ */
+export const watchPopupPlacement = ({
+  referenceNode,
+  popupNode,
+  gapPx = 8,
+}: {
+  referenceNode: HTMLElement;
+  popupNode: HTMLElement;
+  gapPx?: number;
+}): (() => void) => {
+  const updatePlacement = () => placePopup(referenceNode, popupNode, gapPx);
+
+  updatePlacement();
+
+  window.addEventListener("resize", updatePlacement);
+  window.addEventListener("scroll", updatePlacement, {
+    capture: true,
+    passive: true,
+  });
+
+  let removed = false;
+  return () => {
+    if (removed) {
+      return;
+    }
+
+    window.removeEventListener("resize", updatePlacement);
+    window.removeEventListener("scroll", updatePlacement, {
+      capture: true,
+    });
+
+    removed = true;
+  };
+};
+
 export class HTMLStringBuilder {
   private readonly tag: string;
   private readonly attributes: Record<string, string> = {};

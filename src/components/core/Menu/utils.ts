@@ -1,4 +1,4 @@
-import { getById, killEvent } from "~/lib/dom";
+import { getById, killEvent, watchPopupPlacement } from "~/lib/dom";
 
 export interface MenuItemProps {
   label: string;
@@ -18,6 +18,7 @@ export class Menu {
   private menuItemNodes: HTMLElement[] = [];
   private activeIndex: number | null = null;
   private onOpenChange?: (state: "open" | "close") => void;
+  private unwatchPlacement: (() => void) | undefined;
 
   constructor({ triggerId, menuId, onOpenChange }: MenuConfig) {
     const triggerNode = getById(triggerId);
@@ -198,7 +199,15 @@ export class Menu {
   }
 
   private open() {
+    if (this.isOpen()) {
+      return;
+    }
+
     this.menuNode.style.display = "block";
+    this.unwatchPlacement = watchPopupPlacement({
+      referenceNode: this.triggerNode,
+      popupNode: this.menuNode,
+    });
     this.triggerNode.setAttribute("aria-expanded", "true");
     this.menuNode.focus();
     this.focusMenuItem(0);
@@ -209,6 +218,8 @@ export class Menu {
     if (!this.isOpen()) {
       return;
     }
+
+    this.unwatchPlacement?.();
 
     this.triggerNode.setAttribute("aria-expanded", "false");
     this.menuNode.setAttribute("aria-activedescendant", "");
