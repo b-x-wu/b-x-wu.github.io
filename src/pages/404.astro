@@ -1,0 +1,24 @@
+---
+import Chat from "~/components/layout/Chat.astro";
+import Chatbox from "~/components/layout/Chatbox.astro";
+import Layout from "~/layouts/Layout.astro";
+
+const ISSUES_URL = "https://github.com/b-x-wu/b-x-wu.github.io/issues/new";
+---
+
+<Layout title="b-x-wu | Page Not Found">
+  <Chat>
+    <Chatbox>sorry!! i don't think "<span id="path" />" exists yet...</Chatbox>
+    <Chatbox>
+      if you think something should be here, lmk on
+      {" "}
+      <a href={ISSUES_URL}>github</a>!
+    </Chatbox>
+  </Chat>
+</Layout>
+
+<script>
+  import { getById } from "~/lib/dom";
+
+  getById("path").textContent = location.pathname;
+</script>
