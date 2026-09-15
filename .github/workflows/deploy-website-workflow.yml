@@ -15,9 +15,6 @@ concurrency:
   group: "pages"
   cancel-in-progress: false
 
-env:
-  NODE_ENV: "production"
-
 jobs:
   build:
     runs-on: ubuntu-latest
