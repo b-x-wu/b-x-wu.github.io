@@ -11,7 +11,8 @@
     "preview": "astro preview",
     "astro": "astro",
     "lint:fix": "npx @biomejs/biome check --write",
-    "lint": "npx @biomejs/biome check"
+    "lint": "npx @biomejs/biome check",
+    "prepare": "husky"
   },
   "dependencies": {
     "@nanostores/persistent": "^1.3.3",
@@ -23,6 +24,7 @@
     "@astrojs/language-server": "^2.16.15",
     "@biomejs/biome": "2.4.10",
     "@types/node": "^25.5.2",
+    "husky": "^9.1.7",
     "type-fest": "^5.9.0",
     "typescript": "^7.0.2"
   },
