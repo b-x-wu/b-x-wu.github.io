@@ -12,7 +12,7 @@
     "astro": "astro",
     "lint:fix": "npx @biomejs/biome check --write",
     "lint": "npx @biomejs/biome check",
-    "prepare": "husky"
+    "prepare": "node .husky/install.mjs"
   },
   "dependencies": {
     "@nanostores/persistent": "^1.3.3",
