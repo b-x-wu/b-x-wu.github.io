@@ -32,21 +32,25 @@ const VISUAL_NOVEL_TERMINAL_URL =
           <ProjectPreview
             id="pixel-svg-maker-preview-dark"
             fallback="Loading Pixel SVG Maker preview"
+            themeMode="dark"
           >
             <Image
               src={pixelSvgMakerPreviewDark}
               alt="Pixel SVG Maker preview"
               class="pixelSvgMakerPreviewImage"
+              loading="lazy"
             />
           </ProjectPreview>
           <ProjectPreview
             id="pixel-svg-maker-preview-light"
             fallback="Loading Pixel SVG Maker preview"
+            themeMode="light"
           >
             <Image
               src={pixelSvgMakerPreview}
               alt="Pixel SVG Maker preview"
               class="pixelSvgMakerPreviewImage"
+              loading="lazy"
             />
           </ProjectPreview>
         </a>
@@ -80,7 +84,7 @@ const VISUAL_NOVEL_TERMINAL_URL =
               src={createReactSandboxPreview.src}
               alt="Create React Sandbox preview"
               class="createReactSandboxPreviewImage"
-            />
+            >
           </ProjectPreview>
         </a>
       </Window>
@@ -105,7 +109,7 @@ const VISUAL_NOVEL_TERMINAL_URL =
               src={visualNovelTerminalPreview.src}
               alt="Visual Novel Terminal preview"
               class="visualNovelTerminalPreviewImage"
-            />
+            >
           </ProjectPreview>
         </a>
       </Window>
@@ -118,21 +122,25 @@ const VISUAL_NOVEL_TERMINAL_URL =
           <ProjectPreview
             id="palette-posterizer-preview-dark"
             fallback="Loading Palette Posterizer preview"
+            themeMode="dark"
           >
             <Image
               src={palettePosterizationPreviewDark}
               alt="Palette Posterizer preview"
               class="palettePosterizerPreviewImage"
+              loading="lazy"
             />
           </ProjectPreview>
           <ProjectPreview
             id="palette-posterizer-preview-light"
             fallback="Loading Palette Posterizer preview"
+            themeMode="light"
           >
             <Image
               src={palettePosterizationPreview}
               alt="Palette Posterizer preview"
               class="palettePosterizerPreviewImage"
+              loading="lazy"
             />
           </ProjectPreview>
         </a>
@@ -200,41 +208,7 @@ const VISUAL_NOVEL_TERMINAL_URL =
   import visualNovelTerminalPreview from "~/assets/images/project-previews/visual-novel-terminal-preview.gif";
   import visualNovelTerminalPreviewReducedMotion from "~/assets/images/project-previews/visual-novel-terminal-preview-reduced-motion.png";
   import { getById, getBySelector } from "~/lib/dom";
-  import {
-    motionStore,
-    normalizeLocalStoreMotionMode,
-    normalizeLocalStoreThemeMode,
-    themeStore,
-  } from "~/lib/settings";
-
-  const pixelSvgMakerPreviewDarkNode = getById("pixel-svg-maker-preview-dark");
-  const pixelSvgMakerPreviewLightNode = getById(
-    "pixel-svg-maker-preview-light",
-  );
-  const palettePosterizerPreviewDarkNode = getById(
-    "palette-posterizer-preview-dark",
-  );
-  const palettePosterizerPreviewLightNode = getById(
-    "palette-posterizer-preview-light",
-  );
-
-  themeStore.subscribe((value) => {
-    const themeMode = normalizeLocalStoreThemeMode(value);
-
-    if (themeMode === "light") {
-      pixelSvgMakerPreviewDarkNode.style.display = "none";
-      pixelSvgMakerPreviewLightNode.style.display = "block";
-      palettePosterizerPreviewDarkNode.style.display = "none";
-      palettePosterizerPreviewLightNode.style.display = "block";
-    }
-
-    if (themeMode === "dark") {
-      pixelSvgMakerPreviewDarkNode.style.display = "block";
-      pixelSvgMakerPreviewLightNode.style.display = "none";
-      palettePosterizerPreviewDarkNode.style.display = "block";
-      palettePosterizerPreviewLightNode.style.display = "none";
-    }
-  });
+  import { motionStore, normalizeLocalStoreMotionMode } from "~/lib/settings";
 
   const swapPreviewImage = (previewId: string, src: string): void => {
     const previewNode = getById(previewId);
