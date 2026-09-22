@@ -18,10 +18,11 @@ type Props = Record<string, never>;
     <span>made with</span>
     <Image
       class="heartIcon"
+      id="footer-heart"
       src={heartIcon}
       alt="Love"
-      width={24}
       height={24}
+      width={24}
     />
     <ResponsiveVisibility>
       <span slot="xs">and a coffee</span>
@@ -33,7 +34,7 @@ type Props = Record<string, never>;
       href="https://github.com/b-x-wu"
       target="_blank"
       rel="noopener noreferrer"
-      src={githubIcon.src}
+      src={githubIcon}
       aria-label="Link to my GitHub profile"
       id="github-link"
       color="muted"
@@ -42,7 +43,7 @@ type Props = Record<string, never>;
       href="https://twitter.com/b_x_wu"
       target="_blank"
       rel="noopener noreferrer"
-      src={twitterIcon.src}
+      src={twitterIcon}
       aria-label="Link to my Twitter page"
       id="twitter-link"
       color="muted"
@@ -51,7 +52,7 @@ type Props = Record<string, never>;
       href="https://www.linkedin.com/in/b-x-wu/"
       target="_blank"
       rel="noopener noreferrer"
-      src={linkedinIcon.src}
+      src={linkedinIcon}
       aria-label="Link to my LinkedIn page"
       id="linkedin-link"
       color="muted"
@@ -60,7 +61,7 @@ type Props = Record<string, never>;
       href="mailto:bridgette.x.wu@gmail.com"
       target="_blank"
       rel="noopener noreferrer"
-      src={emailIcon.src}
+      src={emailIcon}
       aria-label="Link to email me"
       id="email-link"
       color="muted"
@@ -85,7 +86,9 @@ type Props = Record<string, never>;
     text-align: center;
   }
 
-  .heartIcon {
+  :global(.heartIcon) {
+    width: 20px;
+    height: 20px;
     margin: 0 8px;
   }
 
@@ -99,3 +102,18 @@ type Props = Record<string, never>;
     padding: 8px 0;
   }
 </style>
+
+<script>
+  import heartIcon from "~/assets/icons/heart.svg";
+  import heartDarkModeIcon from "~/assets/icons/heart-dark-mode.svg";
+  import { getById } from "~/lib/dom";
+  import { normalizeLocalStoreThemeMode, themeStore } from "~/lib/settings";
+
+  const heartIconEle = getById<HTMLImageElement>("footer-heart");
+
+  themeStore.subscribe((value) => {
+    const theme = normalizeLocalStoreThemeMode(value);
+    heartIconEle.src =
+      theme === "light" ? heartIcon.src : heartDarkModeIcon.src;
+  });
+</script>

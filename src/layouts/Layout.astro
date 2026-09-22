@@ -16,6 +16,24 @@ const { title } = Astro.props;
 <!doctype html>
 <html lang="en" class="dark">
   <head>
+    <script is:inline>
+      (() => {
+        var read = (key) => {
+          try {
+            return localStorage.getItem(key);
+          } catch {
+            return null;
+          }
+        };
+        var theme = read("theme");
+        var dark =
+          theme === "dark" ||
+          ((theme === null || theme === "system") &&
+            window.matchMedia("(prefers-color-scheme: dark)").matches);
+        document.documentElement.classList.toggle("dark", dark);
+      })();
+    </script>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width">
     <link rel="icon" href="/favicon.ico">
@@ -75,7 +93,7 @@ const { title } = Astro.props;
 </style>
 
 <script>
-  import { initializeStores } from "~/lib/globalStore";
+  import { initializeStores } from "~/lib/settings";
 
   initializeStores();
 </script>

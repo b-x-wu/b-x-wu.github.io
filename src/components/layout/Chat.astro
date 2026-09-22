@@ -4,11 +4,13 @@ import Chatbox from "./Chatbox.astro";
 interface Props {
   children: astroHTML.JSX.Element;
 }
+
+const dateString = new Date().toUTCString();
 ---
 
 <div class="container">
   <div class="dateContainer">
-    <div class="date" id="date" />
+    <div class="date" id="date" data-state="loading">{dateString}</div>
   </div>
   <Chatbox> <span class="joinChatbox">joined the room</span> </Chatbox>
   <slot />
@@ -44,5 +46,8 @@ interface Props {
 
   const dateEle = getById("date");
 
-  dateEle.textContent = new Date().toUTCString();
+  if (dateEle.dataset.state === "loading") {
+    dateEle.textContent = new Date().toUTCString();
+    dateEle.dataset.state = "ready";
+  }
 </script>

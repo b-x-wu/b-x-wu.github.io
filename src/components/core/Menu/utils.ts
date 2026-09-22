@@ -1,14 +1,21 @@
+import { type IconSrc, updateIcon } from "~/components/core/Icon/utils";
 import {
   getById,
   getBySelector,
   killEvent,
+  type NodeIdentifier,
+  resolveRootNode,
   watchPopupPlacement,
 } from "~/lib/dom";
 
 export interface MenuItemProps {
   label: string;
-  iconSrc?: string;
+  icon?: IconSrc;
   id: string;
+}
+
+export interface MenuItemLinkProps extends MenuItemProps {
+  href: string;
 }
 
 export interface MenuConfig {
@@ -51,8 +58,6 @@ export class Menu {
 
     this.menuNode.setAttribute("aria-labelledby", triggerId);
     this.menuNode.setAttribute("tabindex", "-1");
-
-    this.menuNode.style.display = "none";
 
     // trigger event handlers
     this.triggerNode.addEventListener("click", (e) => {
@@ -208,7 +213,7 @@ export class Menu {
       return;
     }
 
-    this.menuNode.style.display = "block";
+    this.menuNode.classList.add("open");
     this.unwatchPlacement = watchPopupPlacement({
       referenceNode: this.triggerNode,
       popupNode: this.menuNode,
@@ -233,7 +238,7 @@ export class Menu {
       menuItem.classList.remove("focus");
     }
 
-    this.menuNode.style.display = "none";
+    this.menuNode.classList.remove("open");
     this.triggerNode.focus();
     this.onOpenChange?.("close");
   }
@@ -278,16 +283,17 @@ export const createMenu = (menuConfig: MenuConfig) => {
   return new Menu(menuConfig);
 };
 
-export const updateMenuItem = (
-  id: string,
-  { iconSrc, label }: Partial<MenuItemProps>,
-): void => {
-  const menuItem = getById(id);
-  const labelNode = getBySelector(menuItem, ".label");
-  const iconNode = getBySelector(menuItem, ".icon");
+type UpdateMenuItemProps = Pick<MenuItemProps, "label" | "icon">;
 
-  if (iconSrc !== undefined) {
-    iconNode.style.setProperty("--bg-image", `url(${iconSrc})`);
+export const updateMenuItem = (
+  rootIdentifier: NodeIdentifier<HTMLElement>,
+  { icon, label }: Partial<UpdateMenuItemProps>,
+): void => {
+  const menuItem = resolveRootNode(rootIdentifier);
+  const labelNode = getBySelector(menuItem, ".label");
+
+  if (icon !== undefined) {
+    updateIcon(getBySelector(menuItem, ".icon"), { src: icon });
   }
 
   if (label !== undefined) {

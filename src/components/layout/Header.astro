@@ -1,12 +1,12 @@
 ---
+import closedFolderIcon from "~/assets/icons/closed-folder.svg";
 import configMenuClosedIcon from "~/assets/icons/config-menu-closed.svg";
 import lightModeIcon from "~/assets/icons/light-mode.svg";
-import lowContrastIcon from "~/assets/icons/low-contrast.svg";
 import reducedMotionIcon from "~/assets/icons/reduced-motion.svg";
 import IconButton from "~/components/core/IconButton";
 import Menu from "~/components/core/Menu";
 import MenuItem from "~/components/core/Menu/MenuItem.astro";
-import ResponsiveVisibility from "~/components/core/ResponsiveVisibility";
+import MenuItemLink from "~/components/core/Menu/MenuItemLink.astro";
 
 type Props = Record<string, never>;
 ---
@@ -17,49 +17,52 @@ type Props = Record<string, never>;
     <a href="/resume" aria-label="Resumé">/resume</a>
     <a href="/projects" aria-label="Projects">/projects</a>
   </nav>
-  <ResponsiveVisibility>
-    <div class="toolbar">
-      <IconButton
-        aria-label="Enable light mode"
-        src={lightModeIcon.src}
-        id="theme-button"
-      />
-      <IconButton
-        aria-label="Enable low contrast mode"
-        src={lowContrastIcon.src}
-        id="contrast-button"
-      />
-      <IconButton
-        aria-label="Enable reduced motion mode"
-        src={reducedMotionIcon.src}
-        id="motion-button"
-      />
-    </div>
-    <span slot="xs">
-      <IconButton
-        id="config-menu-trigger"
-        src={configMenuClosedIcon.src}
-        aria-label="Open config menu"
-      />
-      <Menu id="config-menu" placement="right">
-        <MenuItem
-          id="theme-menuitem"
-          iconSrc={lightModeIcon.src}
-          label="Enable light mode"
-        />
-        <MenuItem
-          id="contrast-menuitem"
-          iconSrc={lowContrastIcon.src}
-          label="Enable low contrast mode"
-        />
-        <MenuItem
-          id="motion-menuitem"
-          iconSrc={reducedMotionIcon.src}
-          label="Enable reduced motion mode"
-        />
-      </Menu>
-    </span>
-  </ResponsiveVisibility>
+  <div class="toolbar">
+    <IconButton
+      aria-label="Enable light mode"
+      src={lightModeIcon}
+      id="theme-button"
+    />
+    <IconButton
+      aria-label="Enable reduced motion mode"
+      src={reducedMotionIcon}
+      id="motion-button"
+    />
+  </div>
+  <div class="mobileBar">
+    <IconButton
+      id="navbar-menu-trigger"
+      src={closedFolderIcon}
+      aria-label="Open navigation menu"
+    />
+    <a class="homeLink" href="/" aria-label="Home">b-x-wu!</a>
+    <IconButton
+      id="config-menu-trigger"
+      src={configMenuClosedIcon}
+      aria-label="Open config menu"
+    />
+  </div>
+  <Menu id="navbar-menu" placement="left">
+    <MenuItemLink id="navbar-home-menuitem" label="/" href="/" />
+    <MenuItemLink id="navbar-resume-menuitem" label="/resume" href="/resume" />
+    <MenuItemLink
+      id="navbar-projects-menuitem"
+      label="/projects"
+      href="/projects"
+    />
+  </Menu>
+  <Menu id="config-menu" placement="right">
+    <MenuItem
+      id="theme-menuitem"
+      icon={lightModeIcon}
+      label="Enable light mode"
+    />
+    <MenuItem
+      id="motion-menuitem"
+      icon={reducedMotionIcon}
+      label="Enable reduced motion mode"
+    />
+  </Menu>
 </header>
 
 <style>
@@ -73,7 +76,7 @@ type Props = Record<string, never>;
   }
 
   nav {
-    display: flex;
+    display: none;
     flex-direction: row;
     column-gap: 48px;
   }
@@ -89,59 +92,85 @@ type Props = Record<string, never>;
   }
 
   .toolbar {
-    display: flex;
+    display: none;
     flex-direction: row;
     column-gap: 4px;
+  }
+
+  .mobileBar {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  .mobileBar a.homeLink {
+    flex: 0 0 50%;
+    text-align: center;
+    color: var(--color-primary);
+    font-weight: bold;
+  }
+
+  @media (--sm) {
+    nav,
+    .toolbar {
+      display: flex;
+    }
+
+    .mobileBar {
+      display: none;
+    }
   }
 </style>
 
 <script>
+  import closedFolderIcon from "~/assets/icons/closed-folder.svg";
   import configMenuClosedIcon from "~/assets/icons/config-menu-closed.svg";
   import configMenuOpenIcon from "~/assets/icons/config-menu-open.svg";
   import darkModeIcon from "~/assets/icons/dark-mode.svg";
-  import highContrastIcon from "~/assets/icons/high-contrast.svg";
   import lightModeIcon from "~/assets/icons/light-mode.svg";
-  import lowContrastIcon from "~/assets/icons/low-contrast.svg";
   import noReducedMotionIcon from "~/assets/icons/no-reduced-motion.svg";
+  import openFolderIcon from "~/assets/icons/open-folder.svg";
   import reducedMotionIcon from "~/assets/icons/reduced-motion.svg";
   import { updateIconButton } from "~/components/core/IconButton/utils";
   import { createMenu, updateMenuItem } from "~/components/core/Menu/utils";
   import { getById } from "~/lib/dom";
   import {
-    contrastStore,
-    getNormalizedContrastMode,
-    getNormalizedMotionMode,
-    getNormalizedTheme,
+    getMotionMode,
+    getThemeMode,
     motionStore,
+    normalizeLocalStoreMotionMode,
+    normalizeLocalStoreThemeMode,
     themeStore,
-  } from "~/lib/globalStore";
+  } from "~/lib/settings";
 
   themeStore.subscribe((value) => {
-    const theme = getNormalizedTheme(value);
+    const theme = normalizeLocalStoreThemeMode(value);
     if (theme === "dark") {
       updateIconButton("theme-button", {
         "aria-label": "Enable light mode",
-        src: lightModeIcon.src,
+        src: lightModeIcon,
       });
       updateMenuItem("theme-menuitem", {
         label: "Enable light mode",
-        iconSrc: lightModeIcon.src,
+        icon: lightModeIcon,
       });
     } else {
       // light mode
       updateIconButton("theme-button", {
         "aria-label": "Enable dark mode",
-        src: darkModeIcon.src,
+        src: darkModeIcon,
       });
       updateMenuItem("theme-menuitem", {
         label: "Enable dark mode",
-        iconSrc: darkModeIcon.src,
+        icon: darkModeIcon,
       });
     }
   });
 
   const toggleTheme = () => {
-    const theme = getNormalizedTheme();
+    const theme = getThemeMode();
     if (theme === "dark") {
       themeStore.set("light");
     } else {
@@ -153,69 +182,32 @@ type Props = Record<string, never>;
   getById("theme-button").addEventListener("click", toggleTheme);
   getById("theme-menuitem").addEventListener("click", toggleTheme);
 
-  contrastStore.subscribe((value) => {
-    const contrastMode = getNormalizedContrastMode(value);
-    if (contrastMode === "default") {
-      updateIconButton("contrast-button", {
-        "aria-label": "Enable high contrast mode",
-        src: highContrastIcon.src,
-      });
-      updateMenuItem("contrast-menuitem", {
-        label: "Enable high contrast mode",
-        iconSrc: highContrastIcon.src,
-      });
-    } else {
-      // high contrast mode
-      updateIconButton("contrast-button", {
-        "aria-label": "Disable high contrast mode",
-        src: lowContrastIcon.src,
-      });
-      updateMenuItem("contrast-menuitem", {
-        label: "Disable high contrast mode",
-        iconSrc: lowContrastIcon.src,
-      });
-    }
-  });
-
-  const toggleContrastMode = () => {
-    const contrastMode = getNormalizedContrastMode();
-    if (contrastMode === "default") {
-      contrastStore.set("high");
-    } else {
-      // high contrast
-      contrastStore.set("default");
-    }
-  };
-
-  getById("contrast-button").addEventListener("click", toggleContrastMode);
-  getById("contrast-menuitem").addEventListener("click", toggleContrastMode);
-
   motionStore.subscribe((value) => {
-    const motionMode = getNormalizedMotionMode(value);
+    const motionMode = normalizeLocalStoreMotionMode(value);
     if (motionMode === "default") {
       updateIconButton("motion-button", {
         "aria-label": "Enable reduced motion mode",
-        src: reducedMotionIcon.src,
+        src: reducedMotionIcon,
       });
       updateMenuItem("motion-menuitem", {
         label: "Enabled reduced motion mode",
-        iconSrc: reducedMotionIcon.src,
+        icon: reducedMotionIcon,
       });
     } else {
       // reduced motion mode
       updateIconButton("motion-button", {
         "aria-label": "Disable reduced motion mode",
-        src: noReducedMotionIcon.src,
+        src: noReducedMotionIcon,
       });
       updateMenuItem("motion-menuitem", {
         label: "Disable reduced motion mode",
-        iconSrc: noReducedMotionIcon.src,
+        icon: noReducedMotionIcon,
       });
     }
   });
 
   const toggleMotionMode = () => {
-    const motionMode = getNormalizedMotionMode();
+    const motionMode = getMotionMode();
     if (motionMode === "default") {
       motionStore.set("reduced");
     } else {
@@ -234,13 +226,32 @@ type Props = Record<string, never>;
     onOpenChange: (state) => {
       if (state === "open") {
         updateIconButton("config-menu-trigger", {
-          src: configMenuOpenIcon.src,
+          src: configMenuOpenIcon,
           "aria-label": "Close config menu",
         });
       } else {
         updateIconButton("config-menu-trigger", {
-          src: configMenuClosedIcon.src,
+          src: configMenuClosedIcon,
           "aria-label": "Open config menu",
+        });
+      }
+    },
+  });
+
+  // wire up navbar menu
+  createMenu({
+    triggerId: "navbar-menu-trigger",
+    menuId: "navbar-menu",
+    onOpenChange: (state) => {
+      if (state === "open") {
+        updateIconButton("navbar-menu-trigger", {
+          src: openFolderIcon,
+          "aria-label": "Close navigation menu",
+        });
+      } else {
+        updateIconButton("navbar-menu-trigger", {
+          src: closedFolderIcon,
+          "aria-label": "Open navigation menu",
         });
       }
     },
